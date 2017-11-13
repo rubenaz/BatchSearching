@@ -1,3 +1,10 @@
-<p>
-  searching works!
-</p>
+  <h1>Your Search</h1>
+  <input #box/>
+  <button #but (click)="onSave(box.value)">Search</button>
+  <div *ngIf = "pressed==true">
+  <h3 *ngFor="let item of results">
+    {{item.AbstractURL}}{{item.RelatedTopics}}</h3>
+  </div>
+
+  
+
