@@ -1,10 +1,30 @@
   <h1>Your Search</h1>
-  <input #box/>
+  <input #box class="box"/>
   <button #but (click)="onSave(box.value)">Search</button>
+  <div class="btn-group" data-toggle="buttons">
+      <label>
+        <input type="radio" data-ng-model="selection" name="options" [value]="music" (click)="setRadio('music')" />
+        <span>music</span>
+      </label>
+      <label >
+        <input type="radio" data-ng-model="selection" name="options" [value]="film" (click)="setRadio('film')" />
+        <span>film</span>
+      </label>
+      <label >
+        <input type="radio" data-ng-model="selection" name="options" [value]="image"(click)="setRadio('image')" />
+        <span>image</span>
+      </label>
+      <label >
+          <input type="radio" data-ng-model="selection" name="options" [value]="wikipedia"(click)="setRadio('wikipedia')" />
+          <span>wikipedia</span>
+        </label>
+    </div>
   <div *ngIf = "pressed==true">
-  <h3 *ngFor="let item of results">
-    {{item.AbstractURL}}{{item.RelatedTopics}}</h3>
+  <div *ngFor="let item of results">
+      <div *ngIf = "item.name==AbstractURL"></div>
+    {{item.AbstractURL}}
   </div>
 
   
 
+  

@@ -8,12 +8,14 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class APIservice{
 
-    results:any[];
+    allSearch:string[];
     private apiUrl;
 
     constructor(){}
 
-    load(result:any[]){
-
+    load(input){
+        this.allSearch=input.split(",",input.length);
+        return this.allSearch;
       }
+      
     }

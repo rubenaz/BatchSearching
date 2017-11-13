@@ -19,24 +19,34 @@ export class SearchingComponent implements OnInit {
   input;
   private apiUrl;
   pressed=false;
-  public results:any[]=[];
+  results:any[]=[];
+  allSearch:string[];
+  sort;
+  private service=new APIservice();
+  
 
  // s2= new APIservice(this.http)
-  constructor(private http:Http,private service:APIservice) {} 
+  constructor(private http:Http) {} 
+setRadio(sort)
+{
+  this.sort=sort;
+}
 
   onSave(message){
+  this.results=Array.of(this.results);
   this.input=message;
+  this.allSearch=this.service.load(this.input);
+  for(let i=0 ; i<this.allSearch.length;i++){
   this.apiUrl="http://api.duckduckgo.com/?q="; 
-  this.apiUrl+=this.input+"&format=json";
+  this.apiUrl+=this.allSearch[i]+"&format=json";
   console.log( this.apiUrl);
   this.http.get(this.apiUrl).subscribe(data => {
     // data is now an instance of type ItemsResponse, so you can do this:
-    this.results = data.json();
-    this.results=Array.of(this.results);
-    console.log(this.results[0]);
-    this.service.load(this.results);
+    this.results[i]=data.json();
+    console.log(this.results[i]);
     this.pressed=true;
   });
+}
   }
   
   
