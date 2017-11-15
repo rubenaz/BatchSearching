@@ -13,7 +13,9 @@ import { AsyncPipe } from '@angular/common';
   templateUrl: './searching.component.html',
   styleUrls: ['./searching.component.css']                
 })
-
+//cle api flickr 33870ee66d8bf44b0cc3c8c95cace552
+//secret 10de5f4189fc5ddd
+//id LJWS3MTZIOEOU35YFVDF 5DNH67
 
 export class SearchingComponent implements OnInit {
   input;
@@ -27,6 +29,7 @@ export class SearchingComponent implements OnInit {
 
  // s2= new APIservice(this.http)
   constructor(private http:Http) {} 
+
 setRadio(sort)
 {
   this.sort=sort;
@@ -37,8 +40,14 @@ setRadio(sort)
   this.input=message;
   this.allSearch=this.service.load(this.input);
   for(let i=0 ; i<this.allSearch.length;i++){
+    if(this.sort!="image"){
   this.apiUrl="http://api.duckduckgo.com/?q="; 
   this.apiUrl+=this.allSearch[i]+"&format=json";
+    }
+  else
+  {
+this.apiUrl="https://api.flickr.com/services/rest/?&method=flickr.photos.getRecent&api_key=33870ee66d8bf44b0cc3c8c95cace552&" + this.allSearch[i] +"&format=json&per_page=1"
+  }
   console.log( this.apiUrl);
   this.http.get(this.apiUrl).subscribe(data => {
     // data is now an instance of type ItemsResponse, so you can do this:

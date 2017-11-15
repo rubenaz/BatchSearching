@@ -25,6 +25,7 @@
     "@angular/router": "^5.1.0-beta.0",
     "@ng-bootstrap/ng-bootstrap": "^1.0.0-beta.5",
     "angular-event-service": "^1.2.0",
+    "angular-flickr-api-factory": "^0.5.1",
     "bootstrap": "^3.3.7",
     "core-js": "^2.4.1",
     "flickrapi": "^0.6.0",
