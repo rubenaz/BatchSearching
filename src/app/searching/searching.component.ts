@@ -23,7 +23,8 @@ export class SearchingComponent implements OnInit {
   pressed=false;
   results:any[]=[];
   allSearch:string[];
-  sort;
+  sort=" ";
+  falseInput=false;
   private service=new APIservice();
   
 
@@ -36,25 +37,44 @@ setRadio(sort)
 }
 
   onSave(message){
-  this.results=Array.of(this.results);
   this.input=message;
-  this.allSearch=this.service.load(this.input);
+  this.allSearch= this.service.load(this.input);
+  this.results=Array.of(this.results);
+
+  if(this.service.error(this.input)==true)
+    return;;
+
+//==============================================================================================
   for(let i=0 ; i<this.allSearch.length;i++){
+
     if(this.sort!="image"){
   this.apiUrl="http://api.duckduckgo.com/?q="; 
   this.apiUrl+=this.allSearch[i]+"&format=json";
     }
   else
   {
-this.apiUrl="https://api.flickr.com/services/rest/?&method=flickr.photos.getRecent&api_key=33870ee66d8bf44b0cc3c8c95cace552&" + this.allSearch[i] +"&format=json&per_page=1"
+this.apiUrl="https://api.flickr.com/services/rest/?&method=flickr.photos.search&api_key=33870ee66d8bf44b0cc3c8c95cace552&" + this.allSearch[i] +"&format=json&&nojsoncallback=1&per_page=1"
   }
   console.log( this.apiUrl);
   this.http.get(this.apiUrl).subscribe(data => {
     // data is now an instance of type ItemsResponse, so you can do this:
-    this.results[i]=data.json();
-    console.log(this.results[i]);
+    if(this.sort!="image")
+       this.results[i]=data.json();
+    else
+    {
+      this.results[i]=data;
+      console.log(this.results[i]._body);
+
+      //x is the json returned from the url.
+     /* var _s = n.photos.photo;
+      var CurrentPhotoUrl = 'https://farm'+_s[i]['farm']+'.staticflickr.com/'+_s[i]['server']+'/'+_s[i]['id']+'_'+_s[i]['secret']+'_n.jpg'
+      console.log(CurrentPhotoUrl);  */
+    } 
+
+    
     this.pressed=true;
   });
+  //===============================================================================================
 }
   }
   

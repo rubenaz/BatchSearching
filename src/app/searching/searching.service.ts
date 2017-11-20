@@ -13,7 +13,14 @@ export class APIservice{
 
     constructor(){}
 
-    load(input){
+    error(input){
+        if(input.lastIndexOf(",")==(input.length-1))
+            return true;
+        return false;
+         
+    }
+
+    load(input){    
         this.allSearch=input.split(",",input.length);
         return this.allSearch;
       }

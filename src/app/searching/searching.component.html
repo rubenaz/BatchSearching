@@ -1,6 +1,12 @@
-  <h1>Your Search</h1>
-  <input #box class="box"/>
+  <h1>Your Search</h1> 
+    <div class="top">
+        <p><input #choice class="box2"/><br>
+      <input #sort class="box2"/> </p> 
+      <button #plus class="plus">+</button>    
+    </div> 
+ <div> <input #box class="box"/>
   <button #but (click)="onSave(box.value)">Search</button>
+</div>
   <div class="btn-group" data-toggle="buttons">
       <label>
         <input type="radio" data-ng-model="selection" name="options" [value]="music" (click)="setRadio('music')" />
@@ -20,11 +26,19 @@
         </label>
     </div>
   <div *ngIf = "pressed==true">
-  <div *ngFor="let item of results">
-      <div *ngIf = "item.name==AbstractURL"></div>
-    {{item.AbstractURL}}
+    <div *ngIf="sort=='music' || sort=='film' || sort=='wikipedia' ||sort==' '">
+      <div *ngFor="let item of results">
+        <div *ngIf = "item.name==AbstractURL">
+          {{item.AbstractURL}}
+        </div>
+      </div>
+    </div>  
+   <div *ngIf="sort =='image'">
+      <div *ngFor="let item of results">
+          {{item}}
+      </div>
+   </div>
   </div>
-
   
 
   

@@ -1,9 +1,23 @@
-.radio
-{
-    border-style: solid;  
-}
+
 .box
 {
     width: 400px;
     
+}
+.box2
+{
+    width:100px;
+    margin-top:10px;
+}
+.plus
+{
+    position: relative;
+    width: 20px;
+    
+}
+
+.top
+{
+    background-color: #b0e0e6;
+    display: block;
 }
