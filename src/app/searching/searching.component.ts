@@ -22,6 +22,7 @@ export class SearchingComponent implements OnInit {
   private apiUrl;
   pressed=false;
   results:any[]=[];
+  relatedtopics:any[]=[];
   allSearch:string[];
   sort=" ";
   falseInput=false;
@@ -31,15 +32,13 @@ export class SearchingComponent implements OnInit {
  // s2= new APIservice(this.http)
   constructor(private http:Http) {} 
 
-setRadio(sort)
-{
-  this.sort=sort;
-}
 
-  onSave(message){
+  onSave(message,type,choice){
+
   this.input=message;
   this.allSearch= this.service.load(this.input);
   this.results=Array.of(this.results);
+  this.relatedtopics=Array.of(this.relatedtopics);
 
   if(this.service.error(this.input)==true)
     return;;
@@ -47,9 +46,9 @@ setRadio(sort)
 //==============================================================================================
   for(let i=0 ; i<this.allSearch.length;i++){
 
-    if(this.sort!="image"){
+    if(type!="photo"){
   this.apiUrl="http://api.duckduckgo.com/?q="; 
-  this.apiUrl+=this.allSearch[i]+"&format=json";
+  this.apiUrl+=this.allSearch[i] +"&format=json";
     }
   else
   {
@@ -58,21 +57,24 @@ this.apiUrl="https://api.flickr.com/services/rest/?&method=flickr.photos.search&
   console.log( this.apiUrl);
   this.http.get(this.apiUrl).subscribe(data => {
     // data is now an instance of type ItemsResponse, so you can do this:
-    if(this.sort!="image")
+    if(type!="photo"){
        this.results[i]=data.json();
+       this.relatedtopics[i]=this.results[i].RelatedTopics;
+       
+    }
     else
-    {
       this.results[i]=data;
-      console.log(this.results[i]._body);
 
+      console.log(this.results[i]);
+      console.log(this.relatedtopics);
+      this.pressed=true;
       //x is the json returned from the url.
      /* var _s = n.photos.photo;
       var CurrentPhotoUrl = 'https://farm'+_s[i]['farm']+'.staticflickr.com/'+_s[i]['server']+'/'+_s[i]['id']+'_'+_s[i]['secret']+'_n.jpg'
       console.log(CurrentPhotoUrl);  */
-    } 
 
-    
-    this.pressed=true;
+  
+
   });
   //===============================================================================================
 }

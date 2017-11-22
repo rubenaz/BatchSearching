@@ -8,16 +8,11 @@
 {
     width:100px;
     margin-top:10px;
+    display: inline-block
 }
 .plus
 {
     position: relative;
-    width: 20px;
+    width: 40px;
     
-}
-
-.top
-{
-    background-color: #b0e0e6;
-    display: block;
 }
