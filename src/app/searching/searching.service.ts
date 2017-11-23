@@ -9,6 +9,8 @@ import { Injectable } from '@angular/core';
 export class APIservice{
 
     allSearch:string[];
+    alltype:string[]=[];
+    
     private apiUrl;
 
     constructor(){}
@@ -24,5 +26,15 @@ export class APIservice{
         this.allSearch=input.split(",",input.length);
         return this.allSearch;
       }
-      
+    returnType(type)
+    {
+        
+        for (var i = 0; i < this.allSearch.length; i++) {
+            if(type=="trailer")
+            {
+                this.alltype[i]="!youtube "
+            }
+        }  
+        return this.alltype;     
     }
+}   

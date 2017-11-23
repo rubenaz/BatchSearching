@@ -9,18 +9,20 @@
 </div>
   <div *ngIf = "pressed==true">
     <div *ngFor="let item of results;let i = index">
-        <a [attr.href]="item.AbstractURL" [attr.aria-controls]="item.AbstractURL">FIRST URL: {{item.AbstractURL}} </a>
-      <div *ngIf = "item.Results[0]!=undefined">
-          <a [attr.href]="item.Results[0].FirstURL" [attr.aria-controls]="item.Results[0].FirstURL">SECONDE URL: {{item.Results[0].FirstURL}} </a>
-      </div>
-      <div *ngFor="let item of relatedtopics[i]">
-          <a [attr.href]="item.FirstURL" [attr.aria-controls]="item.FirstURL">{{item.FirstURL}} </a>
-      </div>
-      <div *ngIf = "item.Image!=undefined">
-          <img [src]="item.Image">
-      </div> 
+        <div *ngIf = "typed=='review'">
+              <a [attr.href]="item.AbstractURL" [attr.aria-controls]="item.AbstractURL">FIRST URL: {{item.AbstractURL}} </a>
+            <div *ngIf = "item.Results[0]!=undefined">
+                <a [attr.href]="item.Results[0].FirstURL" [attr.aria-controls]="item.Results[0].FirstURL">SECONDE URL: {{item.Results[0].FirstURL}} </a>
+            </div>
+            <div *ngIf = "item.Image!=undefined">
+                <img [src]="item.Image">
+            </div>
+        </div>
+        <div *ngIf = "typed=='trailer'">
+          <a [attr.href]="item.url" [attr.aria-controls]="item.url">YOUTUBE LINK</a>
+        </div>
+          </div> 
     </div>
-  </div>
-  
+
 
   

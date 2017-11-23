@@ -22,10 +22,12 @@ export class SearchingComponent implements OnInit {
   private apiUrl;
   pressed=false;
   results:any[]=[];
-  relatedtopics:any[]=[];
   allSearch:string[];
+  allType:string[];
   sort=" ";
   falseInput=false;
+  typed="";
+  choice="";
   private service=new APIservice();
   
 
@@ -36,9 +38,11 @@ export class SearchingComponent implements OnInit {
   onSave(message,type,choice){
 
   this.input=message;
+  this.typed=type;
+  this.choice=choice;
   this.allSearch= this.service.load(this.input);
   this.results=Array.of(this.results);
-  this.relatedtopics=Array.of(this.relatedtopics);
+  this.allType=this.service.returnType(this.typed);
 
   if(this.service.error(this.input)==true)
     return;;
@@ -47,7 +51,7 @@ export class SearchingComponent implements OnInit {
   for(let i=0 ; i<this.allSearch.length;i++){
 
     if(type!="photo"){
-  this.apiUrl="http://api.duckduckgo.com/?q="; 
+  this.apiUrl="http://api.duckduckgo.com/?q=" + this.allType[i] ; 
   this.apiUrl+=this.allSearch[i] +"&format=json";
     }
   else
@@ -57,16 +61,13 @@ this.apiUrl="https://api.flickr.com/services/rest/?&method=flickr.photos.search&
   console.log( this.apiUrl);
   this.http.get(this.apiUrl).subscribe(data => {
     // data is now an instance of type ItemsResponse, so you can do this:
-    if(type!="photo"){
+    if(this.typed=="review"){
        this.results[i]=data.json();
-       this.relatedtopics[i]=this.results[i].RelatedTopics;
-       
     }
-    else
+    if(this.typed=="trailer")
+    {
       this.results[i]=data;
-
-      console.log(this.results[i]);
-      console.log(this.relatedtopics);
+    }
       this.pressed=true;
       //x is the json returned from the url.
      /* var _s = n.photos.photo;
