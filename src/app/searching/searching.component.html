@@ -19,7 +19,7 @@
             </div>
         </div>
         <div *ngIf = "typed=='trailer'">
-          <a [attr.href]="item.url" [attr.aria-controls]="item.url">YOUTUBE LINK</a>
+            <iframe [src]="item" width="640" height="360" frameborder="0" allowfullscreen></iframe>
         </div>
           </div> 
     </div>

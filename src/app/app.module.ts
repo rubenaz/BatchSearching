@@ -28,4 +28,5 @@ import { SearchingComponent } from './searching/searching.component';
   providers: [APIservice,AppComponent],
   bootstrap: [AppComponent]
 })
+
 export class AppModule { }

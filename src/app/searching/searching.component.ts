@@ -4,6 +4,7 @@ import {Http,Response,HttpModule,} from '@angular/http';
 import {HttpClient} from '@angular/common/http'; 
 import { EventsServiceModule } from 'angular-event-service';
 import { AsyncPipe } from '@angular/common';
+import { DomSanitizer,SafeResourceUrl, SafeUrl} from '@angular/platform-browser';
 
 
 
@@ -32,7 +33,7 @@ export class SearchingComponent implements OnInit {
   
 
  // s2= new APIservice(this.http)
-  constructor(private http:Http) {} 
+  constructor(private http:Http,private sanitizer: DomSanitizer) {} 
 
 
   onSave(message,type,choice){
@@ -54,6 +55,11 @@ export class SearchingComponent implements OnInit {
   this.apiUrl="http://api.duckduckgo.com/?q=" + this.allType[i] ; 
   this.apiUrl+=this.allSearch[i] +"&format=json";
     }
+    if(type=="trailer")
+    {
+      this.apiUrl="https://www.googleapis.com/youtube/v3/search?part=snippet&q=" + this.allSearch[i]  +" "+ this.typed+"&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos";
+      
+    }
   else
   {
 this.apiUrl="https://api.flickr.com/services/rest/?&method=flickr.photos.search&api_key=33870ee66d8bf44b0cc3c8c95cace552&" + this.allSearch[i] +"&format=json&&nojsoncallback=1&per_page=1"
@@ -66,7 +72,13 @@ this.apiUrl="https://api.flickr.com/services/rest/?&method=flickr.photos.search&
     }
     if(this.typed=="trailer")
     {
-      this.results[i]=data;
+      console.log(this.sanitizer);
+      this.results[i]=data.json();
+      this.results[i]= "https://www.youtube.com/embed/" +this.results[i].items[0].id.videoId;
+      this.results[i]=this.sanitizer.bypassSecurityTrustResourceUrl(this.results[i]);
+      
+      
+      console.log(this.results[i]);
     }
       this.pressed=true;
       //x is the json returned from the url.
