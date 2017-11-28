@@ -8,21 +8,26 @@
   <button #but (click)="onSave(box.value,type.value,choice.value)">Search</button>
 </div>
   <div *ngIf = "pressed==true">
+
     <div *ngFor="let item of results;let i = index">
-        <div *ngIf = "typed=='review'">
-              <a [attr.href]="item.AbstractURL" [attr.aria-controls]="item.AbstractURL">FIRST URL: {{item.AbstractURL}} </a>
-            <div *ngIf = "item.Results[0]!=undefined">
-                <a [attr.href]="item.Results[0].FirstURL" [attr.aria-controls]="item.Results[0].FirstURL">SECONDE URL: {{item.Results[0].FirstURL}} </a>
-            </div>
-            <div *ngIf = "item.Image!=undefined">
-                <img [src]="item.Image">
-            </div>
-        </div>
-        <div *ngIf = "typed=='trailer'">
-            <iframe [src]="item" width="640" height="360" frameborder="0" allowfullscreen></iframe>
-        </div>
-          </div> 
-    </div>
+            <table style="width:100%">
+                    <tr>
+                       <th><h3>{{allSearch[i]}}</h3></th> 
+                       <th class="clm1">
+                            <div *ngIf = "typed=='trailer'">
+                                <iframe [src]="item" width="200" height="200" frameborder="0" allowfullscreen></iframe>
+                            </div>
+                            <div *ngIf = "typed=='photo'">
+                                    <img [src]="item" width="200" height="200" frameborder="0" allowfullscreen>
+                            </div>
+                            <div *ngIf = "typed=='review'">
+                                    {{item}}
+                            </div>
+                       </th>
+                    </tr>
+                </table>
+    </div> 
+</div>
 
 
   

@@ -37,4 +37,29 @@ export class APIservice{
         }  
         return this.alltype;     
     }
+    returnURL(type,search)
+    {
+
+        if(type=="trailer")
+        {
+        this.apiUrl="https://www.googleapis.com/youtube/v3/search?part=snippet&q=" + search +" "+ type+"&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos";
+        
+        }
+        else if (type=="photo" || type=="review")
+        {
+            this.apiUrl="http://api.duckduckgo.com/?q="; 
+            this.apiUrl+=search +"&format=json";
+
+           // this.apiUrl="https://api.flickr.com/services/rest/?&method=flickr.photos.search&api_key=33870ee66d8bf44b0cc3c8c95cace552&text=" + search +"&format=json&nojsoncallback=1&per_page=1"
+        }
+        return this.apiUrl;
+    }
+    getPhotoUrl(jsonResponse)
+    {
+
+        let url="";
+        url= "https://farm" + jsonResponse[0].farm + ".staticflickr.com/" + jsonResponse[0].server +"/" +jsonResponse[0].id +
+        "_"+jsonResponse[0].secret + ".jpg"
+       return  url;
+    }
 }   
