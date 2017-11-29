@@ -5,6 +5,7 @@ import {HttpClient} from '@angular/common/http';
 import { EventsServiceModule } from 'angular-event-service';
 import { AsyncPipe } from '@angular/common';
 import { DomSanitizer,SafeResourceUrl, SafeUrl} from '@angular/platform-browser';
+import { AgmCoreModule } from '@agm/core';
 
 
 
@@ -28,6 +29,8 @@ export class SearchingComponent implements OnInit {
   falseInput=false;
   typed="";
   choice="";
+  lat = 28.38 ;
+  lng= 77.12;
   private service=new APIservice();
   
 
@@ -43,6 +46,7 @@ export class SearchingComponent implements OnInit {
   this.allSearch= this.service.load(this.input);
   this.results=Array.of(this.results);
   this.allType=this.service.returnType(this.typed);
+  
 
   if(this.service.error(this.input)==true)
     return;;
@@ -53,9 +57,11 @@ export class SearchingComponent implements OnInit {
   this.apiUrl=this.service.returnURL(this.typed,this.allSearch[i])//get the url for the response of json
   console.log( this.apiUrl);
   this.http.get(this.apiUrl).subscribe(data => {
-    this.results[i]=data.json();
+    if(type!="map")
+      this.results[i]=data.json();
     // data is now an instance of type ItemsResponse, so you can do this:
     if(this.typed=="photo")
+    
        this.results[i]=this.results[i].Image;
       if(this.typed=="review")
       this.results[i]=this.results[i].AbstractText;
@@ -63,6 +69,11 @@ export class SearchingComponent implements OnInit {
     if(this.typed=="trailer")
     {
       this.results[i]= "https://www.youtube.com/embed/" +this.results[i].items[0].id.videoId;
+      this.results[i]=this.sanitizer.bypassSecurityTrustResourceUrl(this.results[i]);
+    }
+    if(this.typed=="map")
+    {
+      this.results[i]="https://www.google.com/maps/embed/v1/place?q=" + this.allSearch[i] + "&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos"
       this.results[i]=this.sanitizer.bypassSecurityTrustResourceUrl(this.results[i]);
     }
       this.pressed=true;

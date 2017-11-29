@@ -12,6 +12,7 @@
   },
   "private": true,
   "dependencies": {
+    "@agm/core": "^1.0.0-beta.2",
     "@angular/animations": "^5.1.0-beta.0",
     "@angular/common": "^5.1.0-beta.0",
     "@angular/compiler": "^5.1.0-beta.0",
@@ -24,6 +25,7 @@
     "@angular/platform-server": "^5.1.0-beta.0",
     "@angular/router": "^5.1.0-beta.0",
     "@ng-bootstrap/ng-bootstrap": "^1.0.0-beta.5",
+    "@types/googlemaps": "^3.30.0",
     "angular-event-service": "^1.2.0",
     "angular-flickr-api-factory": "^0.5.1",
     "bootstrap": "^3.3.7",
@@ -31,6 +33,7 @@
     "flickrapi": "^0.6.0",
     "google-auth-library": "^0.12.0",
     "googleapis": "^23.0.0",
+    "ngx-permissions": "^3.0.0",
     "rxjs": "^5.4.2",
     "typescript": "^2.2.1",
     "zone.js": "^0.8.14"

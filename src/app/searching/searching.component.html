@@ -23,6 +23,10 @@
                             <div *ngIf = "typed=='review'">
                                     {{item}}
                             </div>
+                            <div *ngIf = "typed=='map'">
+                                    <iframe width="200" height="200" frameborder="0" style="border:0"
+                                    [src]="item" allowfullscreen></iframe>
+                             </div>
                        </th>
                     </tr>
                 </table>

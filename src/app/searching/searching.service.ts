@@ -52,6 +52,10 @@ export class APIservice{
 
            // this.apiUrl="https://api.flickr.com/services/rest/?&method=flickr.photos.search&api_key=33870ee66d8bf44b0cc3c8c95cace552&text=" + search +"&format=json&nojsoncallback=1&per_page=1"
         }
+        else if (type=="map")
+        {
+            this.apiUrl="https://www.google.com/maps/embed/v1/place?q=" + search + "&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos";
+        }
         return this.apiUrl;
     }
     getPhotoUrl(jsonResponse)
@@ -62,4 +66,5 @@ export class APIservice{
         "_"+jsonResponse[0].secret + ".jpg"
        return  url;
     }
+    
 }   

@@ -6,15 +6,18 @@ import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { EventsServiceModule } from 'angular-event-service';
+import { NgxPermissionsModule } from 'ngx-permissions';
+
 
 import { AppComponent } from './app.component';
 import { SearchingComponent } from './searching/searching.component';
+import { AgmCoreModule } from '@agm/core';
 
 @NgModule({
   declarations: [
     AppComponent,
     SearchingComponent,  
-
+    
   ],
   imports: [
     BrowserModule,
@@ -22,7 +25,10 @@ import { SearchingComponent } from './searching/searching.component';
     HttpModule,
     NgbModule,
     HttpClientModule,
-    EventsServiceModule
+    EventsServiceModule,
+    NgxPermissionsModule.forRoot(),
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos'})
 
   ],
   providers: [APIservice,AppComponent],
