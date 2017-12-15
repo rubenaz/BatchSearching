@@ -25,7 +25,7 @@ export class APIservice{
     load(input){    
         this.allSearch=input.split(",",input.length);
         return this.allSearch;
-      }
+    }
     returnType(type)
     {
         
@@ -45,12 +45,16 @@ export class APIservice{
         this.apiUrl="https://www.googleapis.com/youtube/v3/search?part=snippet&q=" + search +" "+ type+"&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos";
         
         }
-        else if (type=="photo" || type=="review")
+        else if (type=="photo")
         {
             this.apiUrl="http://api.duckduckgo.com/?q="; 
-            this.apiUrl+=search +"&format=json";
+            this.apiUrl+=search +"&format=json&pretty=1";
 
            // this.apiUrl="https://api.flickr.com/services/rest/?&method=flickr.photos.search&api_key=33870ee66d8bf44b0cc3c8c95cace552&text=" + search +"&format=json&nojsoncallback=1&per_page=1"
+        }
+        else if(type=="wiki")
+        {
+            this.apiUrl="https://en.wikipedia.org/w/api.php?action=opensearch&search=" + search +"&limit=10&format=json&origin=*" ;
         }
         else if (type=="map")
         {
