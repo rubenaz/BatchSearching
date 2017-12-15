@@ -23,7 +23,7 @@ export class APIservice{
     }
 
     load(input){    
-        this.allSearch=input.split(",",input.length);
+        this.allSearch=input.split("\n",input.length);
         return this.allSearch;
     }
     returnType(type)
