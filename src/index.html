@@ -1,27 +1,5 @@
 <!doctype html>
 <html lang="en">
-    <?xml version="1.0" encoding="utf-8"?>
-    <configuration>
-        <system.web>
-            <httpRuntime maxQueryStringLength="32768" maxUrlLength="65536"/>
-        </system.web>
-        <system.webServer>
-            <security>
-                <requestFiltering>
-                    <requestLimits maxQueryString="32768"/>
-                </requestFiltering>
-            </security>
-            <rewrite>
-                <rules>
-                    <rule name="AngularJS" stopProcessing="true">
-                        <match url="^(?!.*(.bundle.js|.bundle.map|.bundle.js.gz|.bundle.css|.bundle.css.gz|.png|.jpg|.ico)).*$" />
-                        <conditions logicalGrouping="MatchAll"></conditions>
-                        <action type="Rewrite" url="/" appendQueryString="true" />
-                    </rule>
-                </rules>
-            </rewrite>
-        </system.webServer>
-    </configuration>
 <head>
   <meta charset="utf-8">
   <title>BacthSearching</title>
