@@ -16,15 +16,27 @@ export class APIservice{
     constructor(){}
 
     error(input){
-        if(input.lastIndexOf(",")==(input.length-1))
+        if(input.lastIndexOf("\n")==(input.length-1))
             return true;
         return false;
          
     }
 
     load(input){    
+        console.log(input);
         this.allSearch=input.split("\n",input.length);
-        return this.allSearch;
+        let temp:string[]=[];
+        let count=0;
+        for(let i=0;i<this.allSearch.length;i++)
+        {
+            if(this.allSearch[i]!="")
+            {
+                temp[count]=this.allSearch[i];
+                count++;
+            }
+        }
+        console.log(temp);
+        return temp;
     }
     returnType(type)
     {

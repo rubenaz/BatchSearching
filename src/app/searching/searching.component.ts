@@ -89,8 +89,8 @@ public loadPage(i)
   this.results=Array.of(this.results);
   this.allType=this.service.returnType(this.typed);
   
-  if(this.service.error(this.input)==true)
-    return;;
+  /*if(this.service.error(this.input)==true)
+    return;*/
 
   for(let i=0 ; i<this.allSearch.length;i++){
 
@@ -105,14 +105,12 @@ public loadPage(i)
 
         if(this.count==this.allSearch.length)
         {
-          this.pressed=true;
           console.log("urlArray: " + this.urlArray);
           console.log("jsonArray: " + this.jsonArray);
         }
     });
-  
   }
-
+  this.pressed=true;
 }
   ngOnInit() :void{}
   
