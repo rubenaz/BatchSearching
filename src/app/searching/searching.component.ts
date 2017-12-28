@@ -173,7 +173,8 @@ public loadPage(i)
         
         if(this.count==this.allSearch.length)
         {
-
+          console.log("responseArray: " + this.responseArray);
+          console.log("jsonArray: " + this.jsonArray);
          
         }
         this.pressed=true;
