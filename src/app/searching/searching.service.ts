@@ -4,11 +4,13 @@ import {Http,Response,HttpModule,} from '@angular/http';
 import {HttpClientModule} from '@angular/common/http'; 
 import 'rxjs/add/operator/map'
 import { Injectable } from '@angular/core';
+declare var require: any;
 
 @Injectable()
 export class APIservice{
 
     allSearch:string[];
+    resultSteam:string[]=[];
     alltype:string[]=[];
     
     private apiUrl;
@@ -23,7 +25,6 @@ export class APIservice{
     }
 
     load(input){    
-        console.log(input);
         this.allSearch=input.split("\n",input.length);
         let temp:string[]=[];
         let count=0;
@@ -35,7 +36,6 @@ export class APIservice{
                 count++;
             }
         }
-        console.log(temp);
         return temp;
     }
     returnType(type)
@@ -51,11 +51,13 @@ export class APIservice{
     }
     returnURL(type,search)
     {
-
+        let origin,destination;
+        let temp=search.split(" to ",search.length);
+        origin= temp[0];
+        destination = temp[1];
         if(type=="trailer")
         {
         this.apiUrl="https://www.googleapis.com/youtube/v3/search?part=snippet&q=" + search +" "+ type+"&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos";
-        
         }
         else if (type=="photo")
         {
@@ -66,12 +68,32 @@ export class APIservice{
         }
         else if(type=="wiki")
         {
-            this.apiUrl="https://en.wikipedia.org/w/api.php?action=opensearch&search=" + search +"&limit=10&format=json&origin=*" ;
+            this.apiUrl="https://en.wikipedia.org/w/api.php?action=opensearch&search=" + search +"&limit=1&format=json&origin=*" ;
         }
         else if (type=="map")
         {
             this.apiUrl="https://www.google.com/maps/embed/v1/place?q=" + search + "&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos";
         }
+        else if(type=="film")
+        {
+           this.apiUrl="https://api.themoviedb.org/3/search/movie?api_key=9949ee3ad75fde21364a3c248c3284f3&query=" + search +"&language=en";
+        }
+        else if(type=="direction")
+        {  
+            this.apiUrl="https://www.google.com/maps/embed/v1/directions?key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos&origin=" + origin +"&destination=" + destination + "&avoid=tolls|highways"
+        }
+        else if(type=="game")
+        {
+          /*  let SteamApi = require('steam-api');
+            let app = new SteamApi.App('B458483E2C76C8BE13EB05C37106916A');
+            app.GetAppList().done(function(result){
+                console.log(result);
+              });*/
+            
+            this.apiUrl="http://api.duckduckgo.com/?q=!steamdb " + search + "&format=json" ;
+            //"http://store.steampowered.com/api/appdetails?appids=57690&key=B458483E2C76C8BE13EB05C37106916A"
+        }
+        console.log(this.resultSteam);
         return this.apiUrl;
     }
     getPhotoUrl(jsonResponse)
@@ -81,6 +103,43 @@ export class APIservice{
         url= "https://farm" + jsonResponse[0].farm + ".staticflickr.com/" + jsonResponse[0].server +"/" +jsonResponse[0].id +
         "_"+jsonResponse[0].secret + ".jpg"
        return  url;
+    }
+    regex(search)
+    {
+       //console.log(search);
+        let index;
+        index=search.search("data-appid=");
+        if(index==-1)
+            return null;
+        search=search.substring(index+12, index +20);
+        search=search.replace("\"","");
+        search=search.replace(">", "");
+
+        
+        return search;
+    }
+    getResultFromSteam(search)
+    {
+        let result:string[]=[];
+        if(search.about_the_game!=undefined)
+            result[result.length]="About the game: " + search.about_the_game;
+        if(search.developers!=null && search.developers[0]!=undefined)
+            result[result.length]="developers: " + search.developers[0];
+        if(search.genres!=null &&search.genres[0]!=null && search.genres[0].description!=undefined )
+            result[result.length]="genre: " + search.genres[0].description;
+        if(search.header_image!=undefined)
+            result[result.length]= search.header_image;
+        if(search.legal_notice!=undefined)
+        result[result.length]="legal notice: " + search.legal_notice
+        if(search.release_date!=null && search.release_date.data!=undefined)
+        result[result.length]="release_date: " + search.release_date.data;
+        if(search.required_age!=undefined)
+        result[result.length]="required_age: " + search.required_age;
+        if( search.recommendations!=null)
+        result[result.length]="recommendation:" + search.recommendations.total;
+
+        return result;
+ 
     }
     
 }   

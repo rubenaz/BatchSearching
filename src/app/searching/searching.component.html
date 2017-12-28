@@ -39,9 +39,27 @@
                                         <div *ngIf = "typed=='wiki'">
                                                 {{element.url}}
                                         </div>
+                                        <div *ngIf = "typed=='film'">
+                                                <ul>
+                                                        <li *ngFor="let item of element.url">
+                                                          {{item}}
+                                                        </li>
+                                                      </ul>
+                                        </div>
+                                        <div *ngIf = "typed=='game'">
+                                                <ul>
+                                                        <li *ngFor="let item of element.url">
+                                                          {{item}}
+                                                        </li>
+                                                      </ul>
+                                        </div>
                                         <div *ngIf = "typed=='map'">
                                                 <iframe width="200" height="200" frameborder="0" style="border:0"
                                                 [src]="element.url" allowfullscreen></iframe>
+                                        </div> 
+                                        <div *ngIf = "typed=='direction'">
+                                                <iframe width="200" height="200" frameborder="0" style="border:0"
+                                                 [src]="element.url" allowfullscreen></iframe>
                                         </div> 
                             </mat-cell>
                     </ng-container>
