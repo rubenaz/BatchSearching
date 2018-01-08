@@ -11,7 +11,10 @@ export class APIservice{
 
     allSearch:string[];
     resultSteam:string[]=[];
-    alltype:string[]=[];
+    alltype:number[]=[];
+
+     
+    
     
     private apiUrl;
 
@@ -38,17 +41,6 @@ export class APIservice{
         }
         return temp;
     }
-    returnType(type)
-    {
-        
-        for (var i = 0; i < this.allSearch.length; i++) {
-            if(type=="trailer")
-            {
-                this.alltype[i]="!youtube "
-            }
-        }  
-        return this.alltype;     
-    }
     returnURL(type,search)
     {
         let origin,destination;
@@ -63,8 +55,6 @@ export class APIservice{
         {
             this.apiUrl="http://api.duckduckgo.com/?q="; 
             this.apiUrl+=search +"&format=json&pretty=1";
-
-           // this.apiUrl="https://api.flickr.com/services/rest/?&method=flickr.photos.search&api_key=33870ee66d8bf44b0cc3c8c95cace552&text=" + search +"&format=json&nojsoncallback=1&per_page=1"
         }
         else if(type=="wiki")
         {
@@ -83,17 +73,9 @@ export class APIservice{
             this.apiUrl="https://www.google.com/maps/embed/v1/directions?key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos&origin=" + origin +"&destination=" + destination + "&avoid=tolls|highways"
         }
         else if(type=="game")
-        {
-          /*  let SteamApi = require('steam-api');
-            let app = new SteamApi.App('B458483E2C76C8BE13EB05C37106916A');
-            app.GetAppList().done(function(result){
-                console.log(result);
-              });*/
-            
+        {            
             this.apiUrl="http://api.duckduckgo.com/?q=!steamdb " + search + "&format=json" ;
-            //"http://store.steampowered.com/api/appdetails?appids=57690&key=B458483E2C76C8BE13EB05C37106916A"
         }
-        console.log(this.resultSteam);
         return this.apiUrl;
     }
     getPhotoUrl(jsonResponse)
@@ -106,7 +88,6 @@ export class APIservice{
     }
     regex(search)
     {
-       //console.log(search);
         let index;
         index=search.search("data-appid=");
         if(index==-1)
@@ -140,6 +121,75 @@ export class APIservice{
 
         return result;
  
+    }
+    getType(response,input)
+    {
+     //this.alltype[0]="imdb",[1]=trailer,[2]=photo,[3]=wiki,[4]=map,[5]=game,[6]=direction[7]=product
+
+        let res=response._body;
+        let index;
+        let indexPopulation;
+        let indexGame;
+        let index4;
+        let index5;
+        index4=input.search(" to ");//check if the type is direction
+        index=res.search("class=\"_Rm\">");//to find the url in the html
+        indexPopulation=res.search("Population");//check if the type is city
+        indexGame=res.search("platform");//check if the type is game 
+        res=res.substring(index+11, index +100);//give the first url from the google search
+        console.log("the url of google is : " + res);
+        let i=res.search("data-ved");
+        console.log(res.substring(i,i+150));
+        
+        if(res.search("allocine")!=-1 || res.search("imdb")!=-1)
+        {   
+            console.log(res.search("allocine"));
+            this.alltype[0]++;
+        }
+        else if(res.search("youtube")!=-1)
+             this.alltype[1]++;
+        else if(indexPopulation!=-1)
+            this.alltype[4]++;
+        else if(index4!=-1)
+            this.alltype[6]++;
+        else if(indexGame!=-1 || res.search("steam")!=-1 )
+            this.alltype[5]++;
+        else if (res.search("wikipedia")!=-1)
+            this.alltype[3]++;
+
+             return this.alltype;
+
+    }
+    getFinalType(typeArray)
+    {
+        let max=0;
+        let type;
+        for(let i=0;i<this.alltype.length;i++)
+        {
+            if(max<typeArray[i])
+                max=i;
+        }
+        if(max==0)
+            type="film";
+        if(max==1)
+            type="trailer";
+        if(max==2)
+            type="photo";
+        if(max==3)
+            type="wiki";
+        if(max==4)
+            type="map";
+        if(max==5)
+            type="game";
+        if(max==6)
+            type="direction";
+
+            return type;      
+    }
+    clearTheArrayType()
+    {
+        for(let i= 0 ; i<7 ; i++)
+            this.alltype[i]=0;
     }
     
 }   
