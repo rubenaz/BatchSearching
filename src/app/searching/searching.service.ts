@@ -47,11 +47,11 @@ export class APIservice{
         let temp=search.split(" to ",search.length);
         origin= temp[0];
         destination = temp[1];
-        if(type=="trailer")
+       /* if(type=="trailer")
         {
         this.apiUrl="https://www.googleapis.com/youtube/v3/search?part=snippet&q=" + search +" "+ type+"&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos";
-        }
-        else if (type=="photo")
+        }*/
+         if (type=="photo")
         {
             this.apiUrl="http://api.duckduckgo.com/?q="; 
             this.apiUrl+=search +"&format=json&pretty=1";
@@ -138,16 +138,11 @@ export class APIservice{
         indexGame=res.search("platform");//check if the type is game 
         res=res.substring(index+11, index +100);//give the first url from the google search
         console.log("the url of google is : " + res);
-        let i=res.search("data-ved");
-        console.log(res.substring(i,i+150));
         
-        if(res.search("allocine")!=-1 || res.search("imdb")!=-1)
-        {   
-            console.log(res.search("allocine"));
+        if(res.search("imdb")!=-1||res.search("youtube")!=-1)
             this.alltype[0]++;
-        }
-        else if(res.search("youtube")!=-1)
-             this.alltype[1]++;
+       /* else if(res.search("youtube")!=-1)
+             this.alltype[1]++;*/
         else if(indexPopulation!=-1)
             this.alltype[4]++;
         else if(index4!=-1)
@@ -171,8 +166,8 @@ export class APIservice{
         }
         if(max==0)
             type="film";
-        if(max==1)
-            type="trailer";
+        /*if(max==1)
+            type="trailer";*/
         if(max==2)
             type="photo";
         if(max==3)
