@@ -17,6 +17,7 @@ export interface Element {
   position: number;
   name: string;
   url: string;
+  otherColumns:any[];
 }
 
 @Component({
@@ -37,7 +38,7 @@ export class SearchingComponent implements OnInit {
   jsonArray:any[]=[];
   results:any[]=[];//all result of the api
   ELEMENT_DATA: Element[] =[]
-  addColumn:any[];
+  otherColumn:any[];
   displayedColumns = ['position', 'name', 'url'];
   dataSource;//= new MatTableDataSource(this.ELEMENT_DATA);
   allSearch:string[];//all the search of the user
@@ -46,6 +47,7 @@ export class SearchingComponent implements OnInit {
   count=0;
   countSendUrls=0;
   steamResponse=0;
+  filmResponse=0;
   flagGame=true;
   typed="";
   choice="";
@@ -65,12 +67,13 @@ onSave(input,type,choice){
   this.responseArray=[];
   this.displayedColumns = ['position', 'name', 'url'];
   this.steamID=[];
-  this.addColumn=[];
+  this.otherColumn=[];
   this.allType=[];
   this.dataSource=new MatTableDataSource(this.ELEMENT_DATA);
   this.input=input;
   this.count=0;
   this.countSendUrls=0;
+  this.filmResponse=0;
   this.flagGame=true;
   this.steamResponse=0;
   this.service.clearTheArrayType()
@@ -102,9 +105,11 @@ onSave(input,type,choice){
 //=====================================================================================================================
 public  getAnswer(){
   this.typed=this.service.getFinalType(this.allType);
+  this.displayedColumns=this.service.getColums(this.typed);
   console.log("in the first if: " + this.typed);
   this.count=0;
   this.steamResponse=0;
+  this.filmResponse=0;
   for(let i=0 ; i<this.allSearch.length;i++)
   {
 
@@ -134,32 +139,42 @@ public loadPage(i)
   this.count++;
       if(this.typed=="photo"){
         this.responseArray[i]=this.results[i].Image;
-        this.ELEMENT_DATA[i]={position:i,name:this.allSearch[i],url:this.responseArray[i]};//push element in the Element array 
+        this.ELEMENT_DATA[i]={position:i,name:this.allSearch[i],url:this.responseArray[i],otherColumns:this.otherColumn[i]};//push element in the Element array 
         this.dataSource=new MatTableDataSource(this.ELEMENT_DATA);//push into the table
       }
 
      else if(this.typed=="wiki"){
        this.responseArray[i]=this.results[i][2];
-       this.ELEMENT_DATA[i]={position:i,name:this.allSearch[i],url:this.responseArray[i]};//push element in the Element array 
+       this.ELEMENT_DATA[i]={position:i,name:this.allSearch[i],url:this.responseArray[i],otherColumns:this.otherColumn[i]};//push element in the Element array 
 
       }
-      else if(this.typed=="trailer")
+      else if(this.typed=="film")
       {
       this.responseArray[i]= "https://www.youtube.com/embed/" +this.results[i].items[0].id.videoId;
       this.responseArray[i]=this.sanitizer.bypassSecurityTrustResourceUrl(this.responseArray[i]);
-      this.ELEMENT_DATA[i]={position:i,name:this.allSearch[i],url:this.responseArray[i]};//push element in the Element array 
+      
+      this.http.get("https://api.themoviedb.org/3/search/movie?api_key=9949ee3ad75fde21364a3c248c3284f3&query=" + this.allSearch[i] +"&language=en").toPromise().then(response => {
+        let result=response.json();
+        this.otherColumn[i]=this.service.getResultFromFilm(result);
+        this.filmResponse++;
+        this.ELEMENT_DATA[i]={position:i,name:this.allSearch[i],url:this.responseArray[i],otherColumns:this.otherColumn[i]};
+        if(this.filmResponse==this.allSearch.length)
+        //push element in the Element array 
+            this.dataSource=new MatTableDataSource(this.ELEMENT_DATA);//push into the table
+          
+        });
       }
       else if(this.typed=="map")
       {
       this.responseArray[i]="https://www.google.com/maps/embed/v1/place?q=" + this.allSearch[i] + "&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos"
       this.responseArray[i]=this.sanitizer.bypassSecurityTrustResourceUrl(this.responseArray[i]);
-      this.ELEMENT_DATA[i]={position:i,name:this.allSearch[i],url:this.responseArray[i]};//push element in the Element array 
+      this.ELEMENT_DATA[i]={position:i,name:this.allSearch[i],url:this.responseArray[i],otherColumns:this.otherColumn[i]};//push element in the Element array 
       }
       else if (this.typed=="direction")
       {
         this.responseArray[i]=this.apiUrl[i];
         this.responseArray[i]=this.sanitizer.bypassSecurityTrustResourceUrl(this.responseArray[i]);
-        this.ELEMENT_DATA[i]={position:i,name:this.allSearch[i],url:this.responseArray[i]};//push element in the Element array 
+        this.ELEMENT_DATA[i]={position:i,name:this.allSearch[i],url:this.responseArray[i],otherColumns:this.otherColumn[i]};//push element in the Element array 
       }
       else if(this.typed=="game")
       {
@@ -167,12 +182,11 @@ public loadPage(i)
           this.http.get("http://store.steampowered.com/api/appdetails?appids=" + this.steamID[i] +"&key=B458483E2C76C8BE13EB05C37106916A&format=json").toPromise().then(response => {
           let result=response.json();
           this.responseArray[i]=this.service.getResultFromSteam(result[this.steamID[i]].data);
-          this.ELEMENT_DATA[i]={position:i,name:this.allSearch[i],url:this.responseArray[i]};//push element in the Element array 
+          this.ELEMENT_DATA[i]={position:i,name:this.allSearch[i],url:this.responseArray[i],otherColumns:this.otherColumn[i]};//push element in the Element array 
           this.steamResponse++; 
-          this.displayedColumns[this.displayedColumns.length]='url2';
           if(this.steamResponse==this.allSearch.length)
             this.dataSource=new MatTableDataSource(this.ELEMENT_DATA);//push into the table
-        
+          
             });
         }
         else
@@ -182,30 +196,7 @@ public loadPage(i)
         }
       
       }
-      else if(this.typed=="film")
-      {
-        if(this.results[i].results[0].original_language!=null && 
-          this.results[i].results[0].original_title!=null &&
-           this.results[i].results[0].overview!=null &&
-           this.results[i].results[0].popularity!=null &&
-           this.results[i].results[0].release_date !=null && 
-           this.results[i].results[0].vote_average!= null){
-          this.responseArray[i]=["original_language: " +this.results[i].results[0].original_language,
-                            "original_title: " + this.results[i].results[0].original_title,
-                            "overview: " + this.results[i].results[0].overview,
-                            "popularity: " + this.results[i].results[0].popularity,
-                            "release_date: " +this.results[i].results[0].release_date,
-                            "vote_average: " +this.results[i].results[0].vote_average
-                          ]
-                        }
-                        else 
-                        this.responseArray[i]="This film doesn't exist !!!!!!!";
-                        this.displayedColumns[this.displayedColumns.length]='url2';
-
-          this.ELEMENT_DATA[i]={position:i,name:this.allSearch[i],url:this.responseArray[i]};//push element in the Element array 
-
-      }
-      if(this.typed!="game")
+      if(this.typed!="game" && this.typed!="film")
       {
           if(this.count==this.allSearch.length)
             this.dataSource=new MatTableDataSource(this.ELEMENT_DATA);//push into the table

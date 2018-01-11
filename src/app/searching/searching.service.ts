@@ -47,10 +47,10 @@ export class APIservice{
         let temp=search.split(" to ",search.length);
         origin= temp[0];
         destination = temp[1];
-       /* if(type=="trailer")
+        if(type=="film")
         {
         this.apiUrl="https://www.googleapis.com/youtube/v3/search?part=snippet&q=" + search +" "+ type+"&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos";
-        }*/
+        }
          if (type=="photo")
         {
             this.apiUrl="http://api.duckduckgo.com/?q="; 
@@ -64,10 +64,10 @@ export class APIservice{
         {
             this.apiUrl="https://www.google.com/maps/embed/v1/place?q=" + search + "&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos";
         }
-        else if(type=="film")
+       /* else if(type=="film")
         {
            this.apiUrl="https://api.themoviedb.org/3/search/movie?api_key=9949ee3ad75fde21364a3c248c3284f3&query=" + search +"&language=en";
-        }
+        }*/
         else if(type=="direction")
         {  
             this.apiUrl="https://www.google.com/maps/embed/v1/directions?key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos&origin=" + origin +"&destination=" + destination + "&avoid=tolls|highways"
@@ -122,38 +122,73 @@ export class APIservice{
         return result;
  
     }
+    getResultFromFilm(results)
+    {
+        let finalResult;
+
+        if(results.results[0].original_language!=null && 
+        results.results[0].original_title!=null &&
+         results.results[0].overview!=null &&
+         results.results[0].popularity!=null &&
+         results.results[0].release_date !=null && 
+         results.results[0].vote_average!= null){
+            finalResult=["original_language: " +results.results[0].original_language,
+                          "original_title: " + results.results[0].original_title,
+                          "overview: " + results.results[0].overview,
+                          "popularity: " + results.results[0].popularity,
+                          "release_date: " +results.results[0].release_date,
+                          "vote_average: " +results.results[0].vote_average
+                        ]
+                        
+                      }
+                      else 
+                         finalResult="This film doesn't exist !!!!!!!";
+                      return finalResult;
+                    }
+                   
     getType(response,input)
     {
      //this.alltype[0]="imdb",[1]=trailer,[2]=photo,[3]=wiki,[4]=map,[5]=game,[6]=direction[7]=product
 
         let res=response._body;
+        let url=res;
         let index;
         let indexPopulation;
         let indexGame;
         let index4;
         let index5;
+        let movie,release;
         index4=input.search(" to ");//check if the type is direction
         index=res.search("class=\"_Rm\">");//to find the url in the html
         indexPopulation=res.search("Population");//check if the type is city
         indexGame=res.search("platform");//check if the type is game 
-        res=res.substring(index+11, index +100);//give the first url from the google search
-        console.log("the url of google is : " + res);
+        url=url.substring(index+11, index +100);//give the first url from the google search
+        console.log("the url of google is : " + url);
+
         
-        if(res.search("imdb")!=-1||res.search("youtube")!=-1)
+        if(res.search("film") || url.search("allocine")!=-1,url.search("imdb")!=-1 ||url.search("youtube")!=-1 || res.search("movie")!=-1 || res.search("Release date")!=-1)
             this.alltype[0]++;
-       /* else if(res.search("youtube")!=-1)
+        /*else if(res.search("youtube")!=-1)
              this.alltype[1]++;*/
         else if(indexPopulation!=-1)
             this.alltype[4]++;
         else if(index4!=-1)
             this.alltype[6]++;
-        else if(indexGame!=-1 || res.search("steam")!=-1 )
-            this.alltype[5]++;
-        else if (res.search("wikipedia")!=-1)
+            else if (url.search("wikipedia")!=-1)
             this.alltype[3]++;
+        else if(indexGame!=-1 || url.search("steam")!=-1 )
+            this.alltype[5]++;
+
 
              return this.alltype;
 
+    }
+    getColums(type)
+    {
+        if(type=="game" || type=="film")
+            return ['position', 'name', 'url','url2'];
+        else    
+            return ['position', 'name', 'url'];
     }
     getFinalType(typeArray)
     {
@@ -164,6 +199,7 @@ export class APIservice{
             if(max<typeArray[i])
                 max=i;
         }
+        console.log(max);
         if(max==0)
             type="film";
         /*if(max==1)

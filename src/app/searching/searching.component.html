@@ -33,14 +33,14 @@
         </div>
         <div *ngIf = "pressed==true">
             <mat-table #table [dataSource]="dataSource">
-                        <ng-container *ngFor="let col of displayedColumns" matColumnDef="{{col}}">
+                        <ng-container *ngFor="let col of displayedColumns;let i = index" matColumnDef="{{col}}">
                                 <mat-header-cell *matHeaderCellDef> {{col}} </mat-header-cell>
                                         <mat-cell *matCellDef="let element">
                                         <div *ngIf = "col!='url'">
                                                 {{element[col]}}
                                         </div>
                                                 <div *ngIf = "col=='url'">
-                                                        <div *ngIf = "typed=='trailer'">
+                                                        <div *ngIf = "typed=='film'">
                                                         <iframe [src]="element.url" width="500" height="300" frameborder="0" allowfullscreen></iframe>
                                                         </div>
                                                         <div *ngIf = "typed=='photo'">
@@ -48,13 +48,6 @@
                                                         </div>
                                                         <div *ngIf = "typed=='wiki'">
                                                                 {{element.url}}
-                                                        </div>
-                                                        <div *ngIf = "typed=='film'">
-                                                                <ul>
-                                                                        <li *ngFor="let item of element.url">
-                                                                        {{item}}
-                                                                        </li>
-                                                                        </ul>
                                                         </div>
                                                         <div *ngIf = "typed=='game'">
                                                                 <ul>
@@ -72,6 +65,23 @@
                                                                 [src]="element.url" allowfullscreen></iframe>
                                                         </div> 
                                                 </div>
+                                                <div *ngIf = "col=='url2'">
+                                                        <div *ngIf = "typed=='film'">
+                                                                <ul>
+                                                                        <li *ngFor="let item of element.otherColumns">
+                                                                                        {{item}}
+                                                                        </li>
+                                                                        </ul>
+                                                        </div>
+                                                        <div *ngIf = "typed=='game'">
+                                                                <ul>
+                                                                        <li *ngFor="let item of element.otherColumns">
+                                                                        {{item}}
+                                                                        </li>
+                                                                        </ul>
+                                                        </div>
+                                                </div>
+
                                         </mat-cell>
                         </ng-container> 
                    <!-- <ng-container matColumnDef="position">
