@@ -3,12 +3,12 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "_heroku":      "https://www.angularonrails.com/deploy-rails-application-angular-cli-webpack-front-end/",
-    "start":        "http-server dist/",
-    "lint":         "tslint \"src/**/*.ts\"",
-    "test":         "ng test",
-    "pree2e":       "webdriver-manager update",
-    "e2e":          "protractor"
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "test": "ng test",
+    "lint": "ng lint",
+    "e2e": "ng e2e"
   },
   "private": true,
   "dependencies": {
@@ -62,5 +62,4 @@
     "tslint": "~5.7.0",
     "typescript": "~2.3.3"
   }
-  
 }
