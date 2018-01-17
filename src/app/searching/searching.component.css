@@ -105,4 +105,11 @@ table, th, td {
 .dropdown:hover .dropbtn {
     background-color:red;
 }
+mat-row:nth-child(even){
+    background-color:rgb(180, 176, 176);
+    }
+
+mat-row:nth-child(odd){
+    background-color:rgb(241, 183, 163);
+    }
   

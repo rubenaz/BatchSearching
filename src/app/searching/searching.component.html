@@ -84,49 +84,6 @@
 
                                         </mat-cell>
                         </ng-container> 
-                   <!-- <ng-container matColumnDef="position">
-                            <mat-header-cell *matHeaderCellDef> No. </mat-header-cell>
-                            <mat-cell *matCellDef="let element"> {{element.position}} </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="name">
-                        <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-                        <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="url">
-                        <mat-header-cell *matHeaderCellDef> {{typed}} </mat-header-cell>
-                        <mat-cell *matCellDef="let element"> 
-                                    <div *ngIf = "typed=='trailer'">
-                                            <iframe [src]="element.url" width="500" height="300" frameborder="0" allowfullscreen></iframe>
-                                        </div>
-                                        <div *ngIf = "typed=='photo'">
-                                                <img [src]="element.url" width="200" height="200" frameborder="0" allowfullscreen>
-                                        </div>
-                                        <div *ngIf = "typed=='wiki'">
-                                                {{element.url}}
-                                        </div>
-                                        <div *ngIf = "typed=='film'">
-                                                <ul>
-                                                        <li *ngFor="let item of element.url">
-                                                          {{item}}
-                                                        </li>
-                                                      </ul>
-                                        </div>
-                                        <div *ngIf = "typed=='game'">
-                                                <ul>
-                                                        <li *ngFor="let item of element.url">
-                                                          {{item}}
-                                                        </li>
-                                                      </ul>
-                                        </div>
-                                        <div *ngIf = "typed=='map'">
-                                                <iframe width="200" height="200" frameborder="0" style="border:0"
-                                                [src]="element.url" allowfullscreen></iframe>
-                                        </div> 
-                                        <div *ngIf = "typed=='direction'">
-                                                <iframe width="200" height="200" frameborder="0" style="border:0"
-                                                 [src]="element.url" allowfullscreen></iframe>
-                                        </div> 
-                            </mat-cell>-->
                     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
             </mat-table>
