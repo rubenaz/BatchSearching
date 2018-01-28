@@ -126,7 +126,8 @@ export class APIservice{
     {
         let finalResult;
 
-        if(results.results[0].original_language!=null && 
+        if(results.results[0]!=null&&
+            results.results[0].original_language!=null && 
         results.results[0].original_title!=null &&
          results.results[0].overview!=null &&
          results.results[0].popularity!=null &&
@@ -166,21 +167,19 @@ export class APIservice{
         console.log("the url of google is : " + url);
 
         
-        if(res.search("film") || url.search("allocine")!=-1,url.search("imdb")!=-1 ||url.search("youtube")!=-1 || res.search("movie")!=-1 || res.search("Release date")!=-1)
+        if(res.search("film")!=-1 || url.search("allocine")!=-1||url.search("imdb")!=-1 ||url.search("youtube")!=-1 || res.search("movie")!=-1 || res.search("Release date")!=-1)
             this.alltype[0]++;
-        /*else if(res.search("youtube")!=-1)
-             this.alltype[1]++;*/
-        else if(indexPopulation!=-1)
-            this.alltype[4]++;
         else if(index4!=-1)
             this.alltype[6]++;
-            else if (url.search("wikipedia")!=-1)
+        else if(indexPopulation!=-1 || res.search(">Address<"))
+            this.alltype[4]++;
+        else if (url.search("wikipedia")!=-1)
             this.alltype[3]++;
         else if(indexGame!=-1 || url.search("steam")!=-1 )
             this.alltype[5]++;
 
 
-             return this.alltype;
+        return this.alltype;
 
     }
     getColums(type)
@@ -193,11 +192,16 @@ export class APIservice{
     getFinalType(typeArray)
     {
         let max=0;
+        let count=0;
         let type;
         for(let i=0;i<this.alltype.length;i++)
         {
-            if(max<typeArray[i])
+            if(count<typeArray[i])
+            {
                 max=i;
+                count=typeArray[i];
+            }
+              
         }
         console.log(max);
         if(max==0)
