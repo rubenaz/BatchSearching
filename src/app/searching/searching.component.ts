@@ -91,7 +91,7 @@ onSave(input,type,choice){
     this.http.get(this.searchUrl[i]).toPromise().then(response => 
     {
       console.log("in the first get");
-      this.allType=this.service.getType(response,input);
+      this.allType=this.service.getType(response,this.allSearch[i]);
       console.log(this.allType);
       this.countSendUrls++;
       if(this.countSendUrls==this.allSearch.length){

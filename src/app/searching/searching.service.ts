@@ -143,7 +143,7 @@ export class APIservice{
                         
                       }
                       else 
-                         finalResult="This film doesn't exist !!!!!!!";
+                         finalResult=["This film doesn't exist !!!!!!!"];
                       return finalResult;
                     }
                    
@@ -153,15 +153,14 @@ export class APIservice{
 
         let res=response._body;
         let url=res;
-        let index;
-        let indexPopulation;
-        let indexGame;
-        let index4;
-        let index5;
-        let movie,release;
-        index4=input.search(" to ");//check if the type is direction
+        let index=-1;
+        let indexPopulation=-1;
+        let indexGame=-1;
+        let index4=-1;
+        let index5=-1;
+       // index4=input.search(" to ");//check if the type is direction
         index=res.search("class=\"_Rm\">");//to find the url in the html
-        indexPopulation=res.search("Population");//check if the type is city
+        indexPopulation=res.search(">Population<");//check if the type is city
         indexGame=res.search("platform");//check if the type is game 
         url=url.substring(index+11, index +100);//give the first url from the google search
         console.log("the url of google is : " + url);
@@ -169,9 +168,9 @@ export class APIservice{
         
         if(res.search("film")!=-1 || url.search("allocine")!=-1||url.search("imdb")!=-1 ||url.search("youtube")!=-1 || res.search("movie")!=-1 || res.search("Release date")!=-1)
             this.alltype[0]++;
-        else if(index4!=-1)
+        else if(input.search(" to ")!=-1)
             this.alltype[6]++;
-        else if(indexPopulation!=-1 || res.search(">Address<"))
+        else if(indexPopulation!=-1 || res.search(">Address<")!=-1)
             this.alltype[4]++;
         else if (url.search("wikipedia")!=-1)
             this.alltype[3]++;
@@ -206,8 +205,6 @@ export class APIservice{
         console.log(max);
         if(max==0)
             type="film";
-        /*if(max==1)
-            type="trailer";*/
         if(max==2)
             type="photo";
         if(max==3)
