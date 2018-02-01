@@ -30,7 +30,7 @@ This project is developed as part of the requirements for  our final project to 
 
 ### Team: 
 
-[Ruben Azoulay](https://github.com/rubenaz)
+[Ruben Azoulay](https://github.com/rubenaz)<br>
 [Asaf Ben Eliezer](https://github.com/asafbn)
 
 ### Project Documents
