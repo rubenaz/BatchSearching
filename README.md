@@ -4,9 +4,9 @@
  
 
 ## Application Screenshots:
-<b>Main Page:  <br><br>
+<b>1- Main Page:  <br><br>
 ![project main page](http://i63.tinypic.com/mhzoyo.png)<br><br><br>
-<b>Page after cities search: <br><br>
+<b>2- Page after cities search: <br><br>
 ![project main page](http://i67.tinypic.com/zu4ccl.png)<br><br><br>
 
 # Tools & Practices:
