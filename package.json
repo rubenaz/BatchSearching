@@ -12,7 +12,6 @@
     "postinstall": "ng build --target=production -e ${NODE_ENV:-production} --aot",
     "update": "ng update --style scss --prefix xc",
     "test": "ng test"
-
   },
   "private": true,
   "dependencies": {
@@ -64,6 +63,7 @@
     "protractor": "~5.1.2",
     "ts-node": "~3.2.0",
     "tslint": "~5.7.0",
-    "typescript": "~2.3.3"
+    "typescript": "~2.3.3",
+    "webpack": "^4.6.0"
   }
 }
