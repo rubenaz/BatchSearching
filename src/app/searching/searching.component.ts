@@ -50,7 +50,7 @@ export class SearchingComponent implements OnInit {
   filmResponse=0;
   flagGame=true;
   typed="";
-  choice="";
+
   searchUrl:any[]=[];
   
   private service=new APIservice();
@@ -61,7 +61,7 @@ export class SearchingComponent implements OnInit {
 
 //============================FUNCTIONS==========================================================================
 //=====================================click on the button "SEARCH"==================================================
-onSave(input,type,choice){
+onSave(input){
 
   this.ELEMENT_DATA=[];
   this.responseArray=[];
@@ -77,8 +77,6 @@ onSave(input,type,choice){
   this.flagGame=true;
   this.steamResponse=0;
   this.service.clearTheArrayType()
-  //this.typed=type;
-  this.choice=choice;
   this.allSearch= this.service.load(this.input);
   this.results=[];
   this.results=Array.of(this.results);
@@ -180,14 +178,23 @@ public loadPage(i)
       {
         if(this.flagGame==true){
           this.http.get("http://store.steampowered.com/api/appdetails?appids=" + this.steamID[i] +"&key=B458483E2C76C8BE13EB05C37106916A&format=json").toPromise().then(response => {
-          let result=response.json();
-          this.responseArray[i]=this.service.getResultFromSteam(result[this.steamID[i]].data);
-          this.ELEMENT_DATA[i]={position:i,name:this.allSearch[i],url:this.responseArray[i],otherColumns:this.otherColumn[i]};//push element in the Element array 
-          this.steamResponse++; 
-          if(this.steamResponse==this.allSearch.length)
-            this.dataSource=new MatTableDataSource(this.ELEMENT_DATA);//push into the table
+            let result=response.json();
+            this.responseArray[i]=this.service.getResultFromSteam(result[this.steamID[i]].data);
+            this.http.get("https://www.googleapis.com/youtube/v3/search?part=snippet&q=" + this.allSearch[i] +" "+ "trailer"+"&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos").toPromise().then(response => {
+                this.steamResponse++;
+                let youtube_result=response.json();
+                this.otherColumn[i]= "https://www.youtube.com/embed/" +youtube_result.items[0].id.videoId;
+                this.otherColumn[i]=this.sanitizer.bypassSecurityTrustResourceUrl(this.otherColumn[i]);
+                this.ELEMENT_DATA[i]={position:i,name:this.allSearch[i],url:this.responseArray[i],otherColumns:this.otherColumn[i]};//push element in the Element array 
+            
+                 if(this.steamResponse==this.allSearch.length)
+                   this.dataSource=new MatTableDataSource(this.ELEMENT_DATA);//push into the table*/
+             });
+          });
+           /* this.ELEMENT_DATA[i]={position:i,name:this.allSearch[i],url:this.responseArray[i],otherColumns:this.otherColumn[i]};//push element in the Element array 
           
-            });
+          if(this.steamResponse==this.allSearch.length)
+            this.dataSource=new MatTableDataSource(this.ELEMENT_DATA);//push into the table*/
         }
         else
         {
@@ -203,7 +210,10 @@ public loadPage(i)
         }
       }
 
-
+  add(keyword,selectType)
+  {
+console.log(keyword,selectType);
+  }
 
   ngOnInit() :void{}
   

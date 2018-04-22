@@ -10,26 +10,23 @@
     
         </head>
     <body>
+
         <div class="top">
-                <mat-form-field class="example-full-width"><input matInput placeholder=" Another Seach" #choice class="box2"/></mat-form-field>
                 <mat-form-field class="example-full-width"><input matInput placeholder=" Keyword" #type class="box2"/></mat-form-field>
-                <div class="dropdown">
-                        <button class="dropbtn">Type</button>
-                        <div class="dropdown-content">
-                          <a href="#">Imdb</a>
-                          <a href="#">Wikipedia</a>
-                          <a href="#">Map</a>
-                          <a href="#">Direction</a>
-                          <a href="#">Photo</a>
-                          <a href="#">Game</a>
-                          <a href="#">Trailer</a>
-                        </div>
-                      </div>
-            <button #plus class="plus">+</button>    
+                <select class="selection" #select >
+                        <option value="imdb">IMDB</option>
+                        <option value="wikipedia">Wikipedia</option>
+                        <option value="map">Map</option>
+                        <option value="direction">Direction</option>
+                        <option value="photo">Photo</option>
+                        <option value="game">Game</option>
+                        <option value="trailer">Trailer</option>                              
+                </select>
+            <button #plus class="plus" (click)="add(type.value,select.value)" >+</button>    
             </div> 
         <div> 
         <mat-form-field><textarea class="SearchArea" #box matInput placeholder="Your Search" class="box"></textarea></mat-form-field>
-        <button class = "button" #but (click)="onSave(box.value,type.value,choice.value)">Search</button>
+        <button class = "button" #but (click)="onSave(box.value)">Search</button>
         </div>
         <div *ngIf = "pressed==true">
             <mat-table #table [dataSource]="dataSource">
@@ -75,9 +72,8 @@
                                                         </div>
                                                         <div *ngIf = "typed=='game'">
                                                                 <ul>
-                                                                        <li *ngFor="let item of element.otherColumns">
-                                                                        {{item}}
-                                                                        </li>
+                                                                        <iframe [src]="element.otherColumns" width="300" height="300" frameborder="0" allowfullscreen></iframe>
+                                                                        
                                                                         </ul>
                                                         </div>
                                                 </div>

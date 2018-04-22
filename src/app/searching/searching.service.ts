@@ -64,10 +64,6 @@ export class APIservice{
         {
             this.apiUrl="https://www.google.com/maps/embed/v1/place?q=" + search + "&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos";
         }
-       /* else if(type=="film")
-        {
-           this.apiUrl="https://api.themoviedb.org/3/search/movie?api_key=9949ee3ad75fde21364a3c248c3284f3&query=" + search +"&language=en";
-        }*/
         else if(type=="direction")
         {  
             this.apiUrl="https://www.google.com/maps/embed/v1/directions?key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos&origin=" + origin +"&destination=" + destination + "&avoid=tolls|highways"
@@ -159,25 +155,28 @@ export class APIservice{
         let index4=-1;
         let index5=-1;
        // index4=input.search(" to ");//check if the type is direction
-        index=res.search("class=\"_Rm\">");//to find the url in the html
-        indexPopulation=res.search(">Population<");//check if the type is city
+        index=res.search("cite class=\"iUh30\">");//to find the url in the html
+        indexPopulation=res.search("data-original-name=\"Area\"");//check if the type is city
         indexGame=res.search("platform");//check if the type is game 
         url=url.substring(index+11, index +100);//give the first url from the google search
         console.log("the url of google is : " + url);
 
-        
-        if(res.search("film")!=-1 || url.search("allocine")!=-1||url.search("imdb")!=-1 ||url.search("youtube")!=-1 || res.search("movie")!=-1 || res.search("Release date")!=-1)
+        if(url.search("imdb")!=-1 || url.search("youtube")!=-1 )//if the first url is imdb or youtube 
             this.alltype[0]++;
+        else if (url.search("steam")!=-1)//if the first url is steam 
+            this.alltype[5]++;
+        else if(res.search("Release date")!=-1)
+             this.alltype[0]++;
         else if(input.search(" to ")!=-1)
             this.alltype[6]++;
-        else if(indexPopulation!=-1 || res.search(">Address<")!=-1)
-            this.alltype[4]++;
-        else if (url.search("wikipedia")!=-1)
-            this.alltype[3]++;
-        else if(indexGame!=-1 || url.search("steam")!=-1 )
-            this.alltype[5]++;
+        else if(indexPopulation!=-1 || res.search("data-original-name=\"Address\"")!=-1 || res.search("data-original-name=\"Superficie\"")!=-1)
+            this.alltype[4]++;  
+        else if(indexGame!=-1 )
+         this.alltype[5]++;
+         else 
+         this.alltype[3]++;
 
-
+            
         return this.alltype;
 
     }
