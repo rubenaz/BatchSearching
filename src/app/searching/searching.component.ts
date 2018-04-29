@@ -17,7 +17,7 @@ export interface Element {
   position: number;
   name: string;
   url: string;
-  otherColumns:any[];
+  otherColumns:any[][];
 }
 
 @Component({
@@ -50,7 +50,7 @@ export class SearchingComponent implements OnInit {
   filmResponse=0;
   flagGame=true;
   typed="";
-
+  countOfColums;
   searchUrl:any[]=[];
   
   private service=new APIservice();
@@ -80,6 +80,7 @@ onSave(input){
   this.allSearch= this.service.load(this.input);
   this.results=[];
   this.results=Array.of(this.results);
+  this.countOfColums=0;
 
 
   for(let i=0;i<this.allSearch.length;i++)
@@ -191,10 +192,6 @@ public loadPage(i)
                    this.dataSource=new MatTableDataSource(this.ELEMENT_DATA);//push into the table*/
              });
           });
-           /* this.ELEMENT_DATA[i]={position:i,name:this.allSearch[i],url:this.responseArray[i],otherColumns:this.otherColumn[i]};//push element in the Element array 
-          
-          if(this.steamResponse==this.allSearch.length)
-            this.dataSource=new MatTableDataSource(this.ELEMENT_DATA);//push into the table*/
         }
         else
         {
@@ -212,7 +209,11 @@ public loadPage(i)
 
   add(keyword,selectType)
   {
-console.log(keyword,selectType);
+    this.countOfColums++;
+    console.log(keyword,selectType);
+    this.displayedColumns[this.displayedColumns.length]='otherSearch'+ this.countOfColums;
+    document.getElementById('otherColumn').innerHTML='<div *ngIf = \"col==\'otherSearch' + this.countOfColums + '\'\"> <iframe [src]=\"https://www.youtube.com/watch?v=pJzQHC7H6dk\" width=\"300\" height=\"300\" frameborder=\"0\" allowfullscreen></iframe>'
+    console.log(this.displayedColumns);
   }
 
   ngOnInit() :void{}
