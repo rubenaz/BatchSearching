@@ -85,7 +85,7 @@ onSave(input){
 
   for(let i=0;i<this.allSearch.length;i++)
   {
-    this.searchUrl[i]="http://api.duckduckgo.com/?q=!g " + this.allSearch[i] + "&format=json";
+    this.searchUrl[i]="https://api.duckduckgo.com/?q=!g " + this.allSearch[i] + "&format=json";
     console.log("the first for :" + this.searchUrl[i]);
     this.http.get(this.searchUrl[i]).toPromise().then(response => 
     {
@@ -205,8 +205,10 @@ public loadPage(i)
           if(this.count==this.allSearch.length)
             this.dataSource=new MatTableDataSource(this.ELEMENT_DATA);//push into the table
         }
-      }
-
+     }
+//===================================================================================================================================
+//===================================================================================================================================
+//click on the button "+"
   add(keyword,selectType)
   {
     this.countOfColums++;
