@@ -9,7 +9,7 @@ import { AgmCoreModule } from '@agm/core';
 import { MatTableDataSource } from '@angular/material/table';
 import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Observable';
-
+import * as cors from 'cors'
 
 
 
@@ -53,6 +53,7 @@ export class SearchingComponent implements OnInit {
   countOfColums;
   searchUrl:any[]=[];
   
+  
   private service=new APIservice();
 
 //==================================================================================================================
@@ -62,6 +63,9 @@ export class SearchingComponent implements OnInit {
 //============================FUNCTIONS==========================================================================
 //=====================================click on the button "SEARCH"==================================================
 onSave(input){
+  
+  if(input=="")
+    return;
 
   this.ELEMENT_DATA=[];
   this.responseArray=[];
@@ -81,6 +85,9 @@ onSave(input){
   this.results=[];
   this.results=Array.of(this.results);
   this.countOfColums=0;
+
+  const cors = require('cors')({origin: true});
+  //cors({ origin: 'true' })
 
 
   for(let i=0;i<this.allSearch.length;i++)
@@ -211,6 +218,8 @@ public loadPage(i)
 //click on the button "+"
   add(keyword,selectType)
   {
+    if(this.pressed!=true)
+      return;
     this.countOfColums++;
     console.log(keyword,selectType);
     this.displayedColumns[this.displayedColumns.length]='otherSearch'+ this.countOfColums;
