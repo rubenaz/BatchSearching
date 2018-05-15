@@ -91,11 +91,8 @@ onSave(input){
   for(let i=0;i<this.allSearch.length;i++)
   {
     this.searchUrl[i]="https://cors.io/?https://api.duckduckgo.com/?q=!g " + this.allSearch[i] + "&format=json";
-<<<<<<< HEAD
     console.log("the first for :" + this.searchUrl[i]);
-=======
-    console.log("the first for bgbgbgbgbg:" + this.searchUrl[i]);
->>>>>>> d1174cde5311bb02d09c8454a25ac5f2c63233fc
+
     this.http.get(this.searchUrl[i]).toPromise().then(response => 
     {
       console.log("in the first get");
