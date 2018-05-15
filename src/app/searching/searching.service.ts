@@ -49,7 +49,7 @@ export class APIservice{
         destination = temp[1];
         if(type=="film")
         {
-        this.apiUrl="https://www.googleapis.com/youtube/v3/search?part=snippet&q=" + search +" "+ type+"&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos";
+        this.apiUrl="https://cors.io/?https://www.googleapis.com/youtube/v3/search?part=snippet&q=" + search +" "+ type+"&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos";
         }
          if (type=="photo")
         {
@@ -62,7 +62,7 @@ export class APIservice{
         }
         else if (type=="map")
         {
-            this.apiUrl="https://cors.io/?https://cors.io/?https://www.google.com/maps/embed/v1/place?q=" + search + "&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos";
+            this.apiUrl="https://cors.io/?https://www.google.com/maps/embed/v1/place?q=" + search + "&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos";
         }
         else if(type=="direction")
         {  
