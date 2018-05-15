@@ -9,7 +9,7 @@ import { AgmCoreModule } from '@agm/core';
 import { MatTableDataSource } from '@angular/material/table';
 import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Observable';
-
+import * as cors from 'cors'
 
 
 
@@ -53,6 +53,7 @@ export class SearchingComponent implements OnInit {
   countOfColums;
   searchUrl:any[]=[];
   
+  
   private service=new APIservice();
 
 //==================================================================================================================
@@ -62,6 +63,9 @@ export class SearchingComponent implements OnInit {
 //============================FUNCTIONS==========================================================================
 //=====================================click on the button "SEARCH"==================================================
 onSave(input){
+  
+  if(input=="")
+    return;
 
   this.ELEMENT_DATA=[];
   this.responseArray=[];
@@ -83,9 +87,10 @@ onSave(input){
   this.countOfColums=0;
 
 
+
   for(let i=0;i<this.allSearch.length;i++)
   {
-    this.searchUrl[i]="https://api.duckduckgo.com/?q=!g " + this.allSearch[i] + "&format=json";
+    this.searchUrl[i]="https://cors.io/?https://api.duckduckgo.com/?q=!g " + this.allSearch[i] + "&format=json";
     console.log("the first for :" + this.searchUrl[i]);
     this.http.get(this.searchUrl[i]).toPromise().then(response => 
     {
@@ -152,7 +157,7 @@ public loadPage(i)
       this.responseArray[i]= "https://www.youtube.com/embed/" +this.results[i].items[0].id.videoId;
       this.responseArray[i]=this.sanitizer.bypassSecurityTrustResourceUrl(this.responseArray[i]);
       
-      this.http.get("https://api.themoviedb.org/3/search/movie?api_key=9949ee3ad75fde21364a3c248c3284f3&query=" + this.allSearch[i] +"&language=en").toPromise().then(response => {
+      this.http.get("https://cors.io/?https://api.themoviedb.org/3/search/movie?api_key=9949ee3ad75fde21364a3c248c3284f3&query=" + this.allSearch[i] +"&language=en").toPromise().then(response => {
         let result=response.json();
         this.otherColumn[i]=this.service.getResultFromFilm(result);
         this.filmResponse++;
@@ -165,7 +170,7 @@ public loadPage(i)
       }
       else if(this.typed=="map")
       {
-      this.responseArray[i]="https://www.google.com/maps/embed/v1/place?q=" + this.allSearch[i] + "&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos"
+      this.responseArray[i]="https://cors.io/?https://www.google.com/maps/embed/v1/place?q=" + this.allSearch[i] + "&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos"
       this.responseArray[i]=this.sanitizer.bypassSecurityTrustResourceUrl(this.responseArray[i]);
       this.ELEMENT_DATA[i]={position:i,name:this.allSearch[i],url:this.responseArray[i],otherColumns:this.otherColumn[i]};//push element in the Element array 
       }
@@ -178,7 +183,7 @@ public loadPage(i)
       else if(this.typed=="game")
       {
         if(this.flagGame==true){
-          this.http.get("http://store.steampowered.com/api/appdetails?appids=" + this.steamID[i] +"&key=B458483E2C76C8BE13EB05C37106916A&format=json").toPromise().then(response => {
+          this.http.get("https://cors.io/?http://store.steampowered.com/api/appdetails?appids=" + this.steamID[i] +"&key=B458483E2C76C8BE13EB05C37106916A&format=json").toPromise().then(response => {
             let result=response.json();
             this.responseArray[i]=this.service.getResultFromSteam(result[this.steamID[i]].data);
             this.http.get("https://www.googleapis.com/youtube/v3/search?part=snippet&q=" + this.allSearch[i] +" "+ "trailer"+"&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos").toPromise().then(response => {
@@ -211,6 +216,8 @@ public loadPage(i)
 //click on the button "+"
   add(keyword,selectType)
   {
+    if(this.pressed!=true)
+      return;
     this.countOfColums++;
     console.log(keyword,selectType);
     this.displayedColumns[this.displayedColumns.length]='otherSearch'+ this.countOfColums;
