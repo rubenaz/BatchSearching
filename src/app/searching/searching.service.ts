@@ -49,28 +49,28 @@ export class APIservice{
         destination = temp[1];
         if(type=="film")
         {
-        this.apiUrl="https://www.googleapis.com/youtube/v3/search?part=snippet&q=" + search +" "+ type+"&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos";
+        this.apiUrl="https://cors.io/?https://www.googleapis.com/youtube/v3/search?part=snippet&q=" + search +" "+ type+"&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos";
         }
          if (type=="photo")
         {
-            this.apiUrl="http://api.duckduckgo.com/?q="; 
+            this.apiUrl="https://cors.io/?http://api.duckduckgo.com/?q="; 
             this.apiUrl+=search +"&format=json&pretty=1";
         }
         else if(type=="wiki")
         {
-            this.apiUrl="https://en.wikipedia.org/w/api.php?action=opensearch&search=" + search +"&limit=1&format=json&origin=*" ;
+            this.apiUrl="https://cors.io/?https://en.wikipedia.org/w/api.php?action=opensearch&search=" + search +"&limit=1&format=json&origin=*" ;
         }
         else if (type=="map")
         {
-            this.apiUrl="https://www.google.com/maps/embed/v1/place?q=" + search + "&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos";
+            this.apiUrl="https://cors.io/?https://www.google.com/maps/embed/v1/place?q=" + search + "&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos";
         }
         else if(type=="direction")
         {  
-            this.apiUrl="https://www.google.com/maps/embed/v1/directions?key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos&origin=" + origin +"&destination=" + destination + "&avoid=tolls|highways"
+            this.apiUrl="https://cors.io/?https://www.google.com/maps/embed/v1/directions?key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos&origin=" + origin +"&destination=" + destination + "&avoid=tolls|highways"
         }
         else if(type=="game")
         {            
-            this.apiUrl="http://api.duckduckgo.com/?q=!steamdb " + search + "&format=json" ;
+            this.apiUrl="https://cors.io/?http://api.duckduckgo.com/?q=!steamdb " + search + "&format=json" ;
         }
         return this.apiUrl;
     }
