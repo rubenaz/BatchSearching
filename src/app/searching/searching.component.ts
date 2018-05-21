@@ -52,6 +52,7 @@ export class SearchingComponent implements OnInit {
   typed="";
   countOfColums;
   searchUrl:any[]=[];
+  mapResponse;
   
   
   private service=new APIservice();
@@ -85,6 +86,7 @@ onSave(input){
   this.results=[];
   this.results=Array.of(this.results);
   this.countOfColums=0;
+  this.mapResponse=0;
 
 
 
@@ -122,7 +124,8 @@ public  getAnswer(){
     console.log("in the second for " +  this.apiUrl[i]);
     this.http.get(this.apiUrl[i]).toPromise().then(response => 
     {
-        if(this.typed!="map" && this.typed!="direction" && this.typed!="game")
+        console.log(response.json());
+        if(/*this.typed!="map" &&*/ this.typed!="direction" && this.typed!="game")
           this.results[i]=response.json();
         else if (this.typed=="game")
         {
@@ -147,7 +150,13 @@ public loadPage(i)
         this.ELEMENT_DATA[i]={position:i,name:this.allSearch[i],url:this.responseArray[i],otherColumns:this.otherColumn[i]};//push element in the Element array 
         this.dataSource=new MatTableDataSource(this.ELEMENT_DATA);//push into the table
       }
+      else if(this.typed=="song")
+      {
+        this.responseArray[i]= "https://www.youtube.com/embed/" +this.results[i].items[0].id.videoId;
+        this.responseArray[i]=this.sanitizer.bypassSecurityTrustResourceUrl(this.responseArray[i]);
+        this.ELEMENT_DATA[i]={position:i,name:this.allSearch[i],url:this.responseArray[i],otherColumns:this.otherColumn[i]};
 
+      }
      else if(this.typed=="wiki"){
        this.responseArray[i]=this.results[i][2];
        this.ELEMENT_DATA[i]={position:i,name:this.allSearch[i],url:this.responseArray[i],otherColumns:this.otherColumn[i]};//push element in the Element array 
@@ -164,16 +173,21 @@ public loadPage(i)
         this.filmResponse++;
         this.ELEMENT_DATA[i]={position:i,name:this.allSearch[i],url:this.responseArray[i],otherColumns:this.otherColumn[i]};
         if(this.filmResponse==this.allSearch.length)
-        //push element in the Element array 
             this.dataSource=new MatTableDataSource(this.ELEMENT_DATA);//push into the table
-          
         });
       }
       else if(this.typed=="map")
       {
-      this.responseArray[i]="https://cors.io/?https://www.google.com/maps/embed/v1/place?q=" + this.allSearch[i] + "&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos"
+        this.http.get("https://cors.io/?https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos&placeid=" + this.results[i].results[0].place_id).toPromise().then(response => {
+            let result=response.json();
+            this.mapResponse++;
+            this.responseArray[i]=result.result.url+"&output=embed";
       this.responseArray[i]=this.sanitizer.bypassSecurityTrustResourceUrl(this.responseArray[i]);
       this.ELEMENT_DATA[i]={position:i,name:this.allSearch[i],url:this.responseArray[i],otherColumns:this.otherColumn[i]};//push element in the Element array 
+        if(this.mapResponse==this.allSearch.length)//if get all the answer of the server
+            this.dataSource=new MatTableDataSource(this.ELEMENT_DATA);//push into the table
+        });
+      
       }
       else if (this.typed=="direction")
       {

@@ -8,6 +8,8 @@
           <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
           <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></script>
           <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+          <script type="text/javascript" src="https://maps.google.com/maps/api/js?key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos&sensor=false"></script>
+         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js?key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos"></script>
     
         </head>
     <body>
@@ -39,7 +41,10 @@
                                         </div>
                                                 <div *ngIf = "col=='url'">
                                                         <div *ngIf = "typed=='film'">
-                                                        <iframe [src]="element.url" width="300" height="300" frameborder="0" allowfullscreen></iframe>
+                                                                <iframe [src]="element.url" width="300" height="300" frameborder="0" allowfullscreen></iframe>
+                                                        </div>
+                                                        <div *ngIf = "typed=='song'">
+                                                                <iframe [src]="element.url" width="300" height="300" frameborder="0" allowfullscreen></iframe>
                                                         </div>
                                                         <div *ngIf = "typed=='photo'">
                                                                 <img [src]="element.url" width="200" height="200" frameborder="0" allowfullscreen>

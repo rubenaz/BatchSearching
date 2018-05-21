@@ -49,7 +49,11 @@ export class APIservice{
         destination = temp[1];
         if(type=="film")
         {
-        this.apiUrl="https://cors.io/?https://www.googleapis.com/youtube/v3/search?part=snippet&q=" + search +" "+ type+"&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos";
+        this.apiUrl="https://www.googleapis.com/youtube/v3/search?part=snippet&q=" + search +" "+ type+"&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos";
+        }
+        if(type=="song")
+        {
+            this.apiUrl="https://www.googleapis.com/youtube/v3/search?part=snippet&q=" + search +" "+"&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos";
         }
          if (type=="photo")
         {
@@ -61,26 +65,21 @@ export class APIservice{
             this.apiUrl="https://cors.io/?https://en.wikipedia.org/w/api.php?action=opensearch&search=" + search +"&limit=1&format=json&origin=*" ;
         }
         else if (type=="map")
-        {
-            this.apiUrl="https://cors.io/?https://www.google.com/maps/embed/v1/place?q=" + search + "&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos";
+        {     this.apiUrl="https://maps.googleapis.com/maps/api/geocode/json?address="+search + "&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos"//get the id of the city or the place that i search
+
+            //this.apiUrl="https://www.google.com/maps/embed/v1/place?q=" + search + "&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos";
         }
         else if(type=="direction")
         {  
-            this.apiUrl="https://cors.io/?https://www.google.com/maps/embed/v1/directions?key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos&origin=" + origin +"&destination=" + destination + "&avoid=tolls|highways"
+            this.apiUrl="https://cors.io/?https://maps.googleapis.com/maps/api/directions/json?origin=" + origin + "&destination=" + destination + "&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos"
+            //this.apiUrl="https://cors.io/?https://maps.googleapis.com/maps/api/directions/json?origin=" + origin + "&destination=" + destination +"&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos"
+           this.apiUrl="https://cors.io/?https://www.google.com/maps/embed/v1/directions?key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos&origin=" + origin +"&destination=" + destination + "&avoid=tolls|highways"
         }
         else if(type=="game")
         {            
             this.apiUrl="https://cors.io/?http://api.duckduckgo.com/?q=!steamdb " + search + "&format=json" ;
         }
         return this.apiUrl;
-    }
-    getPhotoUrl(jsonResponse)
-    {
-
-        let url="";
-        url= "https://farm" + jsonResponse[0].farm + ".staticflickr.com/" + jsonResponse[0].server +"/" +jsonResponse[0].id +
-        "_"+jsonResponse[0].secret + ".jpg"
-       return  url;
     }
     regex(search)
     {
@@ -145,34 +144,41 @@ export class APIservice{
                    
     getType(response,input)
     {
-     //this.alltype[0]="imdb",[1]=trailer,[2]=photo,[3]=wiki,[4]=map,[5]=game,[6]=direction[7]=product
+     //this.alltype[0]="imdb",[1]=song,[2]=photo,[3]=wiki,[4]=map,[5]=game,[6]=direction[7]=product
 
         let res=response._body;
         let url=res;
         let index=-1;
-        let indexPopulation=-1;
+        let type;
         let indexGame=-1;
         let index4=-1;
         let index5=-1;
+        if(input.search(" to ")!=-1){
+            this.alltype[6]++;
+            return this.alltype;
+        }
        // index4=input.search(" to ");//check if the type is direction
         index=res.search("cite class=\"iUh30\">");//to find the url in the html
-        indexPopulation=res.search("data-original-name=\"Area\"");//check if the type is city
+        type=res.match("a class=\"fl\" data-original-name=\"([0-9a-zA-Z ]*)\"")[1];//check if the type is city
         indexGame=res.search("platform");//check if the type is game 
         url=url.substring(index+11, index +100);//give the first url from the google search
+        console.log(type)
         console.log("the url of google is : " + url);
 
-        if(url.search("imdb")!=-1 || url.search("youtube")!=-1 )//if the first url is imdb or youtube 
+        if(url.search("imdb")!=-1)//if the first url is imdb or youtube 
             this.alltype[0]++;
         else if (url.search("steam")!=-1)//if the first url is steam 
             this.alltype[5]++;
-        else if(res.search("Release date")!=-1)
+        else if(type=="Release date" || type=="Initial release" || type=="Movies")
              this.alltype[0]++;
-        else if(input.search(" to ")!=-1)
-            this.alltype[6]++;
-        else if(indexPopulation!=-1 || res.search("data-original-name=\"Address\"")!=-1 || res.search("data-original-name=\"Superficie\"")!=-1)
+       // else if(input.search(" to ")!=-1)
+          //  this.alltype[6]++;
+        else if(type=="Area" || type=="Address" || type=="Superficie" ||type=="Population"||type=="Land area" || type=="Capital"|| res.serch("Area")|| res.search("Population"))
             this.alltype[4]++;  
-        else if(indexGame!=-1 )
+        else if(indexGame!=-1)
          this.alltype[5]++;
+        else if (type=="Artists" || type=="Albums" || type=="Artist")
+            this.alltype[1]++ 
          else 
          this.alltype[3]++;
 
@@ -204,6 +210,8 @@ export class APIservice{
         console.log(max);
         if(max==0)
             type="film";
+        if(max==1)
+            type="song";
         if(max==2)
             type="photo";
         if(max==3)
