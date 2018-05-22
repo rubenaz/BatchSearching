@@ -124,8 +124,8 @@ public  getAnswer(){
     console.log("in the second for " +  this.apiUrl[i]);
     this.http.get(this.apiUrl[i]).toPromise().then(response => 
     {
-        console.log(response.json());
-        if(/*this.typed!="map" &&*/ this.typed!="direction" && this.typed!="game")
+      console.log(response.json());
+        if(/*this.typed!="map" && */this.typed!="direction" && this.typed!="game")
           this.results[i]=response.json();
         else if (this.typed=="game")
         {
@@ -191,9 +191,11 @@ public loadPage(i)
       }
       else if (this.typed=="direction")
       {
+       // this.http.get("https://cors.io/?https://maps.googleapis.com/maps/api/directions/json?key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos&origin=" + this.results[i].geocoded_waypoints[0].place_id + "&destination=" +this.results[i].geocoded_waypoints[1].place_id ).toPromise().then(response => {
         this.responseArray[i]=this.apiUrl[i];
         this.responseArray[i]=this.sanitizer.bypassSecurityTrustResourceUrl(this.responseArray[i]);
-        this.ELEMENT_DATA[i]={position:i,name:this.allSearch[i],url:this.responseArray[i],otherColumns:this.otherColumn[i]};//push element in the Element array 
+        this.ELEMENT_DATA[i]={position:i,name:this.allSearch[i],url:this.responseArray[i],otherColumns:this.otherColumn[i]};
+     // });//push element in the Element array 
       }
       else if(this.typed=="game")
       {

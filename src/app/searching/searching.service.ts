@@ -70,10 +70,11 @@ export class APIservice{
             //this.apiUrl="https://www.google.com/maps/embed/v1/place?q=" + search + "&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos";
         }
         else if(type=="direction")
-        {  
-            this.apiUrl="https://cors.io/?https://maps.googleapis.com/maps/api/directions/json?origin=" + origin + "&destination=" + destination + "&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos"
+        {   this.apiUrl="https://maps.google.com/maps/api/dir/json?key=key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos&description=\"\"&isDevelopment=false&isRuntime=true"
+            //this.apiUrl="https://cors.io/?https://www.google.com/maps/dir/api=1?origin=" + origin + "&destination=" + destination +"&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos"
+            //this.apiUrl="https://cors.io/?https://maps.googleapis.com/maps/api/distancematrix/json?origins=" + origin + "&destinations=" + destination + "&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos"
             //this.apiUrl="https://cors.io/?https://maps.googleapis.com/maps/api/directions/json?origin=" + origin + "&destination=" + destination +"&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos"
-           this.apiUrl="https://cors.io/?https://www.google.com/maps/embed/v1/directions?key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos&origin=" + origin +"&destination=" + destination + "&avoid=tolls|highways"
+           //this.apiUrl="https://cors.io/?https://www.google.com/maps/embed/v1/directions?key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos&origin=" + origin +"&destination=" + destination + "&avoid=tolls|highways"
         }
         else if(type=="game")
         {            
@@ -172,13 +173,13 @@ export class APIservice{
         else if(type=="Release date" || type=="Initial release" || type=="Movies")
              this.alltype[0]++;
        // else if(input.search(" to ")!=-1)
-          //  this.alltype[6]++;
-        else if(type=="Area" || type=="Address" || type=="Superficie" ||type=="Population"||type=="Land area" || type=="Capital"|| res.serch("Area")|| res.search("Population"))
+          //  this.alltype[6]++;\
+        else if (type=="Artists" || type=="Albums" || type=="Artist")
+          this.alltype[1]++ 
+        else if(type=="Area" || type=="Address" || type=="Superficie" ||type=="Population"||type=="Land area" || type=="Capital"|| res.search("Area")|| res.search("Population"))
             this.alltype[4]++;  
         else if(indexGame!=-1)
          this.alltype[5]++;
-        else if (type=="Artists" || type=="Albums" || type=="Artist")
-            this.alltype[1]++ 
          else 
          this.alltype[3]++;
 
