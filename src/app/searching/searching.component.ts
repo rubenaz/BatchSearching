@@ -38,7 +38,7 @@ export class SearchingComponent implements OnInit {
   jsonArray:any[]=[];
   results:any[]=[];//all result of the api
   ELEMENT_DATA: Element[] =[]
-  otherColumn:any[];
+  otherColumn:any[][];
   displayedColumns = ['position', 'name', 'url'];
   dataSource;//= new MatTableDataSource(this.ELEMENT_DATA);
   allSearch:string[];//all the search of the user
@@ -53,6 +53,10 @@ export class SearchingComponent implements OnInit {
   countOfColums;
   searchUrl:any[]=[];
   mapResponse;
+  plus=false;
+  htmlStr;
+  finalHtml;
+  
   
   
   private service=new APIservice();
@@ -72,7 +76,6 @@ onSave(input){
   this.responseArray=[];
   this.displayedColumns = ['position', 'name', 'url'];
   this.steamID=[];
-  this.otherColumn=[];
   this.allType=[];
   this.dataSource=new MatTableDataSource(this.ELEMENT_DATA);
   this.input=input;
@@ -84,9 +87,13 @@ onSave(input){
   this.service.clearTheArrayType()
   this.allSearch= this.service.load(this.input);
   this.results=[];
+  this.otherColumn=this.service.generate(this.otherColumn,this.allSearch.length);
   this.results=Array.of(this.results);
   this.countOfColums=0;
   this.mapResponse=0;
+  this.htmlStr=[];
+  this.finalHtml=[]
+  this.plus=false;
 
 
 
@@ -124,14 +131,16 @@ public  getAnswer(){
     console.log("in the second for " +  this.apiUrl[i]);
     this.http.get(this.apiUrl[i]).toPromise().then(response => 
     {
-      console.log(response.json());
+      //console.log(response.json());
         if(/*this.typed!="map" && */this.typed!="direction" && this.typed!="game")
           this.results[i]=response.json();
         else if (this.typed=="game")
         {
           this.results[i]=response;
-          if(this.service.regex(this.results[i]._body)!=null)
-              this.steamID[i]=this.service.regex(this.results[i]._body);
+          //console.log(response);
+          if(this.service.regex(this.results[i]._body)!=null){
+              this.steamID[i]=this.service.regex(this.results[i]._body);console.log("this steam id = " + this.steamID[i]);
+          }
           else
             this.flagGame=false;
         }
@@ -146,20 +155,23 @@ public loadPage(i)
 {
   this.count++;
       if(this.typed=="photo"){
-        this.responseArray[i]=this.results[i].Image;
-        this.ELEMENT_DATA[i]={position:i,name:this.allSearch[i],url:this.responseArray[i],otherColumns:this.otherColumn[i]};//push element in the Element array 
+        this.responseArray[i]= "https://farm" + this.results[i].photos.photo[0].farm + ".staticflickr.com/" + this.results[i].photos.photo[0].server+
+         "/" + this.results[i].photos.photo[0].id +"_" + this.results[i].photos.photo[0].secret +".jpg"
+         console.log(this.responseArray[i]);
+        //this.responseArray[i]=this.results[i].Image;
+        this.ELEMENT_DATA[i]={position:i,name:this.allSearch[i],url:this.responseArray[i],otherColumns:this.otherColumn[i][this.countOfColums]};//push element in the Element array 
         this.dataSource=new MatTableDataSource(this.ELEMENT_DATA);//push into the table
       }
       else if(this.typed=="song")
       {
         this.responseArray[i]= "https://www.youtube.com/embed/" +this.results[i].items[0].id.videoId;
         this.responseArray[i]=this.sanitizer.bypassSecurityTrustResourceUrl(this.responseArray[i]);
-        this.ELEMENT_DATA[i]={position:i,name:this.allSearch[i],url:this.responseArray[i],otherColumns:this.otherColumn[i]};
+        this.ELEMENT_DATA[i]={position:i,name:this.allSearch[i],url:this.responseArray[i],otherColumns:this.otherColumn[i][this.countOfColums]};
 
       }
      else if(this.typed=="wiki"){
        this.responseArray[i]=this.results[i][2];
-       this.ELEMENT_DATA[i]={position:i,name:this.allSearch[i],url:this.responseArray[i],otherColumns:this.otherColumn[i]};//push element in the Element array 
+       this.ELEMENT_DATA[i]={position:i,name:this.allSearch[i],url:this.responseArray[i],otherColumns:this.otherColumn[i][this.countOfColums]};//push element in the Element array 
 
       }
       else if(this.typed=="film")
@@ -169,9 +181,9 @@ public loadPage(i)
       
       this.http.get("https://cors.io/?https://api.themoviedb.org/3/search/movie?api_key=9949ee3ad75fde21364a3c248c3284f3&query=" + this.allSearch[i] +"&language=en").toPromise().then(response => {
         let result=response.json();
-        this.otherColumn[i]=this.service.getResultFromFilm(result);
+        this.otherColumn[i][this.countOfColums]=this.service.getResultFromFilm(result);
         this.filmResponse++;
-        this.ELEMENT_DATA[i]={position:i,name:this.allSearch[i],url:this.responseArray[i],otherColumns:this.otherColumn[i]};
+        this.ELEMENT_DATA[i]={position:i,name:this.allSearch[i],url:this.responseArray[i],otherColumns:this.otherColumn[i][this.countOfColums]};
         if(this.filmResponse==this.allSearch.length)
             this.dataSource=new MatTableDataSource(this.ELEMENT_DATA);//push into the table
         });
@@ -182,8 +194,9 @@ public loadPage(i)
             let result=response.json();
             this.mapResponse++;
             this.responseArray[i]=result.result.url+"&output=embed";
+            console.log(this.otherColumn)
       this.responseArray[i]=this.sanitizer.bypassSecurityTrustResourceUrl(this.responseArray[i]);
-      this.ELEMENT_DATA[i]={position:i,name:this.allSearch[i],url:this.responseArray[i],otherColumns:this.otherColumn[i]};//push element in the Element array 
+      this.ELEMENT_DATA[i]={position:i,name:this.allSearch[i],url:this.responseArray[i],otherColumns:this.otherColumn[i][this.countOfColums]};//push element in the Element array 
         if(this.mapResponse==this.allSearch.length)//if get all the answer of the server
             this.dataSource=new MatTableDataSource(this.ELEMENT_DATA);//push into the table
         });
@@ -194,7 +207,7 @@ public loadPage(i)
        // this.http.get("https://cors.io/?https://maps.googleapis.com/maps/api/directions/json?key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos&origin=" + this.results[i].geocoded_waypoints[0].place_id + "&destination=" +this.results[i].geocoded_waypoints[1].place_id ).toPromise().then(response => {
         this.responseArray[i]=this.apiUrl[i];
         this.responseArray[i]=this.sanitizer.bypassSecurityTrustResourceUrl(this.responseArray[i]);
-        this.ELEMENT_DATA[i]={position:i,name:this.allSearch[i],url:this.responseArray[i],otherColumns:this.otherColumn[i]};
+        this.ELEMENT_DATA[i]={position:i,name:this.allSearch[i],url:this.responseArray[i],otherColumns:this.otherColumn[i][this.countOfColums]};
      // });//push element in the Element array 
       }
       else if(this.typed=="game")
@@ -202,13 +215,18 @@ public loadPage(i)
         if(this.flagGame==true){
           this.http.get("https://cors.io/?http://store.steampowered.com/api/appdetails?appids=" + this.steamID[i] +"&key=B458483E2C76C8BE13EB05C37106916A&format=json").toPromise().then(response => {
             let result=response.json();
-            this.responseArray[i]=this.service.getResultFromSteam(result[this.steamID[i]].data);
+            console.log(result)
+            console.log(result[""+this.steamID[i]].success)
+            if(result[""+this.steamID[i]].success!=false)
+                 this.responseArray[i]=this.service.getResultFromSteam(result[this.steamID[i]].data);
+            else
+                 this.responseArray[i]=["this game doesn't extist in steam "];
             this.http.get("https://www.googleapis.com/youtube/v3/search?part=snippet&q=" + this.allSearch[i] +" "+ "trailer"+"&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos").toPromise().then(response => {
                 this.steamResponse++;
                 let youtube_result=response.json();
-                this.otherColumn[i]= "https://www.youtube.com/embed/" +youtube_result.items[0].id.videoId;
-                this.otherColumn[i]=this.sanitizer.bypassSecurityTrustResourceUrl(this.otherColumn[i]);
-                this.ELEMENT_DATA[i]={position:i,name:this.allSearch[i],url:this.responseArray[i],otherColumns:this.otherColumn[i]};//push element in the Element array 
+                this.otherColumn[i][this.countOfColums]= "https://www.youtube.com/embed/" +youtube_result.items[0].id.videoId;
+                this.otherColumn[i][this.countOfColums]=this.sanitizer.bypassSecurityTrustResourceUrl(this.otherColumn[i][this.countOfColums]);
+                this.ELEMENT_DATA[i]={position:i,name:this.allSearch[i],url:this.responseArray[i],otherColumns:this.otherColumn[i][this.countOfColums]};//push element in the Element array 
             
                  if(this.steamResponse==this.allSearch.length)
                    this.dataSource=new MatTableDataSource(this.ELEMENT_DATA);//push into the table*/
@@ -217,7 +235,7 @@ public loadPage(i)
         }
         else
         {
-           this.responseArray[i]=["this game doesn't extist"];
+           this.responseArray[i]=["this game doesn't extist in steam "];
            this.steamResponse++;
         }
       
@@ -233,14 +251,23 @@ public loadPage(i)
 //click on the button "+"
   add(keyword,selectType)
   {
+    
     if(this.pressed!=true)
       return;
     this.countOfColums++;
-    console.log(keyword,selectType);
-    this.displayedColumns[this.displayedColumns.length]='otherSearch'+ this.countOfColums;
-    document.getElementById('otherColumn').innerHTML='<div *ngIf = \"col==\'otherSearch' + this.countOfColums + '\'\"> <iframe [src]=\"https://www.youtube.com/watch?v=pJzQHC7H6dk\" width=\"300\" height=\"300\" frameborder=\"0\" allowfullscreen></iframe>'
-    console.log(this.displayedColumns);
+    this.displayedColumns[this.displayedColumns.length]='otherSearch'+ (this.countOfColums);
+    
+    for(let i=0; i<this.allSearch.length;i++)
+    {
+    this.htmlStr[i]=this.sanitizer.bypassSecurityTrustHtml('<iframe width="420" height=\"315\" src=\"https://www.youtube.com/embed/tgbNymZ7vqY\"></iframe></div>');
+    console.log(this.otherColumn)
+   // this.otherColumn[i][this.countOfColums]=this.sanitizer.bypassSecurityTrustResourceUrl(this.otherColumn[i][this.countOfColums]);
+    this.otherColumn[i][this.countOfColums]=this.htmlStr[i];
+    this.ELEMENT_DATA[i]={position:i,name:this.allSearch[i],url:this.responseArray[i],otherColumns:this.otherColumn[i][this.countOfColums]};
+    }
+    this.plus=true;
   }
+
 
   ngOnInit() :void{}
   

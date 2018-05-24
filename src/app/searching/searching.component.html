@@ -13,7 +13,6 @@
     
         </head>
     <body>
-
         <div class="top">
                 <mat-form-field class="example-full-width"><input matInput placeholder=" Keyword" #type class="box2"/></mat-form-field>
                 <select class="selection" #select >
@@ -23,7 +22,8 @@
                         <option value="direction">Direction</option>
                         <option value="photo">Photo</option>
                         <option value="game">Game</option>
-                        <option value="trailer">Trailer</option>                              
+                        <option value="trailer">Trailer</option> 
+                        <option value="song">Song</option>                             
                 </select>
             <button #plus class="plus" (click)="add(type.value,select.value)" >+</button>    
             </div> 
@@ -33,7 +33,7 @@
         </div>
         <div *ngIf = "pressed==true">
             <mat-table #table [dataSource]="dataSource">
-                        <ng-container *ngFor="let col of displayedColumns;let i = index" matColumnDef="{{col}}">
+                        <ng-container *ngFor="let col of displayedColumns" matColumnDef="{{col}}">
                                 <mat-header-cell *matHeaderCellDef> {{col}} </mat-header-cell>
                                         <mat-cell *matCellDef="let element">
                                         <div *ngIf = "col!='url'">
@@ -83,7 +83,9 @@
                                                                         </ul>
                                                         </div>
                                                 </div>
-                                        <div id="otherColumn"></div>
+                                                <div *ngIf = "col=='otherSearch1'">
+                                                        <div [innerHTML]="element.otherColumns"></div>   
+                                                </div>
 
                                         </mat-cell>
                         </ng-container> 

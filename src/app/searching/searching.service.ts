@@ -57,7 +57,7 @@ export class APIservice{
         }
          if (type=="photo")
         {
-            this.apiUrl="https://cors.io/?http://api.duckduckgo.com/?q="; 
+            this.apiUrl="https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=b5adf013f6be330db59e33070c658f55&text=" + search +"&format=json&nojsoncallback=1"; 
             this.apiUrl+=search +"&format=json&pretty=1";
         }
         else if(type=="wiki")
@@ -77,23 +77,26 @@ export class APIservice{
            //this.apiUrl="https://cors.io/?https://www.google.com/maps/embed/v1/directions?key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos&origin=" + origin +"&destination=" + destination + "&avoid=tolls|highways"
         }
         else if(type=="game")
-        {            
-            this.apiUrl="https://cors.io/?http://api.duckduckgo.com/?q=!steamdb " + search + "&format=json" ;
+        {     
+            //this.apiUrl="https://cors.io/?https://store.steampowered.com/app/10/CounterStrike/"     
+            this.apiUrl="https://cors.io/?http://api.duckduckgo.com/?q=!g steam AppID " + search + "&format=json" ;
         }
         return this.apiUrl;
     }
     regex(search)
     {
+       // console.log(search + "        HERE ")
         let index;
-        index=search.search("data-appid=");
-        if(index==-1)
+        index=search.match("https://steamdb.info/app/([0-9 ]*)")[1];
+        console.log(index);
+        if(index==null)
             return null;
-        search=search.substring(index+12, index +20);
-        search=search.replace("\"","");
-        search=search.replace(">", "");
+        //search=search.substring(index+12, index +20);
+        //search=search.replace("\"","");
+        //search=search.replace(">", "");
 
         
-        return search;
+        return index;
     }
     getResultFromSteam(search)
     {
@@ -160,7 +163,9 @@ export class APIservice{
         }
        // index4=input.search(" to ");//check if the type is direction
         index=res.search("cite class=\"iUh30\">");//to find the url in the html
-        type=res.match("a class=\"fl\" data-original-name=\"([0-9a-zA-Z ]*)\"")[1];//check if the type is city
+        type=res.match("a class=\"fl\" data-original-name=\"([0-9a-zA-Z ]*)\"");//check if the type is city
+        if(type!=null)
+            type=type[1];
         indexGame=res.search("platform");//check if the type is game 
         url=url.substring(index+11, index +100);//give the first url from the google search
         console.log(type)
@@ -172,11 +177,9 @@ export class APIservice{
             this.alltype[5]++;
         else if(type=="Release date" || type=="Initial release" || type=="Movies")
              this.alltype[0]++;
-       // else if(input.search(" to ")!=-1)
-          //  this.alltype[6]++;\
         else if (type=="Artists" || type=="Albums" || type=="Artist")
           this.alltype[1]++ 
-        else if(type=="Area" || type=="Address" || type=="Superficie" ||type=="Population"||type=="Land area" || type=="Capital"|| res.search("Area")|| res.search("Population"))
+        else if(type=="Area" || type=="Address" || type=="Superficie" ||type=="Population"||type=="Land area" || type=="Capital"/*|| res.search("Area")|| res.search("Population")*/)
             this.alltype[4]++;  
         else if(indexGame!=-1)
          this.alltype[5]++;
@@ -230,6 +233,13 @@ export class APIservice{
     {
         for(let i= 0 ; i<7 ; i++)
             this.alltype[i]=0;
+    }
+    generate(array,size)
+    {
+        array=[]
+        for(let i=0 ; i< size;i++)
+            array[i]=[]
+        return array
     }
     
 }   
