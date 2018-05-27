@@ -33,61 +33,64 @@
         </div>
         <div *ngIf = "pressed==true">
             <mat-table #table [dataSource]="dataSource">
-                        <ng-container *ngFor="let col of displayedColumns" matColumnDef="{{col}}">
+                        <ng-container *ngFor="let col of displayedColumns;" matColumnDef="{{col}}">
                                 <mat-header-cell *matHeaderCellDef> {{col}} </mat-header-cell>
                                         <mat-cell *matCellDef="let element">
                                         <div *ngIf = "col!='url'">
-                                                {{element[col]}}
+                                                {{element[0][col]}}
                                         </div>
                                                 <div *ngIf = "col=='url'">
                                                         <div *ngIf = "typed=='film'">
-                                                                <iframe [src]="element.url" width="300" height="300" frameborder="0" allowfullscreen></iframe>
+                                                                <iframe [src]="element[0].url" width="300" height="300" frameborder="0" allowfullscreen></iframe>
                                                         </div>
                                                         <div *ngIf = "typed=='song'">
-                                                                <iframe [src]="element.url" width="300" height="300" frameborder="0" allowfullscreen></iframe>
+                                                                <iframe [src]="element[0].url" width="300" height="300" frameborder="0" allowfullscreen></iframe>
                                                         </div>
                                                         <div *ngIf = "typed=='photo'">
-                                                                <img [src]="element.url" width="200" height="200" frameborder="0" allowfullscreen>
+                                                                <img [src]="element[0].url" width="200" height="200" frameborder="0" allowfullscreen>
                                                         </div>
                                                         <div *ngIf = "typed=='wiki'">
-                                                                {{element.url}}
+                                                                {{element[0].url}}
                                                         </div>
                                                         <div *ngIf = "typed=='game'">
                                                                 <ul>
-                                                                        <li *ngFor="let item of element.url">
+                                                                        <li *ngFor="let item of element[0].url">
                                                                         {{item}}
                                                                         </li>
                                                                         </ul>
                                                         </div>
                                                         <div *ngIf = "typed=='map'">
                                                                 <iframe width="200" height="200" frameborder="0" style="border:0"
-                                                                [src]="element.url" allowfullscreen></iframe>
+                                                                [src]="element[0].url" allowfullscreen></iframe>
                                                         </div> 
                                                         <div *ngIf = "typed=='direction'">
                                                                 <iframe width="200" height="200" frameborder="0" style="border:0"
-                                                                [src]="element.url" allowfullscreen></iframe>
+                                                                [src]="element[0].url" allowfullscreen></iframe>
                                                         </div> 
                                                 </div>
                                                 <div *ngIf = "col=='url2'">
                                                         <div *ngIf = "typed=='film'">
                                                                 <ul>
-                                                                        <li *ngFor="let item of element.otherColumns">
+                                                                        <li *ngFor="let item of element[0].otherColumns">
                                                                                         {{item}}
                                                                         </li>
                                                                         </ul>
                                                         </div>
                                                         <div *ngIf = "typed=='game'">
                                                                 <ul>
-                                                                        <iframe [src]="element.otherColumns" width="300" height="300" frameborder="0" allowfullscreen></iframe>
+                                                                        <iframe [src]="element[0].otherColumns" width="300" height="300" frameborder="0" allowfullscreen></iframe>
                                                                         
                                                                         </ul>
                                                         </div>
                                                 </div>
-                                                <div *ngIf = "col=='otherSearch1'">
-                                                        <div [innerHTML]="element.otherColumns"></div>   
+                                                <div *ngFor="let item of createRange(countOfColums)">
+                                                        <div *ngIf = "col==returncol(item)">
+                                                                <div [innerHTML]="element[item].otherColumns"></div>   
+                                                        </div>
                                                 </div>
 
                                         </mat-cell>
+
                         </ng-container> 
                     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
@@ -96,6 +99,3 @@
 
     </body>
 </html>
-
-
-  
