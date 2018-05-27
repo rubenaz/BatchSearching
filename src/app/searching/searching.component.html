@@ -31,9 +31,9 @@
         <mat-form-field><textarea class="SearchArea" #box matInput placeholder="Your Search" class="box"></textarea></mat-form-field>
         <button class = "button" #but (click)="onSave(box.value)">Search</button>
         </div>
-        <div *ngIf = "pressed==true">
+        <div *ngIf = "pressed==true && flag==true">
             <mat-table #table [dataSource]="dataSource">
-                        <ng-container *ngFor="let col of displayedColumns;" matColumnDef="{{col}}">
+                        <ng-container *ngFor="let col of displayedColumns;let i=index" matColumnDef="{{col}}">
                                 <mat-header-cell *matHeaderCellDef> {{col}} </mat-header-cell>
                                         <mat-cell *matCellDef="let element">
                                         <div *ngIf = "col!='url'">

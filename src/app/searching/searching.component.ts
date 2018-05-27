@@ -57,6 +57,7 @@ export class SearchingComponent implements OnInit {
   htmlStr;
   finalHtml;
   newType;
+  flag;
   
   
   
@@ -97,6 +98,8 @@ onSave(input){
   this.htmlStr=[];
   this.finalHtml=[]
   this.plus=false;
+  this.flag=false;
+  
 
 
 
@@ -187,8 +190,10 @@ public loadPage(i)
         this.otherColumn[i][this.countOfColums]=this.service.getResultFromFilm(result);
         this.filmResponse++;
         this.ELEMENT_DATA[i][this.countOfColums]={position:i,name:this.allSearch[i],url:this.responseArray[i][this.countOfColums],otherColumns:this.otherColumn[i][this.countOfColums]};
-        if(this.filmResponse==this.allSearch.length)
+        if(this.filmResponse==this.allSearch.length){
             this.dataSource=new MatTableDataSource(this.ELEMENT_DATA);//push into the table
+            this.flag=true;
+        }
         });
       }
       else if(this.typed=="map")
@@ -200,8 +205,10 @@ public loadPage(i)
             console.log(this.otherColumn)
       this.responseArray[i][this.countOfColums]=this.sanitizer.bypassSecurityTrustResourceUrl(this.responseArray[i][this.countOfColums]);
       this.ELEMENT_DATA[i][this.countOfColums]={position:i,name:this.allSearch[i],url:this.responseArray[i][this.countOfColums],otherColumns:this.otherColumn[i][this.countOfColums]};//push element in the Element array 
-        if(this.mapResponse==this.allSearch.length)//if get all the answer of the server
+        if(this.mapResponse==this.allSearch.length){//if get all the answer of the server
             this.dataSource=new MatTableDataSource(this.ELEMENT_DATA);//push into the table
+            this.flag=true;
+        }
         });
       
       }
@@ -231,8 +238,9 @@ public loadPage(i)
                 this.otherColumn[i][this.countOfColums]=this.sanitizer.bypassSecurityTrustResourceUrl(this.otherColumn[i][this.countOfColums]);
                 this.ELEMENT_DATA[i][this.countOfColums]={position:i,name:this.allSearch[i],url:this.responseArray[i][this.countOfColums],otherColumns:this.otherColumn[i][this.countOfColums]};//push element in the Element array 
             
-                 if(this.steamResponse==this.allSearch.length)
+                 if(this.steamResponse==this.allSearch.length){
                    this.dataSource=new MatTableDataSource(this.ELEMENT_DATA);//push into the table*/
+                   this.flag=true;}
              });
           });
         }
@@ -245,11 +253,13 @@ public loadPage(i)
       }
       if(this.typed!="game" && this.typed!="film")
       {
-          if(this.count==this.allSearch.length)
-            this.dataSource=new MatTableDataSource(this.ELEMENT_DATA);//push into the table
-        }
-        console.log(this.ELEMENT_DATA)
-     }
+          if(this.count==this.allSearch.length){
+            this.dataSource=new MatTableDataSource(this.ELEMENT_DATA[0]);//push into the table
+            this.flag=true;
+          }
+      }
+     console.log(this.ELEMENT_DATA)
+    }
 //===================================================================================================================================
 //===================================================================================================================================
 //click on the button "+"

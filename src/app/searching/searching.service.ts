@@ -175,14 +175,14 @@ export class APIservice{
             this.alltype[0]++;
         else if (url.search("steam")!=-1)//if the first url is steam 
             this.alltype[5]++;
-        else if(res.search("Release date")!=-1 || res.search("Initial release")!=-1 || res.search("Movies")!=-1)
+        else if(res.search("Release date")!=-1|| res.search("Movies")!=-1)
              this.alltype[0]++;
         else if(res.search("Address")!=-1 || res.search("Superficie")!=-1 ||res.search("Land area")!=-1 ||res.search("Capital")!=-1|| res.search("Area")!=-1|| res.search("Population")!=-1)
             this.alltype[4]++;  
             else if (res.search("Artists")!=-1 || res.search("Albums")!=-1 || res.search("Artist")!=-1)
             this.alltype[1]++ 
         else if(indexGame!=-1)
-         this.alltype[5]++;
+             this.alltype[5]++;
          else 
          this.alltype[3]++;
 
