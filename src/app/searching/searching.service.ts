@@ -193,9 +193,9 @@ export class APIservice{
     getColums(type)
     {
         if(type=="game" || type=="film")
-            return ['position', 'name', 'url','url2'];
+            return ['name', 'url','url2'];
         else    
-            return ['position', 'name', 'url'];
+            return ['name', 'url'];
     }
     getFinalType(typeArray)
     {

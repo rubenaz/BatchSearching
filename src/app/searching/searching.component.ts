@@ -11,7 +11,7 @@ import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Observable';
 import * as cors from 'cors'
 
-
+declare function require(arg:string): any;
 
 export interface Element {
   position: number;
@@ -39,7 +39,7 @@ export class SearchingComponent implements OnInit {
   results:any[]=[];//all result of the api
   ELEMENT_DATA: Element[][];
   otherColumn:any[][];
-  displayedColumns = ['position', 'name', 'url'];
+  displayedColumns = ['name','url'];
   dataSource;//= new MatTableDataSource(this.ELEMENT_DATA);
   allSearch:string[];//all the search of the user
   allType:number[];//each type of each search
@@ -63,11 +63,23 @@ export class SearchingComponent implements OnInit {
   
   
   private service=new APIservice();
+  
+  /*const functions = require('firebase-functions');
+  const admin = require('firebase-admin');
+  admin.initializeApp(functions.config().firebase);
+  exports.notifyUser = functions.https.onRequest((req, res) => {
+    console.log("hahahhahahaha")
+        this.onSave(req);
+    // ...
+  });*/
+
 
 //==================================================================================================================
   
-  constructor(private http:Http,private sanitizer: DomSanitizer) {} 
-
+  constructor(private http:Http,private sanitizer: DomSanitizer) {
+    
+  } 
+ 
 //============================FUNCTIONS==========================================================================
 //=====================================click on the button "SEARCH"==================================================
 onSave(input){
@@ -77,7 +89,7 @@ onSave(input){
 
 
 
-  this.displayedColumns = ['position', 'name', 'url'];
+  this.displayedColumns = ['name', 'url'];
   this.steamID=[];
   this.allType=[];
   this.dataSource=new MatTableDataSource(this.ELEMENT_DATA);
@@ -103,7 +115,6 @@ onSave(input){
   this.addApiUrl=[];
   this.addResult=[]
   
-
 
 
   for(let i=0;i<this.allSearch.length;i++)
@@ -291,12 +302,12 @@ public loadPage(i,result)
     this.displayedColumns[this.displayedColumns.length]='otherSearch'+ (this.countOfColums);
     for(let i=0; i<this.allSearch.length;i++)
     {
-    this.addApiUrl[i]=this.service.returnURL(selectType,this.allSearch[i]);
+  /* this.addApiUrl[i]=this.service.returnURL(selectType,this.allSearch[i]);
     console.log(this.addApiUrl[i])
     this.http.get(this.addApiUrl[i]).toPromise().then(response => 
       {
         
-          if(/*this.typed!="map" && */this.typed!="direction" && this.typed!="game")
+          if(this.typed!="direction" && this.typed!="game")
             this.addResult[i]=response.json();
           else if (this.typed=="game")
           {
@@ -309,21 +320,22 @@ public loadPage(i,result)
               this.flagGame=false;
           }
           this.loadPage(i,this.addResult[i]);
-      });
-   /* if(selectType=="imdb")
+      });*/
+      
+   if(selectType=="imdb")
     this.htmlStr[i]=this.sanitizer.bypassSecurityTrustHtml('<iframe width="420" height=\"315\" src=\"https://www.youtube.com/embed/tgbNymZ7vqY\"></iframe></div>');
     else
-    this.htmlStr[i]=this.sanitizer.bypassSecurityTrustHtml('<iframe width="420" height=\"315\" src=\"https://www.youtube.com/embed/tgbNymZ7vqf\"></iframe></div>');*/
+    this.htmlStr[i]=this.sanitizer.bypassSecurityTrustHtml('<iframe width="420" height=\"315\" src=\"https://www.youtube.com/embed/tgbNymZ7vqf\"></iframe></div>');
 
     //console.log(this.otherColumn)
    // this.otherColumn[i][this.countOfColums]=this.sanitizer.bypassSecurityTrustResourceUrl(this.otherColumn[i][this.countOfColums]);
-    if(this.newType=="map")
-    {
-        this.htmlStr[i]=this.sanitizer.bypassSecurityTrustHtml('<iframe width="200" height="200" frameborder="0" style="border:0"[src]='+ this.responseArray[i][this.countOfColums]+' allowfullscreen></iframe>');
-        console.log(this.responseArray[i][this.countOfColums])
+    //if(this.newType=="map")
+   // {
+     //   this.htmlStr[i]=this.sanitizer.bypassSecurityTrustHtml('<iframe width="200" height="200" frameborder="0" style="border:0"[src]='+ this.responseArray[i][this.countOfColums]+' allowfullscreen></iframe>');
+      //  console.log(this.responseArray[i][this.countOfColums])
         this.otherColumn[i][this.countOfColums]=this.htmlStr[i];
         this.ELEMENT_DATA[i][this.countOfColums]={position:i,name:this.allSearch[i],url:this.responseArray[i][this.countOfColums],otherColumns:this.otherColumn[i][this.countOfColums]};
-    }
+   // }
     }
     this.dataSource=new MatTableDataSource(this.ELEMENT_DATA);
     this.plus=true;
@@ -342,7 +354,16 @@ public loadPage(i,result)
   }
 
 
-  ngOnInit() :void{}
-  
+  ngOnInit() :void{
+ 
 }
+
+}
+/*const functions = require('firebase-functions');
+const admin = require('firebase-admin');
+admin.initializeApp(functions.config().firebase);
+exports.onSave = functions.https.onRequest((req, res) => {
+  console.log("hahahhahahaha")
+      this.onSave(req);
+});*/
   //===============================================================================================
