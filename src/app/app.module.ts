@@ -17,6 +17,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatTableModule} from '@angular/material/table';
 import { RouterModule, Routes } from '@angular/router';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,10 +34,13 @@ import { RouterModule, Routes } from '@angular/router';
     HttpClientModule,
     EventsServiceModule,
     MatInputModule,
-    RouterModule.forRoot([{
-      path: '',
-      component: AppComponent
-  }, ]),
+    RouterModule.forRoot([
+      {
+          path: 'search',
+          component: SearchingComponent
+      },
+      
+  ]),
     NgxPermissionsModule.forRoot(),
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos'}),

@@ -13,7 +13,6 @@ import * as cors from 'cors'
 import {Router, ActivatedRoute, Params} from '@angular/router';
 
 
-declare function require(arg:string): any;
 
 export interface Element {
   position: number;
@@ -63,7 +62,7 @@ export class SearchingComponent implements OnInit {
   addApiUrl
   addResult
   
-  
+  public href: string = "";
   private service=new APIservice();
   
   /*const functions = require('firebase-functions');
@@ -79,10 +78,17 @@ export class SearchingComponent implements OnInit {
 //==================================================================================================================
   
   constructor(private http:Http,private sanitizer: DomSanitizer,private activatedRoute: ActivatedRoute) {
-    console.log("in constructor")
-    this.activatedRoute.queryParams.subscribe(params => {
-      let date = params['startdate'];
-      console.log(this.activatedRoute.snapshot); // Print the parameter to the console. 
+     console.log("in constructor")
+    console.log(this.activatedRoute.snapshot);
+    console.log(this.activatedRoute.url);
+    console.log(this.activatedRoute.toString())
+    this.activatedRoute.queryParams.subscribe((params: Params) => {
+      console.log(params);
+      let date = params['q'];
+      console.log(date);
+      if(date!=null)
+        this.onSave(date);
+       // Print the parameter to the console. 
   });
     
   } 
@@ -362,7 +368,6 @@ public loadPage(i,result)
 
 
   ngOnInit() :void{
- 
 }
 
 }
