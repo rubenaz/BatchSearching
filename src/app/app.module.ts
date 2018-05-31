@@ -15,6 +15,7 @@ import { AgmCoreModule } from '@agm/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatInputModule} from '@angular/material/input';
 import {MatTableModule} from '@angular/material/table';
+import { RouterModule, Routes } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -32,9 +33,15 @@ import {MatTableModule} from '@angular/material/table';
     HttpClientModule,
     EventsServiceModule,
     MatInputModule,
+    RouterModule.forRoot([{
+      path: '',
+      component: AppComponent
+  }, ]),
     NgxPermissionsModule.forRoot(),
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos'})
+      apiKey: 'AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos'}),
+      
+      
 
   ],
   providers: [APIservice,AppComponent],

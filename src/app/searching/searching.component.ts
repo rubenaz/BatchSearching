@@ -10,6 +10,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Observable';
 import * as cors from 'cors'
+import {Router, ActivatedRoute, Params} from '@angular/router';
+
 
 declare function require(arg:string): any;
 
@@ -76,7 +78,12 @@ export class SearchingComponent implements OnInit {
 
 //==================================================================================================================
   
-  constructor(private http:Http,private sanitizer: DomSanitizer) {
+  constructor(private http:Http,private sanitizer: DomSanitizer,private activatedRoute: ActivatedRoute) {
+    console.log("in constructor")
+    this.activatedRoute.queryParams.subscribe(params => {
+      let date = params['startdate'];
+      console.log(this.activatedRoute.snapshot); // Print the parameter to the console. 
+  });
     
   } 
  
