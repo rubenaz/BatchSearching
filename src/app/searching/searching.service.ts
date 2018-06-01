@@ -27,7 +27,7 @@ export class APIservice{
          
     }
 
-    load(input){    
+    load(input){   
         this.allSearch=input.split("\n",input.length);
         let temp:string[]=[];
         let count=0;
@@ -47,20 +47,21 @@ export class APIservice{
         let temp=search.split(" to ",search.length);
         origin= temp[0];
         destination = temp[1];
-        if(type=="film")
+        if(type=="film" || type=="trailer")
         {
         this.apiUrl="https://www.googleapis.com/youtube/v3/search?part=snippet&q=" + search +" "+ type+"&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos";
         }
-        if(type=="song")
+        if(type=="song" || type=="trailer")
         {
-            this.apiUrl="https://www.googleapis.com/youtube/v3/search?part=snippet&q=" + search +" "+"&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos";
+            if(type=="song")
+                this.apiUrl="https://www.googleapis.com/youtube/v3/search?part=snippet&q=" + search +" "+"&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos";
         }
          if (type=="photo")
         {
             this.apiUrl="https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=b5adf013f6be330db59e33070c658f55&text=" + search +"&format=json&nojsoncallback=1"; 
             this.apiUrl+=search +"&format=json&pretty=1";
         }
-        else if(type=="wiki")
+        else if(type=="wikipedia")
         {
             this.apiUrl="https://cors.io/?https://en.wikipedia.org/w/api.php?action=opensearch&search=" + search +"&limit=1&format=json&origin=*" ;
         }
@@ -179,7 +180,7 @@ export class APIservice{
              this.alltype[0]++;
         else if(res.search("Address")!=-1 || res.search("Superficie")!=-1 ||res.search("Land area")!=-1 ||res.search("Capital")!=-1|| res.search("Area")!=-1|| res.search("Population")!=-1)
             this.alltype[4]++;  
-            else if (res.search("Artists")!=-1 || res.search("Albums")!=-1 || res.search("Artist")!=-1)
+        else if (res.search("Artists")!=-1 || res.search("Albums")!=-1 || res.search("Artist")!=-1 || res.search("Lyrics")!=-1 || res.search("lyrics")!=-1 || res.search("albums")!=-1|| res.search("music")!=-1 || res.search("song")!=-1)
             this.alltype[1]++ 
         else if(indexGame!=-1)
              this.alltype[5]++;
@@ -238,8 +239,8 @@ export class APIservice{
     {
         array=[]
         for(let i=0 ; i< size;i++)
-            array[i]=[]
+            array[i]=[""]
         return array
     }
-    
+   
 }   

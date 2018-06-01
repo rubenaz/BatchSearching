@@ -16,15 +16,15 @@
         <div class="top">
                 <mat-form-field class="example-full-width"><input matInput placeholder=" Keyword" #type class="box2"/></mat-form-field>
                 <select class="selection" #select >
+                        <option value="map">Map</option>
                         <option value="imdb">IMDB</option>
                         <option value="wikipedia">Wikipedia</option>
-                        <option value="map">Map</option>
                         <option value="direction">Direction</option>
                         <option value="photo">Photo</option>
                         <option value="game">Game</option>
                         <option value="trailer">Trailer</option> 
                         <option value="song">Song</option> 
-                        <option value="song">video</option> 
+                        <option value="video">video</option> 
 
                 </select>
             <button #plus class="plus" (click)="add(type.value,select.value)" >+</button>    
