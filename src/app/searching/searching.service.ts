@@ -13,8 +13,6 @@ export class APIservice{
     resultSteam:string[]=[];
     alltype:number[]=[];
 
-     
-    
     
     private apiUrl;
 
@@ -43,20 +41,17 @@ export class APIservice{
     }
     returnURL(type,search)
     {
-        let origin,destination;
-        let temp=search.split(" to ",search.length);
-        origin= temp[0];
-        destination = temp[1];
-        if(type=="film" || type=="trailer")
+       
+        if(type=="film" || type=="trailer"|| type=="imdb")
         {
         this.apiUrl="https://www.googleapis.com/youtube/v3/search?part=snippet&q=" + search +" "+ type+"&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos";
         }
-        if(type=="song" || type=="trailer")
+        else if(type=="song" || type=="video")
         {
             if(type=="song")
-                this.apiUrl="https://www.googleapis.com/youtube/v3/search?part=snippet&q=" + search +" "+"&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos";
+                this.apiUrl="https://www.googleapis.com/youtube/v3/search?part=snippet&q=" + search +" "+ type +"&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos";
         }
-         if (type=="photo")
+         else if (type=="photo")
         {
             this.apiUrl="https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=b5adf013f6be330db59e33070c658f55&text=" + search +"&format=json&nojsoncallback=1"; 
             this.apiUrl+=search +"&format=json&pretty=1";
@@ -71,11 +66,16 @@ export class APIservice{
             //this.apiUrl="https://www.google.com/maps/embed/v1/place?q=" + search + "&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos";
         }
         else if(type=="direction")
-        {   this.apiUrl="https://maps.google.com/maps/api/dir/json?key=key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos&description=\"\"&isDevelopment=false&isRuntime=true"
+        { 
+            let origin,destination;
+            let temp=search.split(" to ",search.length);
+            origin= temp[0];
+            destination = temp[1];
+              //this.apiUrl="https://maps.google.com/maps/api/dir/json?key=key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos&description=\"\"&isDevelopment=false&isRuntime=true"
             //this.apiUrl="https://cors.io/?https://www.google.com/maps/dir/api=1?origin=" + origin + "&destination=" + destination +"&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos"
             //this.apiUrl="https://cors.io/?https://maps.googleapis.com/maps/api/distancematrix/json?origins=" + origin + "&destinations=" + destination + "&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos"
             //this.apiUrl="https://cors.io/?https://maps.googleapis.com/maps/api/directions/json?origin=" + origin + "&destination=" + destination +"&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos"
-           //this.apiUrl="https://cors.io/?https://www.google.com/maps/embed/v1/directions?key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos&origin=" + origin +"&destination=" + destination + "&avoid=tolls|highways"
+           //this.apiUrl="https://www.google.com/maps/embed/v1/directions?key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos&origin=" + origin +"&destination=" + destination + "&avoid=tolls|highways"
         }
         else if(type=="game")
         {     
@@ -84,20 +84,16 @@ export class APIservice{
         }
         return this.apiUrl;
     }
-    regex(search)
+    findSteamID(search)
     {
-       // console.log(search + "        HERE ")
-        let index;
-        index=search.match("https://steamdb.info/app/([0-9 ]*)")[1];
-        console.log(index);
-        if(index==null)
+     
+        let steamID;
+        steamID=search.match("https://steamdb.info/app/([0-9 ]*)")[1];
+        console.log(steamID);
+        if(steamID==null)
             return null;
-        //search=search.substring(index+12, index +20);
-        //search=search.replace("\"","");
-        //search=search.replace(">", "");
-
-        
-        return index;
+       
+        return steamID;
     }
     getResultFromSteam(search)
     {

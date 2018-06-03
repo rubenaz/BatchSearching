@@ -30,11 +30,11 @@ export interface Element {
 export class SearchingComponent implements OnInit {
 
 //==================================VARIABLE=====================================================================
-
+  
   input;
   private apiUrl:any[]=[];
   pressed=false;
-  steamID:any[]=[];
+  steamID:any[][]=[];
   responseArray:any[][]=[];
   jsonArray:any[]=[];
   results:any[]=[];//all result of the api
@@ -64,6 +64,7 @@ export class SearchingComponent implements OnInit {
   addResult
   countWait
   keyword
+  finish
   
   public href: string = "";
   private service=new APIservice();
@@ -98,7 +99,7 @@ onSave(input){
     return;
 
 
-
+  this.finish=true;
   this.displayedColumns = ['name', 'url'];
   this.steamID=[];
   this.allType=[];
@@ -114,6 +115,7 @@ onSave(input){
   this.otherColumn=this.service.generate(this.otherColumn,this.allSearch.length);
   this.ELEMENT_DATA=this.service.generate(this.ELEMENT_DATA,this.allSearch.length);
   this.responseArray=this.service.generate(this.responseArray,this.allSearch.length);
+  this.steamID=this.service.generate(this.steamID,this.allSearch.length);
   this.results=
   this.results=Array.of(this.results);
   this.countOfColums=0;
@@ -172,8 +174,9 @@ public  getAnswer(){
         {
           this.results[i]=response;
           //console.log(response);
-          if(this.service.regex(this.results[i]._body)!=null){
-              this.steamID[i]=this.service.regex(this.results[i]._body);console.log("this steam id = " + this.steamID[i]);
+          if(this.service.findSteamID(this.results[i]._body)!=null){
+              this.steamID[i][this.countOfColums]=this.service.findSteamID(this.results[i]._body);
+              console.log("this steam id = " + this.steamID[i]);
           }
           else
             this.flagGame=false;
@@ -205,10 +208,15 @@ public loadPage(i,result)
         if(this.typed=="song" && this.plus==false)
           this.responseArray[i][this.countOfColums]=this.sanitizer.bypassSecurityTrustResourceUrl(this.responseArray[i][this.countOfColums]);
         else
-          this.otherColumn[i][this.countOfColums]=this.sanitizer.bypassSecurityTrustHtml('<iframe width="200" height="200" frameborder="0" style="border:0" src=\"'+ this.responseArray[i][this.countOfColums] + '\"allowfullscreen></iframe>');
-        this.ELEMENT_DATA[i][this.countOfColums]={position:i,name:this.allSearch[i],url:this.responseArray[i][this.countOfColums],otherColumns:this.otherColumn[i][this.countOfColums]};
+          this.otherColumn[i][this.countOfColums]=this.sanitizer.bypassSecurityTrustHtml('<iframe width="300" height="300" frameborder="0" style="border:0" src=\"'+ this.responseArray[i][this.countOfColums] + '\"allowfullscreen></iframe>');
+        this.ELEMENT_DATA[i][this.countOfColums]={position:i,name:this.allSearch[i],url:this.responseArray[i][this.countOfColums],otherColumns:this.otherColumn[i][this.countOfColums]};        if(this.count==this.allSearch.length)
+        if(this.count==this.allSearch.length)
+        {
         this.dataSource=new MatTableDataSource(this.ELEMENT_DATA);
+        this.finish=true;
         this.flag=true;
+        }
+        
       }
 //==============================================WIKIPEDIA=====================================================================================
 
@@ -219,8 +227,13 @@ public loadPage(i,result)
        if(this.newType=="wikipedia")
         this.otherColumn[i][this.countOfColums]=this.sanitizer.bypassSecurityTrustHtml(result[2]);
        this.ELEMENT_DATA[i][this.countOfColums]={position:i,name:this.allSearch[i],url:this.responseArray[i][this.countOfColums],otherColumns:this.otherColumn[i][this.countOfColums]};//push element in the Element array 
+       if(this.count==this.allSearch.length)
+       {
+        this.flag=true;
        this.dataSource=new MatTableDataSource(this.ELEMENT_DATA);
-      }
+       this.finish=true;
+       }
+     }
 //=======================================================FILM OR IMDB ======================================================================
       if(this.typed=="film"||this.newType=="imdb")
       {
@@ -251,6 +264,7 @@ public loadPage(i,result)
             if(this.filmResponse==this.allSearch.length)
             {
                 this.dataSource=new MatTableDataSource(this.ELEMENT_DATA);//push into the table
+                this.finish=true;
                 this.flag=true;
             }
         });
@@ -258,7 +272,7 @@ public loadPage(i,result)
 //====================================================MAP MAP MAP ===============================================================================
 
       if(this.typed=="map" || this.newType=="map")//this.newType is for the button + to know if i push on or no and if the type that i search is map
-      {     
+      {   
             if((this.typed=="map"&& this.plus==false) || this.newType=="map")
             this.http.get("https://cors.io/?https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos&placeid=" + result.results[0].place_id).toPromise().then(response => {
             let res=response.json();
@@ -268,10 +282,11 @@ public loadPage(i,result)
               this.responseArray[i][this.countOfColums]=this.sanitizer.bypassSecurityTrustResourceUrl(this.responseArray[i][this.countOfColums]);
             console.log(this.responseArray[i][this.countOfColums])
             if(this.newType=="map")
-              this.otherColumn[i][this.countOfColums]=this.sanitizer.bypassSecurityTrustHtml('<iframe width="200" height="200" frameborder="0" style="border:0" src=\"'+ this.responseArray[i][this.countOfColums] + '\"allowfullscreen></iframe>');
+              this.otherColumn[i][this.countOfColums]=this.sanitizer.bypassSecurityTrustHtml('<iframe width="300" height="300" frameborder="0" style="border:0" src=\"'+ this.responseArray[i][this.countOfColums] + '\"allowfullscreen></iframe>');
               this.ELEMENT_DATA[i][this.countOfColums]={position:i,name:this.allSearch[i],url:this.responseArray[i][this.countOfColums],otherColumns:this.otherColumn[i][this.countOfColums]};//push element in the Element array 
               if(this.mapResponse==this.allSearch.length)
               {//if get all the answer of the server
+                this.finish=true;
                   this.dataSource=new MatTableDataSource(this.ELEMENT_DATA);//push into the table
                   this.flag=true;
               }              
@@ -286,43 +301,51 @@ public loadPage(i,result)
         this.responseArray[i][this.countOfColums]=this.sanitizer.bypassSecurityTrustResourceUrl(this.responseArray[i][this.countOfColums]);
         this.ELEMENT_DATA[i][this.countOfColums]={position:i,name:this.allSearch[i],url:this.responseArray[i][this.countOfColums],otherColumns:this.otherColumn[i][this.countOfColums]};
         this.dataSource=new MatTableDataSource(this.ELEMENT_DATA);
+        this.flag=true;
 
         // });//push element in the Element array 
       }
 //======================================================GAME=======================================================================================
       if(this.typed=="game" ||  this.newType=="game")
       {
-        if(this.flagGame==true){
-          this.http.get("https://cors.io/?http://store.steampowered.com/api/appdetails?appids=" + this.steamID[i] +"&key=B458483E2C76C8BE13EB05C37106916A&format=json").toPromise().then(response => {
-            let result=response.json();
-            console.log(result)
-            console.log(result[""+this.steamID[i]].success)
-            if(result[""+this.steamID[i]].success!=false)
-                 this.responseArray[i][this.countOfColums]=this.service.getResultFromSteam(result[this.steamID[i]].data);
+          this.http.get("https://cors.io/?http://store.steampowered.com/api/appdetails?appids=" + this.steamID[i][this.countOfColums] +"&key=B458483E2C76C8BE13EB05C37106916A&format=json").toPromise().then(response => {
+            let res=response.json();
+            console.log(res)
+            console.log(this.newType)
+            console.log(res[""+this.steamID[i][this.countOfColums]].success)
+            if(res[""+this.steamID[i][this.countOfColums]].success!=false)
+              {
+                  if(this.typed=="game" && this.plus==false)
+                      this.responseArray[i][this.countOfColums]=this.service.getResultFromSteam(res[this.steamID[i][this.countOfColums]].data);
+                  else if (this.newType=="game" && this.plus==true)
+                      this.otherColumn[i][this.countOfColums]=this.service.getResultFromSteam(res[this.steamID[i][this.countOfColums]].data);
+              }
             else
+              {
+                if(this.typed=="game" && this.plus==false)
                  this.responseArray[i][this.countOfColums]=["this game doesn't extist in steam "];
+                 else
+                 this.otherColumn[i][this.countOfColums]=["this game doesn't extist in steam "];              
+              }
             this.http.get("https://www.googleapis.com/youtube/v3/search?part=snippet&q=" + this.allSearch[i] +" "+ "trailer"+"&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos").toPromise().then(response => {
                 this.steamResponse++;
+                if(this.plus==false)
+                {
                 let youtube_result=response.json();
                 this.otherColumn[i][this.countOfColums]= "https://www.youtube.com/embed/" +youtube_result.items[0].id.videoId;
                 this.otherColumn[i][this.countOfColums]=this.sanitizer.bypassSecurityTrustResourceUrl(this.otherColumn[i][this.countOfColums]);
-                if(this.plus==false)
-                {
+                }
                 this.ELEMENT_DATA[i][this.countOfColums]={position:i,name:this.allSearch[i],url:this.responseArray[i][this.countOfColums],otherColumns:this.otherColumn[i][this.countOfColums]};//push element in the Element array 
             
                  if(this.steamResponse==this.allSearch.length){
                    this.dataSource=new MatTableDataSource(this.ELEMENT_DATA);//push into the table*/
-                   this.flag=true;}
-                 }
+                   this.flag=true;
+                  this.finish=true;                
+                  }
+                 
              });
           });
-        }
-        else
-        {
-           this.responseArray[i][this.countOfColums] =["this game doesn't extist in steam "];
-           this.steamResponse++;
-        }
-      
+   
       }
       
      console.log(this.ELEMENT_DATA)
@@ -334,6 +357,9 @@ public loadPage(i,result)
 //click on the button "+"
   add(keyword,selectType)
   {
+    this.finish=false;
+    this.plus=true;
+    this.count=0;
     console.log(selectType);
     this.newType=selectType;
     this.keyword=keyword;
@@ -343,6 +369,9 @@ public loadPage(i,result)
       this.mapResponse=0;
     if(selectType=="imdb")
       this.filmResponse=0;
+    if(selectType=="game")
+    this.steamResponse=0;
+
 
     this.countOfColums++;
     this.displayedColumns[this.displayedColumns.length]='otherSearch'+ (this.countOfColums);
@@ -352,12 +381,24 @@ public loadPage(i,result)
             console.log(this.addApiUrl[i])
       this.http.get(this.addApiUrl[i]).toPromise().then(response => 
         {
-            console.log(response.json());
-            this.addResult[i]=response.json();
-            this.loadPage(i,this.addResult[i]);
+          if (selectType=="game")
+          {
+            let result:any;
+            result=response;
+            if(this.service.findSteamID(result._body)!=null){
+              this.steamID[i][this.countOfColums]=this.service.findSteamID(result._body);
+                console.log("this steam id = " + this.steamID[i]);
+                this.addResult[i]=this.steamID[i][this.countOfColums]
+            }
+            else this.addResult[i]=0;
+          }
+          else
+            this.addResult[i]=response.json()
+          this.loadPage(i,this.addResult[i]);
         });
-        this.plus=true;
+      
     }
+    
     
   }
   returncol(i)

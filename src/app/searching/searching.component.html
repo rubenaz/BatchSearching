@@ -13,6 +13,7 @@
     
         </head>
     <body>
+                
         <div class="top">
                 <mat-form-field class="example-full-width"><input matInput placeholder=" Keyword" #type class="box2"/></mat-form-field>
                 <select class="selection" #select >
@@ -24,16 +25,17 @@
                         <option value="game">Game</option>
                         <option value="trailer">Trailer</option> 
                         <option value="song">Song</option> 
-                        <option value="video">video</option> 
+                        <option value="video">Video</option> 
 
                 </select>
             <button #plus class="plus" (click)="add(type.value,select.value)" >+</button>    
             </div> 
         <div> 
-        <mat-form-field><textarea class="SearchArea" #box matInput placeholder="Your Search" class="box"></textarea></mat-form-field>
-        <button class = "button" #but (click)="onSave(box.value)">Search</button>
+        <mat-form-field><textarea class="SearchArea" #box matInput placeholder="Your Search" class="box" (keydown.control.enter)="onSave(box.value)"></textarea></mat-form-field>
+       <button class = "button" #but (click)="onSave(box.value)">Search</button>
+
         </div>
-        <div *ngIf = "pressed==true && flag==true">
+        <div *ngIf = "pressed==true && flag==true && finish==true">
             <mat-table #table [dataSource]="dataSource">
                         <ng-container *ngFor="let col of displayedColumns;let i=index" matColumnDef="{{col}}">
                                 <mat-header-cell *matHeaderCellDef> {{col}} </mat-header-cell>
@@ -55,11 +57,7 @@
                                                                 {{element[0].url}}
                                                         </div>
                                                         <div *ngIf = "typed=='game'">
-                                                                <ul>
-                                                                        <li *ngFor="let item of element[0].url">
-                                                                        {{item}}
-                                                                        </li>
-                                                                        </ul>
+                                                                        <div [innerHTML]="element[0].url"></div> 
                                                         </div>
                                                         <div *ngIf = "typed=='map'">
                                                                 <iframe width="200" height="200" frameborder="0" style="border:0"
