@@ -53,8 +53,10 @@ export class APIservice{
         }
          else if (type=="photo")
         {
-            this.apiUrl="https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=b5adf013f6be330db59e33070c658f55&text=" + search +"&format=json&nojsoncallback=1"; 
-            this.apiUrl+=search +"&format=json&pretty=1";
+         this.apiUrl="https://api.gettyimages.com/v3/search/images?fields=detail_set%2Cdisplay_set%2Curi_oembed&phrase=" + search // + "&Api-Key=78bseah6sqfmza2547zkt4y3"
+
+            //this.apiUrl="https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=b5adf013f6be330db59e33070c658f55&text=" + search +"&format=json&nojsoncallback=1"; 
+           // this.apiUrl+=search +"&format=json&pretty=1";
         }
         else if(type=="wikipedia")
         {

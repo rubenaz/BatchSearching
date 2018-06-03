@@ -1,7 +1,7 @@
 import { APIservice } from './searching.service';
 import { Component, OnInit } from '@angular/core';
-import {Http,Response,HttpModule,} from '@angular/http';
-import {HttpClient} from '@angular/common/http'; 
+import {Http,Response,HttpModule, RequestOptions, Headers,} from '@angular/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http'; 
 import { EventsServiceModule } from 'angular-event-service';
 import { AsyncPipe } from '@angular/common';
 import { DomSanitizer,SafeResourceUrl, SafeUrl} from '@angular/platform-browser';
@@ -193,12 +193,15 @@ public loadPage(i,result)
   this.count++;
 //====================================================PHOTO======================================================================================
       if(this.newType=="photo"){
-        this.responseArray[i][this.countOfColums]= "https://farm" + result.photos.photo[0].farm + ".staticflickr.com/" + result.photos.photo[0].server+
-         "/" + result.photos.photo[0].id +"_" + result.photos.photo[0].secret +".jpg"
-         console.log(this.responseArray[i]);     
-        //this.responseArray[i]=this.results[i].Image;
-                this.ELEMENT_DATA[i][this.countOfColums]={position:i,name:this.allSearch[i],url:this.responseArray[i][this.countOfColums],otherColumns:this.otherColumn[i][this.countOfColums]};//push element in the Element array 
-        this.dataSource=new MatTableDataSource(this.ELEMENT_DATA);//push into the table
+        this.responseArray[i][this.countOfColums]= result.images[0].display_sizes[0].uri
+        this.otherColumn[i][this.countOfColums]=this.sanitizer.bypassSecurityTrustHtml('<img width="300" height="300" frameborder="0" style="border:0" src=\"'+ this.responseArray[i][this.countOfColums] + '\"allowfullscreen>');
+        this.ELEMENT_DATA[i][this.countOfColums]={position:i,name:this.allSearch[i],url:this.responseArray[i][this.countOfColums],otherColumns:this.otherColumn[i][this.countOfColums]};//push element in the Element array 
+        if(this.count==this.allSearch.length)
+        {
+        this.dataSource=new MatTableDataSource(this.ELEMENT_DATA);
+        this.finish=true;
+        this.flag=true;
+        }
       }
 //===========================================SONG VIDEO TRAILER ========================================================================================
       if(this.typed=="song" || this.newType=="song" || this.newType=="trailer" || this.newType=="video")
@@ -357,6 +360,7 @@ public loadPage(i,result)
 //click on the button "+"
   add(keyword,selectType)
   {
+    let options
     this.finish=false;
     this.plus=true;
     this.count=0;
@@ -379,8 +383,22 @@ public loadPage(i,result)
     {
       this.addApiUrl[i]=this.service.returnURL(selectType,this.allSearch[i]+" " +keyword);
             console.log(this.addApiUrl[i])
-      this.http.get(this.addApiUrl[i]).toPromise().then(response => 
+        if(selectType=="photo")
         {
+          let api="78bseah6sqfmza2547zkt4y3"
+          let access_token="Bearer lCJGE3R5nZxoFeR9ZXDhlU5ZUxwl8SYe+rbKGyHGdw5jKdMUIEH1EEsEYgf6T5VvUrOPuqWJfw6PiXQeflYZfwBL7TJj+OAF+7TXA3+/r+r5Wq2RiXUnTd7YIqi5MADlJp259vCPFAVhrZYOmiS3rta9tMfGGpvP5TC1U1e7Q4s=|77u/KzZQNERxaXNKa2o2ZjRkd2RFNGYKMzMxOTAKClZKWDFEUT09ClhKejFEUT09CjAKNzhic2VhaDZzcWZtemEyNTQ3emt0NHkzCjMxLjIxMC4xODAuNzQKMAozMzE5MAoKMzMxOTAKMAoKCg==|3|2|1"
+         options = new RequestOptions({
+            headers: new Headers({
+              'Accept': 'application/json','Api-Key': '78bseah6sqfmza2547zkt4y3'
+            })
+          });
+
+          
+        }
+        
+      this.http.get(this.addApiUrl[i],options).toPromise().then(response => 
+        {
+          console.log(response)
           if (selectType=="game")
           {
             let result:any;
