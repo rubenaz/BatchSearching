@@ -65,6 +65,8 @@ export class SearchingComponent implements OnInit {
   countWait
   keyword
   finish
+  nameOfColum
+  minus
   
   public href: string = "";
   private service=new APIservice();
@@ -128,6 +130,8 @@ onSave(input){
   this.addResult=[]
   this.keyword=""
   this.newType=""
+  this.nameOfColum=['item']
+  this.minus=true
   
 
   
@@ -155,6 +159,18 @@ onSave(input){
 //=====================================================================================================================
 public  getAnswer(){
   this.typed=this.service.getFinalType(this.allType);
+  if(this.typed=="film"){
+      this.nameOfColum[this.nameOfColum.length]="trailer";
+      this.nameOfColum[this.nameOfColum.length]=this.typed;
+      }
+  else if (this.typed=="game")
+      {
+        this.nameOfColum[this.nameOfColum.length]=this.typed;
+        this.nameOfColum[this.nameOfColum.length]="trailer";
+      }
+  else 
+        this.nameOfColum[this.nameOfColum.length]=this.typed;
+
   this.displayedColumns=this.service.getColums(this.typed);
   console.log("in the first if: " + this.typed);
   this.count=0;
@@ -378,6 +394,7 @@ public loadPage(i,result)
 
 
     this.countOfColums++;
+    this.nameOfColum[this.nameOfColum.length]= selectType + " \n" + keyword
     this.displayedColumns[this.displayedColumns.length]='otherSearch'+ (this.countOfColums);
     for(let i=0; i<this.allSearch.length;i++)
     {
@@ -385,15 +402,11 @@ public loadPage(i,result)
             console.log(this.addApiUrl[i])
         if(selectType=="photo")
         {
-          let api="78bseah6sqfmza2547zkt4y3"
-          let access_token="Bearer lCJGE3R5nZxoFeR9ZXDhlU5ZUxwl8SYe+rbKGyHGdw5jKdMUIEH1EEsEYgf6T5VvUrOPuqWJfw6PiXQeflYZfwBL7TJj+OAF+7TXA3+/r+r5Wq2RiXUnTd7YIqi5MADlJp259vCPFAVhrZYOmiS3rta9tMfGGpvP5TC1U1e7Q4s=|77u/KzZQNERxaXNKa2o2ZjRkd2RFNGYKMzMxOTAKClZKWDFEUT09ClhKejFEUT09CjAKNzhic2VhaDZzcWZtemEyNTQ3emt0NHkzCjMxLjIxMC4xODAuNzQKMAozMzE5MAoKMzMxOTAKMAoKCg==|3|2|1"
-         options = new RequestOptions({
+            options = new RequestOptions({
             headers: new Headers({
               'Accept': 'application/json','Api-Key': '78bseah6sqfmza2547zkt4y3'
             })
           });
-
-          
         }
         
       this.http.get(this.addApiUrl[i],options).toPromise().then(response => 
@@ -414,22 +427,87 @@ public loadPage(i,result)
             this.addResult[i]=response.json()
           this.loadPage(i,this.addResult[i]);
         });
-      
+        console.log(this.displayedColumns)
+
     }
     
     
   }
+  //==============================================RETURN NAME OF COLUMN=================================================================
   returncol(i)
   {
     return "otherSearch" + i + ""; 
   }
-  createRange(number){
+    //==============================================CREATE RANGE FOR COLUMN=================================================================
+
+  createRange(number)
+  {
     var items: number[] = [];
     for(var i = 1; i <= number; i++){
        items.push(i);
     }
     return items;
   }
+  //==============================================DELETE COLUMN=================================================================
+
+
+  deleteColumn(name_of_col)
+  {
+    console.log(this.ELEMENT_DATA,this.otherColumn,this.responseArray)
+
+this.minus=false;
+    let col=name_of_col.slice(-1);
+    col=Number(col)
+    let array2=this.nameOfColum
+    let elementArray=this.ELEMENT_DATA;
+    let otherCol=this.otherColumn
+    let response=this.responseArray
+    let begin
+    if(this.typed=="film" || this.typed=="game")
+      begin=2+col
+    else
+      begin=1+col
+    
+    for(let i=begin;i<this.nameOfColum.length;i++)//update the array name fo columns and the id of each column
+    {
+      if(i+1<=this.nameOfColum.length)
+          this.nameOfColum[i]=array2[i+1]
+    }
+          this.nameOfColum.length--;
+
+    console.log("numToDelete:" + col + "     numOfColums:" + this.countOfColums)
+    for(let i=0;i<this.allSearch.length;i++)//update the database
+    {
+      
+      for(let j=col;j<=this.countOfColums;j++)
+      {
+        
+        console.log(j+1)
+       // console.log(this.countOfColums)
+            if(j+1<=this.countOfColums)
+            {
+              console.log("copy ")
+              this.otherColumn[i][j]=otherCol[i][j+1];
+              this.responseArray[i][j]=response[i][j+1]
+              this.ELEMENT_DATA[i][j]=elementArray[i][j+1]
+            }
+      }
+      this.otherColumn[i].length--;
+      this.responseArray[i].length--;
+      this.ELEMENT_DATA[i].length--;
+    }
+    this.countOfColums--;
+    this.displayedColumns.length--;
+    this.minus=true
+
+    console.log(this.ELEMENT_DATA,this.otherColumn,this.responseArray)
+
+  }
+  classminus(i)
+  {
+    return "minus" + i
+  }
+
 
 
   ngOnInit() :void{}

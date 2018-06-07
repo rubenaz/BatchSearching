@@ -12,8 +12,7 @@
          <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js?key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos"></script>
     
         </head>
-    <body>
-                
+    <body>     
         <div class="top">
                 <mat-form-field class="example-full-width"><input matInput placeholder=" Keyword" #type class="box2"/></mat-form-field>
                 <select class="selection" #select >
@@ -33,12 +32,22 @@
         <div> 
         <mat-form-field><textarea class="SearchArea" #box matInput placeholder="Your Search" class="box" (keydown.control.enter)="onSave(box.value)"></textarea></mat-form-field>
        <button class = "button" #but (click)="onSave(box.value)">Search</button>
-
         </div>
-        <div *ngIf = "pressed==true && flag==true && finish==true">
+        <div *ngIf = "flag==false || finish==false">
+                        <div class="loader"></div>
+        </div>
+        <div *ngIf = "pressed==true && flag==true && finish==true && minus==true">
             <mat-table #table [dataSource]="dataSource">
                         <ng-container *ngFor="let col of displayedColumns;let i=index" matColumnDef="{{col}}">
-                                <mat-header-cell *matHeaderCellDef> {{col}} </mat-header-cell>
+                        <div *ngIf = "col=='name' || col=='url' || col=='url2';else other" >
+                                <mat-header-cell *matHeaderCellDef> {{nameOfColum[i]}} </mat-header-cell>
+                        </div>
+                        <ng-template #other>
+                                        <mat-header-cell *matHeaderCellDef> 
+                                                <button #plus class="plus" (click)="deleteColumn(col)" >-</button>    
+                                                <p>{{nameOfColum[i]}}  </p>
+                                        </mat-header-cell>
+                                </ng-template>
                                         <mat-cell *matCellDef="let element">
                                         <div *ngIf = "col!='url'">
                                                 {{element[0][col]}}
@@ -90,7 +99,7 @@
                                                 </div>
 
                                         </mat-cell>
-
+                        
                         </ng-container> 
                     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
