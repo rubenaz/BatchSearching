@@ -522,13 +522,14 @@ this.minus=false;
     this.minus=true
 
     console.log(this.ELEMENT_DATA,this.otherColumn,this.responseArray)
-
   }
-  classminus(i)
-  {
-    return "minus" + i
-  }
+//========================================CHANGE THE DROPDOWN OF COLUMN=======================================================
+onChange(key,type)
+{
+  this.newType=type;
 
+  console.log(key,type)
+}
 
 
   ngOnInit() :void{}

@@ -46,8 +46,8 @@
                         <ng-template #other>
                                         <mat-header-cell *matHeaderCellDef> 
                                                 <button #plus class="plus" (click)="deleteColumn(col)" >-</button> 
-                                               <p> <mat-form-field class="example-full-width"><input matInput placeholder=" Keyword" #type class="box2"/></mat-form-field></p>
-                                               <p> <select class="selection" #select >
+                                               <p> <mat-form-field class="example-full-width"><input matInput placeholder=" Keyword" #key class="box2"/></mat-form-field></p>
+                                               <p> <select (change)=onChange(key.value,typeChanged.value) class="selection" #typeChanged >
                                                         <option value="map">Map</option>
                                                         <option value="imdb">IMDB</option>
                                                         <option value="wikipedia">Wikipedia</option>

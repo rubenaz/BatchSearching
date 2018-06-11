@@ -44,7 +44,7 @@ export class APIservice{
        console.log(search)
         if(type=="film" || type=="trailer"|| type=="imdb")
         {
-        this.apiUrl="https://www.googleapis.com/youtube/v3/search?part=snippet&q=" + search +" "+ type+"&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos";
+        this.apiUrl="https://www.googleapis.com/youtube/v3/search?part=snippet&q=" + search +" trailer&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos";
         }
         else if(type=="song" || type=="video")
         {
