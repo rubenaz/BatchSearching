@@ -9,8 +9,9 @@
           <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></script>
           <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
           <script type="text/javascript" src="https://maps.google.com/maps/api/js?key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos&sensor=false"></script>
-         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js?key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos"></script>
-    
+          <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js?key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos"></script>
+         <script src="https://apis.google.com/js/platform.js" async defer></script>
+
         </head>
     <body>     
         <div class="top">
@@ -44,7 +45,20 @@
                         </div>
                         <ng-template #other>
                                         <mat-header-cell *matHeaderCellDef> 
-                                                <button #plus class="plus" (click)="deleteColumn(col)" >-</button>    
+                                                <button #plus class="plus" (click)="deleteColumn(col)" >-</button> 
+                                               <p> <mat-form-field class="example-full-width"><input matInput placeholder=" Keyword" #type class="box2"/></mat-form-field></p>
+                                               <p> <select class="selection" #select >
+                                                        <option value="map">Map</option>
+                                                        <option value="imdb">IMDB</option>
+                                                        <option value="wikipedia">Wikipedia</option>
+                                                        <option value="direction">Direction</option>
+                                                        <option value="photo">Photo</option>
+                                                        <option value="game">Game</option>
+                                                        <option value="trailer">Trailer</option> 
+                                                        <option value="song">Song</option> 
+                                                        <option value="video">Video</option> 
+                                
+                                                </select>  </p>
                                                 <p>{{nameOfColum[i]}}  </p>
                                         </mat-header-cell>
                                 </ng-template>

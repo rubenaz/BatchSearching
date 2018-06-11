@@ -41,7 +41,7 @@ export class APIservice{
     }
     returnURL(type,search)
     {
-       
+       console.log(search)
         if(type=="film" || type=="trailer"|| type=="imdb")
         {
         this.apiUrl="https://www.googleapis.com/youtube/v3/search?part=snippet&q=" + search +" "+ type+"&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos";
@@ -50,6 +50,8 @@ export class APIservice{
         {
             if(type=="song")
                 this.apiUrl="https://www.googleapis.com/youtube/v3/search?part=snippet&q=" + search +" "+ type +"&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos";
+            else
+                this.apiUrl="https://www.googleapis.com/youtube/v3/search?part=snippet&q=" + search +" " +"&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos";
         }
          else if (type=="photo")
         {
@@ -77,7 +79,7 @@ export class APIservice{
             //this.apiUrl="https://cors.io/?https://www.google.com/maps/dir/api=1?origin=" + origin + "&destination=" + destination +"&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos"
             //this.apiUrl="https://cors.io/?https://maps.googleapis.com/maps/api/distancematrix/json?origins=" + origin + "&destinations=" + destination + "&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos"
             //this.apiUrl="https://cors.io/?https://maps.googleapis.com/maps/api/directions/json?origin=" + origin + "&destination=" + destination +"&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos"
-           //this.apiUrl="https://www.google.com/maps/embed/v1/directions?key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos&origin=" + origin +"&destination=" + destination + "&avoid=tolls|highways"
+           this.apiUrl="https://www.google.com/maps/embed/v1/directions?key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos&origin=" + origin +"&destination=" + destination + "&avoid=tolls|highways"
         }
         else if(type=="game")
         {     

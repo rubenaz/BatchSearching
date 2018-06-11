@@ -10,7 +10,9 @@ import { MatTableDataSource } from '@angular/material/table';
 import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Observable';
 import * as cors from 'cors'
+
 import {Router, ActivatedRoute, Params} from '@angular/router';
+
 
 
 
@@ -67,7 +69,10 @@ export class SearchingComponent implements OnInit {
   finish
   nameOfColum
   minus
+  cors
   
+ // https://cors-anywhere.herokuapp.com/
+ // http://cors-proxy.htmldriven.com/?url=
   public href: string = "";
   private service=new APIservice();
   
@@ -89,7 +94,7 @@ export class SearchingComponent implements OnInit {
       if(date!=null)
         this.onSave(date);
        // Print the parameter to the console. 
-  });
+      });
     
   } 
  
@@ -132,6 +137,12 @@ onSave(input){
   this.newType=""
   this.nameOfColum=['item']
   this.minus=true
+  this.cors= new Headers({
+    'Content-Type':'*', 
+    'Access-Control-Allow-Origin':'*' ,
+    'Access-Control-Allow-Headers': 'x-requested-with, x-requested-by'  })
+
+
   
 
   
@@ -181,7 +192,7 @@ public  getAnswer(){
 
     this.apiUrl[i]=this.service.returnURL(this.typed,this.allSearch[i])//get the url for the response of json
     console.log("in the second for " +  this.apiUrl[i]);
-    this.http.get(this.apiUrl[i]).toPromise().then(response => 
+    this.http.get(this.apiUrl[i],this.cors).toPromise().then(response => 
     {
       //console.log(response.json());
         if(/*this.typed!="map" && */this.typed!="direction" && this.typed!="game")
@@ -321,12 +332,21 @@ public loadPage(i,result)
         this.ELEMENT_DATA[i][this.countOfColums]={position:i,name:this.allSearch[i],url:this.responseArray[i][this.countOfColums],otherColumns:this.otherColumn[i][this.countOfColums]};
         this.dataSource=new MatTableDataSource(this.ELEMENT_DATA);
         this.flag=true;
-
+        this.finish=true;
+                
         // });//push element in the Element array 
       }
 //======================================================GAME=======================================================================================
       if(this.typed=="game" ||  this.newType=="game")
-      {
+      {   if(this.steamID[i][this.countOfColums]==undefined)
+        {
+          if(this.typed=="game" && this.plus==false)
+                 this.responseArray[i][this.countOfColums]=["this game doesn't extist in steam "];
+                 else
+                 this.otherColumn[i][this.countOfColums]=["this game doesn't extist in steam "];  
+        }
+        else
+        {
           this.http.get("https://cors.io/?http://store.steampowered.com/api/appdetails?appids=" + this.steamID[i][this.countOfColums] +"&key=B458483E2C76C8BE13EB05C37106916A&format=json").toPromise().then(response => {
             let res=response.json();
             console.log(res)
@@ -366,7 +386,7 @@ public loadPage(i,result)
           });
    
       }
-      
+    }
      console.log(this.ELEMENT_DATA)
     }
 
@@ -376,6 +396,8 @@ public loadPage(i,result)
 //click on the button "+"
   add(keyword,selectType)
   {
+    if(this.pressed!=true)
+    return;
     let options
     this.finish=false;
     this.plus=true;
@@ -383,14 +405,13 @@ public loadPage(i,result)
     console.log(selectType);
     this.newType=selectType;
     this.keyword=keyword;
-    if(this.pressed!=true)
-      return;
+    
     if(selectType=="map")
       this.mapResponse=0;
     if(selectType=="imdb")
       this.filmResponse=0;
     if(selectType=="game")
-    this.steamResponse=0;
+      this.steamResponse=0;
 
 
     this.countOfColums++;
