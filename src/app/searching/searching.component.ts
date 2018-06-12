@@ -232,7 +232,7 @@ public loadPage(i,result)
 //====================================================PHOTO======================================================================================
       if(this.newType=="photo"){
         this.responseArray[i][this.countOfColums]= result.images[0].display_sizes[0].uri
-        this.otherColumn[i][this.countOfColums]=this.sanitizer.bypassSecurityTrustHtml('<img width="300" height="300" frameborder="0" style="border:0" src=\"'+ this.responseArray[i][this.countOfColums] + '\"allowfullscreen>');
+        this.otherColumn[i][this.countOfColums]=this.sanitizer.bypassSecurityTrustHtml('<img width="200" height="200" frameborder="0" style="border:0" src=\"'+ this.responseArray[i][this.countOfColums] + '\"allowfullscreen>');
         this.ELEMENT_DATA[i][this.countOfColums]={position:i,name:this.allSearch[i],url:this.responseArray[i][this.countOfColums],otherColumns:this.otherColumn[i][this.countOfColums]};//push element in the Element array 
         if(this.count==this.allSearch.length)
         {
@@ -251,7 +251,7 @@ public loadPage(i,result)
         if(this.typed=="song" && this.plus==false)
           this.responseArray[i][this.countOfColums]=this.sanitizer.bypassSecurityTrustResourceUrl(this.responseArray[i][this.countOfColums]);
         else
-          this.otherColumn[i][this.countOfColums]=this.sanitizer.bypassSecurityTrustHtml('<iframe width="300" height="300" frameborder="0" style="border:0" src=\"'+ this.responseArray[i][this.countOfColums] + '\"allowfullscreen></iframe>');
+          this.otherColumn[i][this.countOfColums]=this.sanitizer.bypassSecurityTrustHtml('<iframe width="400" height="200" frameborder="0" style="border:0" src=\"'+ this.responseArray[i][this.countOfColums] + '\"allowfullscreen></iframe>');
         this.ELEMENT_DATA[i][this.countOfColums]={position:i,name:this.allSearch[i],url:this.responseArray[i][this.countOfColums],otherColumns:this.otherColumn[i][this.countOfColums]};        if(this.count==this.allSearch.length)
         if(this.count==this.allSearch.length)
         {
@@ -331,7 +331,7 @@ public loadPage(i,result)
               this.responseArray[i][this.countOfColums]=this.sanitizer.bypassSecurityTrustResourceUrl(this.responseArray[i][this.countOfColums]);
             console.log(this.responseArray[i][this.countOfColums])
             if(this.newType=="map")
-              this.otherColumn[i][this.countOfColums]=this.sanitizer.bypassSecurityTrustHtml('<iframe width="300" height="300" frameborder="0" style="border:0" src=\"'+ this.responseArray[i][this.countOfColums] + '\"allowfullscreen></iframe>');
+              this.otherColumn[i][this.countOfColums]=this.sanitizer.bypassSecurityTrustHtml('<iframe width="200" height="200" frameborder="0" style="border:0" src=\"'+ this.responseArray[i][this.countOfColums] + '\"allowfullscreen></iframe>');
               this.ELEMENT_DATA[i][this.countOfColums]={position:i,name:this.allSearch[i],url:this.responseArray[i][this.countOfColums],otherColumns:this.otherColumn[i][this.countOfColums]};//push element in the Element array 
               if(this.mapResponse==this.allSearch.length)
               {//if get all the answer of the server
