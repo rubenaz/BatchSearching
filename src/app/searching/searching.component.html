@@ -11,6 +11,7 @@
           <script type="text/javascript" src="https://maps.google.com/maps/api/js?key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos&sensor=false"></script>
           <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js?key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos"></script>
          <script src="https://apis.google.com/js/platform.js" async defer></script>
+         <script src='https://www.google.com/recaptcha/api.js'></script>
 
         </head>
     <body>     
@@ -28,7 +29,7 @@
                         <option value="video">Video</option> 
 
                 </select>
-            <button #plus class="plus" (click)="add(type.value,select.value)" >+</button>    
+            <button #plus class="plus" (click)="add(type.value,select.value,false,'0')" >+</button>    
             </div> 
         <div> 
         <mat-form-field><textarea class="SearchArea" #box matInput placeholder="Your Search" class="box" (keydown.control.enter)="onSave(box.value)"></textarea></mat-form-field>
@@ -47,7 +48,8 @@
                                         <mat-header-cell *matHeaderCellDef> 
                                                 <button #plus class="plus" (click)="deleteColumn(col)" >-</button> 
                                                <p> <mat-form-field class="example-full-width"><input matInput placeholder=" Keyword" #key class="box2"/></mat-form-field></p>
-                                               <p> <select (change)=onChange(key.value,typeChanged.value) class="selection" #typeChanged >
+                                               <p> <select (change)="add(key.value,typeChanged.value,true,col)" class="selection" #typeChanged >
+                                                        <option ></option>
                                                         <option value="map">Map</option>
                                                         <option value="imdb">IMDB</option>
                                                         <option value="wikipedia">Wikipedia</option>

@@ -7,8 +7,11 @@ import { RouterModule, Routes } from '@angular/router';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements AfterViewInit {
+export class AppComponent{
   title='app'
+  resolved(captchaResponse: string) {
+    console.log(`Resolved captcha with response ${captchaResponse}:`);
+  }
  constructor(private elementRef: ElementRef){
 
   }

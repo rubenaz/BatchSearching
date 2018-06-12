@@ -70,6 +70,9 @@ export class SearchingComponent implements OnInit {
   nameOfColum
   minus
   cors
+  error
+  changeCheckBox
+  temp
   
  // https://cors-anywhere.herokuapp.com/
  // http://cors-proxy.htmldriven.com/?url=
@@ -93,8 +96,10 @@ export class SearchingComponent implements OnInit {
       let date = params['q'];
       if(date!=null)
         this.onSave(date);
-       // Print the parameter to the console. 
+       // Print the parameter to the console.
+        
       });
+
     
   } 
  
@@ -137,20 +142,25 @@ onSave(input){
   this.newType=""
   this.nameOfColum=['item']
   this.minus=true
-  this.cors= new Headers({
-    'Content-Type':'*', 
-    'Access-Control-Allow-Origin':'*' ,
-    'Access-Control-Allow-Headers': 'x-requested-with, x-requested-by'  })
+  this.error;
+  this.cors
+  this.changeCheckBox=false;
 
-
-  
+    this.http.get("https://cors.io/?https://api.duckduckgo.com/?q=!g paris" ).subscribe(
+       (err) =>  this.error=err); 
+       
+    
+    if(this.error=="503")
+      this.cors="https://cors-anywhere.herokuapp.com/"
+    else
+      this.cors="https://cors.io/?"
 
   
 
 
   for(let i=0;i<this.allSearch.length;i++)
   {
-    this.searchUrl[i]="https://cors.io/?https://api.duckduckgo.com/?q=!g " + this.allSearch[i] + "&format=json";
+    this.searchUrl[i]=this.cors + "https://api.duckduckgo.com/?q=!g " + this.allSearch[i] + "&format=json";
     console.log("the first for :" + this.searchUrl[i]);
 
     this.http.get(this.searchUrl[i]).toPromise().then(response => 
@@ -190,9 +200,9 @@ public  getAnswer(){
   for(let i=0 ; i<this.allSearch.length;i++)
   {
 
-    this.apiUrl[i]=this.service.returnURL(this.typed,this.allSearch[i])//get the url for the response of json
+    this.apiUrl[i]=this.service.returnURL(this.typed,this.allSearch[i],this.cors)//get the url for the response of json
     console.log("in the second for " +  this.apiUrl[i]);
-    this.http.get(this.apiUrl[i],this.cors).toPromise().then(response => 
+    this.http.get(this.apiUrl[i]).toPromise().then(response => 
     {
       //console.log(response.json());
         if(/*this.typed!="map" && */this.typed!="direction" && this.typed!="game")
@@ -218,6 +228,7 @@ public  getAnswer(){
 public loadPage(i,result)
 {
   this.count++;
+  console.log("in load page " + this.countOfColums)
 //====================================================PHOTO======================================================================================
       if(this.newType=="photo"){
         this.responseArray[i][this.countOfColums]= result.images[0].display_sizes[0].uri
@@ -228,6 +239,8 @@ public loadPage(i,result)
         this.dataSource=new MatTableDataSource(this.ELEMENT_DATA);
         this.finish=true;
         this.flag=true;
+        if(this.changeCheckBox==true)
+                    this.countOfColums=this.temp
         }
       }
 //===========================================SONG VIDEO TRAILER ========================================================================================
@@ -245,6 +258,8 @@ public loadPage(i,result)
         this.dataSource=new MatTableDataSource(this.ELEMENT_DATA);
         this.finish=true;
         this.flag=true;
+        if(this.changeCheckBox==true)
+                    this.countOfColums=this.temp
         }
         
       }
@@ -262,6 +277,8 @@ public loadPage(i,result)
         this.flag=true;
        this.dataSource=new MatTableDataSource(this.ELEMENT_DATA);
        this.finish=true;
+       if(this.changeCheckBox==true)
+                    this.countOfColums=this.temp
        }
      }
 //=======================================================FILM OR IMDB ======================================================================
@@ -271,7 +288,7 @@ public loadPage(i,result)
         this.responseArray[i][this.countOfColums]= "https://www.youtube.com/embed/" +result.items[0].id.videoId;
         this.responseArray[i][this.countOfColums]=this.sanitizer.bypassSecurityTrustResourceUrl(this.responseArray[i][this.countOfColums]);
       }
-        this.http.get("https://cors.io/?https://api.themoviedb.org/3/search/movie?api_key=9949ee3ad75fde21364a3c248c3284f3&query=" + this.allSearch[i] + " " + this.keyword +"&language=en").toPromise().then(response => {
+        this.http.get(this.cors + "https://api.themoviedb.org/3/search/movie?api_key=9949ee3ad75fde21364a3c248c3284f3&query=" + this.allSearch[i] + " " + this.keyword +"&language=en").toPromise().then(response => {
           let res=response.json();
           if(this.newType!="imdb" && this.plus==false)
             this.otherColumn[i][this.countOfColums]=this.service.getResultFromFilm(res);
@@ -296,6 +313,8 @@ public loadPage(i,result)
                 this.dataSource=new MatTableDataSource(this.ELEMENT_DATA);//push into the table
                 this.finish=true;
                 this.flag=true;
+                if(this.changeCheckBox==true)
+                    this.countOfColums=this.temp
             }
         });
       }
@@ -304,7 +323,7 @@ public loadPage(i,result)
       if(this.typed=="map" || this.newType=="map")//this.newType is for the button + to know if i push on or no and if the type that i search is map
       {   
             if((this.typed=="map"&& this.plus==false) || this.newType=="map")
-            this.http.get("https://cors.io/?https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos&placeid=" + result.results[0].place_id).toPromise().then(response => {
+            this.http.get(this.cors +"https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos&placeid=" + result.results[0].place_id).toPromise().then(response => {
             let res=response.json();
             this.mapResponse++;
             this.responseArray[i][this.countOfColums]=res.result.url+"&output=embed";
@@ -319,6 +338,9 @@ public loadPage(i,result)
                 this.finish=true;
                   this.dataSource=new MatTableDataSource(this.ELEMENT_DATA);//push into the table
                   this.flag=true;
+                  if(this.changeCheckBox==true)
+                    this.countOfColums=this.temp
+
               }              
         });
       }
@@ -333,6 +355,8 @@ public loadPage(i,result)
         this.dataSource=new MatTableDataSource(this.ELEMENT_DATA);
         this.flag=true;
         this.finish=true;
+        if(this.changeCheckBox==true)
+                    this.countOfColums=this.temp
                 
         // });//push element in the Element array 
       }
@@ -347,7 +371,7 @@ public loadPage(i,result)
         }
         else
         {
-          this.http.get("https://cors.io/?http://store.steampowered.com/api/appdetails?appids=" + this.steamID[i][this.countOfColums] +"&key=B458483E2C76C8BE13EB05C37106916A&format=json").toPromise().then(response => {
+          this.http.get(this.cors +"http://store.steampowered.com/api/appdetails?appids=" + this.steamID[i][this.countOfColums] +"&key=B458483E2C76C8BE13EB05C37106916A&format=json").toPromise().then(response => {
             let res=response.json();
             console.log(res)
             console.log(this.newType)
@@ -379,7 +403,9 @@ public loadPage(i,result)
                  if(this.steamResponse==this.allSearch.length){
                    this.dataSource=new MatTableDataSource(this.ELEMENT_DATA);//push into the table*/
                    this.flag=true;
-                  this.finish=true;                
+                  this.finish=true;   
+                  if(this.changeCheckBox==true)
+                    this.countOfColums=this.temp             
                   }
                  
              });
@@ -394,10 +420,11 @@ public loadPage(i,result)
 //===================================================================================================================================
 //===================================================================================================================================
 //click on the button "+"
-  add(keyword,selectType)
+  add(keyword,selectType,flag,col)
   {
     if(this.pressed!=true)
     return;
+    this.changeCheckBox=flag
     let options
     this.finish=false;
     this.plus=true;
@@ -405,7 +432,8 @@ public loadPage(i,result)
     console.log(selectType);
     this.newType=selectType;
     this.keyword=keyword;
-    
+        console.log(this.countOfColums)
+
     if(selectType=="map")
       this.mapResponse=0;
     if(selectType=="imdb")
@@ -413,13 +441,31 @@ public loadPage(i,result)
     if(selectType=="game")
       this.steamResponse=0;
 
-
-    this.countOfColums++;
-    this.nameOfColum[this.nameOfColum.length]= selectType + " \n" + keyword
-    this.displayedColumns[this.displayedColumns.length]='otherSearch'+ (this.countOfColums);
-    for(let i=0; i<this.allSearch.length;i++)
+    if(flag==false){
+      console.log("here")
+      this.countOfColums++;
+      this.nameOfColum[this.nameOfColum.length]= selectType + " \n" + keyword
+      this.displayedColumns[this.displayedColumns.length]='otherSearch'+ (this.countOfColums);
+    }
+    else
     {
-      this.addApiUrl[i]=this.service.returnURL(selectType,this.allSearch[i]+" " +keyword);
+      console.log("in the else")
+      col=col.slice(-1);
+      col=Number(col)
+      console.log("col : " +col)
+      if(this.typed=="film" || this.typed=="game")
+        this.nameOfColum[2+col]=selectType
+      else
+        this.nameOfColum[1+col]=selectType
+      this.temp = this.countOfColums;
+      this.countOfColums=col
+    }
+    console.log( "count " + this.countOfColums)
+    
+    for(let i=0; i<this.allSearch.length;i++)
+    {    
+
+      this.addApiUrl[i]=this.service.returnURL(selectType,this.allSearch[i]+" " +keyword,this.cors);
             console.log(this.addApiUrl[i])
         if(selectType=="photo")
         {
@@ -429,7 +475,7 @@ public loadPage(i,result)
             })
           });
         }
-        
+        console.log( "count " + this.countOfColums)
       this.http.get(this.addApiUrl[i],options).toPromise().then(response => 
         {
           console.log(response)
@@ -446,13 +492,14 @@ public loadPage(i,result)
           }
           else
             this.addResult[i]=response.json()
+            console.log( "before the function " + this.countOfColums)
+
           this.loadPage(i,this.addResult[i]);
         });
         console.log(this.displayedColumns)
 
     }
-    
-    
+    console.log(this.countOfColums)
   }
   //==============================================RETURN NAME OF COLUMN=================================================================
   returncol(i)
@@ -476,7 +523,7 @@ public loadPage(i,result)
   {
     console.log(this.ELEMENT_DATA,this.otherColumn,this.responseArray)
 
-this.minus=false;
+    this.minus=false;
     let col=name_of_col.slice(-1);
     col=Number(col)
     let array2=this.nameOfColum
@@ -523,15 +570,6 @@ this.minus=false;
 
     console.log(this.ELEMENT_DATA,this.otherColumn,this.responseArray)
   }
-//========================================CHANGE THE DROPDOWN OF COLUMN=======================================================
-onChange(key,type)
-{
-  this.newType=type;
-
-  console.log(key,type)
-}
-
-
   ngOnInit() :void{}
 }
 

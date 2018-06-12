@@ -39,7 +39,7 @@ export class APIservice{
         }
         return temp;
     }
-    returnURL(type,search)
+    returnURL(type,search,cors)
     {
        console.log(search)
         if(type=="film" || type=="trailer"|| type=="imdb")
@@ -62,7 +62,7 @@ export class APIservice{
         }
         else if(type=="wikipedia")
         {
-            this.apiUrl="https://cors.io/?https://en.wikipedia.org/w/api.php?action=opensearch&search=" + search +"&limit=1&format=json&origin=*" ;
+            this.apiUrl=cors +"https://en.wikipedia.org/w/api.php?action=opensearch&search=" + search +"&limit=1&format=json&origin=*" ;
         }
         else if (type=="map")
         {     this.apiUrl="https://maps.googleapis.com/maps/api/geocode/json?address="+search + "&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos"//get the id of the city or the place that i search
@@ -84,7 +84,7 @@ export class APIservice{
         else if(type=="game")
         {     
             //this.apiUrl="https://cors.io/?https://store.steampowered.com/app/10/CounterStrike/"     
-            this.apiUrl="https://cors.io/?http://api.duckduckgo.com/?q=!g steam AppID " + search + "&format=json" ;
+            this.apiUrl=cors + "http://api.duckduckgo.com/?q=!g steam AppID " + search + "&format=json" ;
         }
         return this.apiUrl;
     }
