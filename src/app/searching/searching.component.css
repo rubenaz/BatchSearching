@@ -65,7 +65,6 @@ body{
 
 .mat-table {
     overflow: auto;
-    max-height: 500px;
     border:1px solid grey
   }
 
@@ -128,3 +127,38 @@ body{
       #sup{
           color: #fff;
       }
+      #bar
+      {
+          background-color: white;
+          position: fixed;
+          bottom: 0;
+          margin-left:10%;
+
+          height: 3%;
+          width: 80%;
+      }
+      #copyright
+      {
+          padding-right: 50%;
+          display: inline-block;
+        
+      }
+      #link
+      {
+        
+        display: inline-block;
+      }
+      footer{
+        height: 50px;
+        margin-top: -50px;
+      }
+      html {
+        position: relative;
+        min-height: 100%;
+    }
+    
+    body {
+        margin: 0 0 100px;
+        /* bottom = footer height */
+        padding: 25px;
+    }

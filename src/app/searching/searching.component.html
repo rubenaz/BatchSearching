@@ -14,11 +14,6 @@
           <a href="https://icons8.com">Icon pack by Icons8</a>
         </head>
     <body>     
-                <div class="title">
-                                <div class="knockout">
-                                    <a>BATCH SEARCHING!</a>
-                                  </div>
-                                </div>
         <div id=mainsearch>
                         <div id="downer"class="form-inline"> 
                                         <textarea id="search" class="form-control" type="text" rows="3" placeholder="add to list" #box (keydown.control.enter)="onSave(box.value)"></textarea>
@@ -154,6 +149,21 @@
                     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
             </mat-table>
         </div>
-
+        
+<div id="bar">
+        <div id="copyright">
+                © 2018 BatchSearching 
+Copyright BatchSearching,
+</div>
+       <div id= "link">
+                gitHub:
+                <a id ="github" href="https://github.com/rubenaz/BatchSearching"><i class="fa fa-github" style="font-size:23px"></i></a>
+                linkedin Ruben
+                <a  id = "ln1" href="https://www.linkedin.com/in/ruben-azoulay-641b9b145/"><i class="fa fa-linkedin-square" style="font-size:23px"></i></a>
+                linkedin Asaf
+                <a id="ln2" href="https://www.linkedin.com/in/asaf-ben-eliezer-978002164/"><i class="fa fa-linkedin-square" style="font-size:23px"></i></a>
+        </div>
+        
+</div>
     </body>
 </html>
