@@ -37,8 +37,9 @@
             <mat-table #table [dataSource]="dataSource">
                         <ng-container *ngFor="let col of displayedColumns;let i=index" matColumnDef="{{col}}">
                         <div *ngIf = "col=='name' || col=='url' || col=='url2';else other" >
-                                <mat-header-cell *matHeaderCellDef> 
-                                            <h2 class="display-4">{{nameOfColum[i]}}</h2>
+                                <mat-header-cell *matHeaderCellDef style="border-right:1px solid grey;
+                                align-self: stretch;"> 
+                                            <h2 class="display-4"><b>{{nameOfColum[i]}}</b></h2>
                                 </mat-header-cell>
                                 
                         </div>
@@ -46,7 +47,7 @@
                                 <div *ngIf = "col!='add';else other2" >
                                         <mat-header-cell *matHeaderCellDef style="border-right:1px solid grey;
                                         align-self: stretch;"> 
-                                                        <h2 class="display-4">{{nameOfColum[i]}}</h2>
+                                                        <h2 class="display-4"><b>{{nameOfColum[i]}}</b></h2>
                                                         <form class="form-inline">
                                                 <input id="keyword"class="form-control" #key type="text" placeholder="Keyword">
                                                 <select class="form-control"(change)="add(key.value,typeChanged.value,true,col)" id="selection" #typeChanged >
@@ -69,7 +70,7 @@
                                 </div>
                         </ng-template>
                                 <ng-template #other2>
-                                        <mat-header-cell *matHeaderCellDef style="    border-right:1px solid grey;
+                                        <mat-header-cell *matHeaderCellDef style="    border-right:2px solid grey;
                                         align-self: stretch;" > 
                                                 <form class="form-inline">
                                                 <input id="keyword"class="form-control" #type type="text" placeholder="Keyword">
@@ -92,7 +93,7 @@
                                         <mat-cell *matCellDef="let element" style="    border-right:1px solid grey;
                                         align-self: stretch;">
                                         <div *ngIf = "col!='url'">
-                                                        <h3 class="display-4">      {{element[0][col]}}</h3>
+                                                        <div  id="nameCell">{{element[0][col]}}</div>
 
                                           
                                         </div>

@@ -65,30 +65,14 @@ body{
 
 .mat-table {
     overflow: auto;
-    border:1px solid grey
+    border:1px solid grey;
+    background-color: #E1E1E1
   }
 
-  .mat-column-url{
-    border-right:1px solid grey;
-  align-self: stretch;
-  }
-  .mat-column-url2{
-    border-right:1px solid grey;
-  align-self: stretch;
-  }
-    .mat-column-name{
-    border-right:1px solid grey;
-  align-self: stretch;
-  }
-  .mat-column-otherSearch1
-  {
-    border-right:1px solid grey;
-    align-self: stretch;
-  } 
-  
   .mat-row
   {
       border:1px solid grey
+
   }
   .mat-cell
   {
@@ -109,7 +93,7 @@ body{
         left: 0;
         right: 0;
     
-        margin:35% auto;
+        margin:25% auto;
         
 
       }
@@ -162,3 +146,17 @@ body{
         /* bottom = footer height */
         padding: 25px;
     }
+    #nameCell
+    {
+        padding:15%;  
+        font-weight:normal;
+        color: #BFB5B5;
+        text-transform: uppercase;
+        font-size:3em;
+        white-space: nowrap;
+        font-size: 2vw;
+        z-index: 100;
+        font-family: 'Bangers', cursive;
+        text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.7);
+        margin: 0 auto;
+}

@@ -140,7 +140,7 @@ onSave(input){
   this.addResult=[]
   this.keyword=""
   this.newType=""
-  this.nameOfColum=['item']
+  this.nameOfColum=['Item']
   this.minus=true
   this.error;
   this.cors
@@ -181,16 +181,16 @@ onSave(input){
 public  getAnswer(){
   this.typed=this.service.getFinalType(this.allType);
   if(this.typed=="film"){
-      this.nameOfColum[this.nameOfColum.length]="trailer";
-      this.nameOfColum[this.nameOfColum.length]=this.typed;
+      this.nameOfColum[this.nameOfColum.length]="Trailer";
+      this.nameOfColum[this.nameOfColum.length]=this.typed[0].toUpperCase() + this.typed.slice(1);
       }
   else if (this.typed=="game")
       {
-        this.nameOfColum[this.nameOfColum.length]=this.typed;
-        this.nameOfColum[this.nameOfColum.length]="trailer";
+        this.nameOfColum[this.nameOfColum.length]=this.typed[0].toUpperCase() + this.typed.slice(1);
+        this.nameOfColum[this.nameOfColum.length]="Trailer";
       }
   else 
-        this.nameOfColum[this.nameOfColum.length]=this.typed;
+        this.nameOfColum[this.nameOfColum.length]=this.typed[0].toUpperCase() + this.typed.slice(1);
 
   this.displayedColumns=this.service.getColums(this.typed);
   console.log("in the first if: " + this.typed);
@@ -450,7 +450,7 @@ public loadPage(i,result)
     if(flag==false){
       console.log("here")
       this.countOfColums++;
-      this.nameOfColum[this.nameOfColum.length]= selectType + " \n" + keyword
+      this.nameOfColum[this.nameOfColum.length]= selectType[0].toUpperCase() + selectType.slice(1) + " \n" + keyword
       this.displayedColumns[this.displayedColumns.length-1]='otherSearch'+ (this.countOfColums);
       this.displayedColumns[this.displayedColumns.length]='add'
     }
@@ -461,9 +461,9 @@ public loadPage(i,result)
       col=Number(col)
       console.log("col : " +col)
       if(this.typed=="film" || this.typed=="game")
-        this.nameOfColum[2+col]=selectType
+        this.nameOfColum[2+col]=selectType[0].toUpperCase() + selectType.slice(1)
       else
-        this.nameOfColum[1+col]=selectType
+        this.nameOfColum[1+col]=selectType[0].toUpperCase() + selectType.slice(1)
       this.temp = this.countOfColums;
       this.countOfColums=col
     }
