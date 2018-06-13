@@ -572,7 +572,7 @@ public loadPage(i,result)
     }
     this.countOfColums--;
     this.displayedColumns.length--;
-    this.displayedColumns[this.displayedColumns.length-1d]='add'
+    this.displayedColumns[this.displayedColumns.length-1]='add'
     this.minus=true
 
     console.log(this.ELEMENT_DATA,this.otherColumn,this.responseArray)

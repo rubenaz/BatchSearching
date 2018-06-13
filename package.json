@@ -30,7 +30,7 @@
     "@types/googlemaps": "^3.30.0",
     "angular-event-service": "^1.2.0",
     "angular-flickr-api-factory": "^0.5.1",
-    "bootstrap": "^4.1.1",
+    "bootstrap": "^4.0.0-beta.3",
     "core-js": "^2.4.1",
     "cors": "^2.8.4",
     "embedo": "^1.7.3",

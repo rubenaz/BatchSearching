@@ -42,14 +42,16 @@
             <mat-table #table [dataSource]="dataSource">
                         <ng-container *ngFor="let col of displayedColumns;let i=index" matColumnDef="{{col}}">
                         <div *ngIf = "col=='name' || col=='url' || col=='url2';else other" >
-                                <mat-header-cell *matHeaderCellDef> {{nameOfColum[i]}} </mat-header-cell>
+                                <mat-header-cell *matHeaderCellDef> 
+                                            <h2 class="display-4">{{nameOfColum[i]}}</h2>
+                                </mat-header-cell>
                                 
                         </div>
                         <ng-template #other>
                                 <div *ngIf = "col!='add';else other2" >
                                         <mat-header-cell *matHeaderCellDef style="border-right:1px solid grey;
                                         align-self: stretch;"> 
-                                                        <p>{{nameOfColum[i]}}  </p>
+                                                        <h2 class="display-4">{{nameOfColum[i]}}</h2>
                                                         <form class="form-inline">
                                                 <input id="keyword"class="form-control" #key type="text" placeholder="Keyword">
                                                 <select class="form-control"(change)="add(key.value,typeChanged.value,true,col)" id="selection" #typeChanged >
@@ -65,7 +67,7 @@
                                                         <option value="video">Video</option> 
                                                 </select>  
                                                         </form>
-                                                        <button #plus class="plus" (click)="deleteColumn(col)" >-</button> 
+                                                        <button #plus class="btn btn-secondary" (click)="deleteColumn(col)" >-</button> 
 
                                                 
                                         </mat-header-cell>
@@ -89,14 +91,15 @@
                                                         <option value="video">Video</option> 
                                                 </select>
                                                 </form>
-                                                <button id="plusButton" type="button" class="btn btn-light" (click)="add(type.value,select.value,false,'0')" >+</button> 
-                                                <p>{{nameOfColum[i]}}  </p>
+                                                <button id="plusButton" type="button" class="btn btn-secondary" (click)="add(type.value,select.value,false,'0')" >+</button> 
                                         </mat-header-cell>
                                 </ng-template>
                                         <mat-cell *matCellDef="let element" style="    border-right:1px solid grey;
                                         align-self: stretch;">
                                         <div *ngIf = "col!='url'">
-                                                {{element[0][col]}}
+                                                        <h3 class="display-4">      {{element[0][col]}}</h3>
+
+                                          
                                         </div>
                                                 <div *ngIf = "col=='url'">
                                                         <div *ngIf = "typed=='film'">
