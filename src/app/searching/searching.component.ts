@@ -422,7 +422,12 @@ public loadPage(i,result)
 //click on the button "+"
   add(keyword,selectType,flag,col)
   {
-
+    if(selectType=="type")
+    {
+      this.flag=true
+      this.finish=true;
+      return
+    }
     if(this.pressed!=true)
     return;
     this.changeCheckBox=flag
@@ -567,7 +572,7 @@ public loadPage(i,result)
     }
     this.countOfColums--;
     this.displayedColumns.length--;
-    this.displayedColumns[this.displayedColumns.length-1]='add'
+    this.displayedColumns[this.displayedColumns.length-1d]='add'
     this.minus=true
 
     console.log(this.ELEMENT_DATA,this.otherColumn,this.responseArray)

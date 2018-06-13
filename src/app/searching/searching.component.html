@@ -47,11 +47,13 @@
                         </div>
                         <ng-template #other>
                                 <div *ngIf = "col!='add';else other2" >
-                                        <mat-header-cell *matHeaderCellDef> 
-                                                <button #plus class="plus" (click)="deleteColumn(col)" >-</button> 
-                                               <p> <mat-form-field class="example-full-width"><input matInput placeholder=" Keyword" #key class="box2"/></mat-form-field></p>
-                                               <p> <select (change)="add(key.value,typeChanged.value,true,col)" id="selection" #typeChanged >
-                                                        <option ></option>
+                                        <mat-header-cell *matHeaderCellDef style="border-right:1px solid grey;
+                                        align-self: stretch;"> 
+                                                        <p>{{nameOfColum[i]}}  </p>
+                                                        <form class="form-inline">
+                                                <input id="keyword"class="form-control" #key type="text" placeholder="Keyword">
+                                                <select class="form-control"(change)="add(key.value,typeChanged.value,true,col)" id="selection" #typeChanged >
+                                                        <option value="type">Type...</option>
                                                         <option value="map">Map</option>
                                                         <option value="imdb">IMDB</option>
                                                         <option value="wikipedia">Wikipedia</option>
@@ -61,17 +63,21 @@
                                                         <option value="trailer">Trailer</option> 
                                                         <option value="song">Song</option> 
                                                         <option value="video">Video</option> 
-                                                </select>  </p>
-                                                <p>{{nameOfColum[i]}}  </p>
+                                                </select>  
+                                                        </form>
+                                                        <button #plus class="plus" (click)="deleteColumn(col)" >-</button> 
+
+                                                
                                         </mat-header-cell>
                                 </div>
                         </ng-template>
                                 <ng-template #other2>
-                                        <mat-header-cell *matHeaderCellDef> 
-                                                        <div id="upper"class="form-inline">
-                                                <p><input id="keyword"class="form-control" #type type="text" placeholder="Keyword"></p>
-                                                <p> <select id="selection" #select >
-                                                        <option ></option>
+                                        <mat-header-cell *matHeaderCellDef style="    border-right:1px solid grey;
+                                        align-self: stretch;" > 
+                                                <form class="form-inline">
+                                                <input id="keyword"class="form-control" #type type="text" placeholder="Keyword">
+                                                <select class="form-control" id="selection" #select >
+                                                        <option value="type">Type...</option>
                                                         <option value="map">Map</option>
                                                         <option value="imdb">IMDB</option>
                                                         <option value="wikipedia">Wikipedia</option>
@@ -81,13 +87,14 @@
                                                         <option value="trailer">Trailer</option> 
                                                         <option value="song">Song</option> 
                                                         <option value="video">Video</option> 
-                                                </select>  </p>
-                                                        </div>
+                                                </select>
+                                                </form>
                                                 <button id="plusButton" type="button" class="btn btn-light" (click)="add(type.value,select.value,false,'0')" >+</button> 
                                                 <p>{{nameOfColum[i]}}  </p>
                                         </mat-header-cell>
                                 </ng-template>
-                                        <mat-cell *matCellDef="let element">
+                                        <mat-cell *matCellDef="let element" style="    border-right:1px solid grey;
+                                        align-self: stretch;">
                                         <div *ngIf = "col!='url'">
                                                 {{element[0][col]}}
                                         </div>
