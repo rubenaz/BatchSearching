@@ -7,7 +7,7 @@ import { RouterModule, Routes } from '@angular/router';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent{
+export class AppComponent implements AfterViewInit{
   title='app'
   resolved(captchaResponse: string) {
     console.log(`Resolved captcha with response ${captchaResponse}:`);
@@ -16,9 +16,9 @@ export class AppComponent{
 
   }
   ngAfterViewInit(){
- //   this.elementRef.nativeElement.ownerDocument.body.style.height='100%'
-   // this.elementRef.nativeElement.ownerDocument.body.style.width='100%'
-    //this.elementRef.nativeElement.ownerDocument.body.style.backgroundColor = 'black';
+   this.elementRef.nativeElement.ownerDocument.body.style.height='100%'
+    this.elementRef.nativeElement.ownerDocument.body.style.width='100%'
+    this.elementRef.nativeElement.ownerDocument.body.style.backgroundColor = ' #444';
 
  }
 }

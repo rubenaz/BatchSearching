@@ -42,7 +42,7 @@ export class SearchingComponent implements OnInit {
   results:any[]=[];//all result of the api
   ELEMENT_DATA: Element[][];
   otherColumn:any[][];
-  displayedColumns = ['name','url'];
+  displayedColumns = ['name','url','otherSearch'];
   dataSource;//= new MatTableDataSource(this.ELEMENT_DATA);
   allSearch:string[];//all the search of the user
   allType:number[];//each type of each search
@@ -112,7 +112,7 @@ onSave(input){
 
 
   this.finish=true;
-  this.displayedColumns = ['name', 'url'];
+  this.displayedColumns = ['name', 'url','otherSearch'];
   this.steamID=[];
   this.allType=[];
   this.dataSource=new MatTableDataSource(this.ELEMENT_DATA);
@@ -422,6 +422,7 @@ public loadPage(i,result)
 //click on the button "+"
   add(keyword,selectType,flag,col)
   {
+
     if(this.pressed!=true)
     return;
     this.changeCheckBox=flag
@@ -445,7 +446,8 @@ public loadPage(i,result)
       console.log("here")
       this.countOfColums++;
       this.nameOfColum[this.nameOfColum.length]= selectType + " \n" + keyword
-      this.displayedColumns[this.displayedColumns.length]='otherSearch'+ (this.countOfColums);
+      this.displayedColumns[this.displayedColumns.length-1]='otherSearch'+ (this.countOfColums);
+      this.displayedColumns[this.displayedColumns.length]='add'
     }
     else
     {
@@ -522,7 +524,7 @@ public loadPage(i,result)
   deleteColumn(name_of_col)
   {
     console.log(this.ELEMENT_DATA,this.otherColumn,this.responseArray)
-
+    
     this.minus=false;
     let col=name_of_col.slice(-1);
     col=Number(col)
@@ -554,7 +556,6 @@ public loadPage(i,result)
        // console.log(this.countOfColums)
             if(j+1<=this.countOfColums)
             {
-              console.log("copy ")
               this.otherColumn[i][j]=otherCol[i][j+1];
               this.responseArray[i][j]=response[i][j+1]
               this.ELEMENT_DATA[i][j]=elementArray[i][j+1]
@@ -566,6 +567,7 @@ public loadPage(i,result)
     }
     this.countOfColums--;
     this.displayedColumns.length--;
+    this.displayedColumns[this.displayedColumns.length-1]='add'
     this.minus=true
 
     console.log(this.ELEMENT_DATA,this.otherColumn,this.responseArray)

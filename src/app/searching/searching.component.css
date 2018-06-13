@@ -1,3 +1,20 @@
+@import url(https://fonts.googleapis.com/css?family=Bangers);
+
+.knockout {
+
+    text-align: center;
+  font-weight: normal;
+  color: #fff;
+  text-transform: uppercase;
+  font-size:5em;
+  white-space: nowrap;
+  font-size: 8vw;
+  z-index: 1000;
+  font-family: 'Bangers', cursive;
+  text-shadow: 5px 5px 0 rgba(0, 0, 0, 0.7);
+  margin: 0 auto;
+    
+  }
 #selection{
     width: 15%;
     height:20%;
@@ -6,6 +23,8 @@
 }
 #mainsearch{
     padding-bottom: 0.005%;
+    margin-left: 30%;
+    
 }
 #upper{
     margin: auto;
@@ -24,12 +43,12 @@ body{
 }
 #downer{
     margin: auto;
-    width:40%;
     position: center;
     margin-bottom: 1%;
 }
 #searchB{
-    margin-left: 1%;
+    margin-left: 3%;
+
 }
 #keyword{
     width:50%
@@ -99,4 +118,7 @@ body{
       @keyframes spin {
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
+      }
+      #sup{
+          color: #fff;
       }
