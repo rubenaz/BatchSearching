@@ -41,6 +41,6 @@ This project is developed as part of the requirements for  our final project to 
 
 ### Project Documents
 -[Searching.Component](https://github.com/rubenaz/BatchSearching/blob/master/src/app/searching/searching.component.ts)-Contains all the client side code , the APIs requests and the basic functions<br>
--[Searching.Service](https://github.com/rubenaz/BatchSearching/blob/master/src/app/searching/searching.service.ts)-Contains all the principal functions and the algorithm to the automat authentification of the user's search
--[Searching.component.html](https://github.com/rubenaz/BatchSearching/blob/master/src/app/searching/searching.component.html)-Contains all the html and the design of the project 
+-[Searching.Service](https://github.com/rubenaz/BatchSearching/blob/master/src/app/searching/searching.service.ts)-Contains all the principal functions and the algorithm to the automat authentification of the user's search<br>
+-[Searching.component.html](https://github.com/rubenaz/BatchSearching/blob/master/src/app/searching/searching.component.html)-Contains all the html and the design of the project <br>
 -[App.module.ts](https://github.com/rubenaz/BatchSearching/blob/master/src/app.module.ts)-Containts all the modules and libraries these We used
