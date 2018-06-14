@@ -6,6 +6,10 @@ import 'rxjs/add/operator/map'
 import { Injectable } from '@angular/core';
 declare var require: any;
 
+
+//this service is all the function from the compoment need the response of server
+// after http request and all the "small" functions that the component need .
+//the algoritmh to the autaomat authentification is the function getType and getFinalType 
 @Injectable()
 export class APIservice{
 

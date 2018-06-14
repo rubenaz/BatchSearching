@@ -13,8 +13,9 @@ import * as cors from 'cors'
 
 import {Router, ActivatedRoute, Params} from '@angular/router';
 
-
-
+//this compoment is the main of the project all the basic function like  the push on the button or  push on the button + or - 
+//the most important function in is component is : LoadPage. this function is the save
+// of the database after that the User push on the button and after he pushed the + button  
 
 export interface Element {
   position: number;
