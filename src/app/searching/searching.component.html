@@ -16,7 +16,7 @@
     <body>     
         <div id=mainsearch>
                         <div id="downer"class="form-inline"> 
-                                        <textarea id="search" class="form-control" type="text" rows="3" placeholder="add to list" #box (keydown.control.enter)="onSave(box.value)"></textarea>
+                                        <textarea id="search" class="form-control" type="text" rows="3" placeholder="what do you search? +  get your item and push 'enter' between each item" #box (keydown.control.enter)="onSave(box.value)"></textarea>
                                         <button type="button" class="btn btn-success" id="searchB" #but (click)="onSave(box.value)">Search</button>
                                 
                         </div>
@@ -55,7 +55,6 @@
                                                         <option value="map">Map</option>
                                                         <option value="imdb">IMDB</option>
                                                         <option value="wikipedia">Wikipedia</option>
-                                                        <option value="direction">Direction</option>
                                                         <option value="photo">Photo</option>
                                                         <option value="game">Game</option>
                                                         <option value="trailer">Trailer</option> 
@@ -79,7 +78,6 @@
                                                         <option value="map">Map</option>
                                                         <option value="imdb">IMDB</option>
                                                         <option value="wikipedia">Wikipedia</option>
-                                                        <option value="direction">Direction</option>
                                                         <option value="photo">Photo</option>
                                                         <option value="game">Game</option>
                                                         <option value="trailer">Trailer</option> 
@@ -99,26 +97,26 @@
                                         </div>
                                                 <div *ngIf = "col=='url'">
                                                         <div *ngIf = "typed=='film'">
-                                                                <iframe [src]="element[0].url" width="400" height="200" frameborder="0" allowfullscreen></iframe>
+                                                                <iframe [src]="element[0].url"  frameborder="0" allowfullscreen></iframe>
                                                         </div>
                                                         <div *ngIf = "typed=='song'">
-                                                                <iframe [src]="element[0].url" width="400" height="200" frameborder="0" allowfullscreen></iframe>
+                                                                <iframe [src]="element[0].url"  frameborder="0" allowfullscreen></iframe>
                                                         </div>
                                                         <div *ngIf = "typed=='photo'">
-                                                                <img [src]="element[0].url" width="200" height="200" frameborder="0" allowfullscreen>
+                                                                <img [src]="element[0].url"  frameborder="0" allowfullscreen>
                                                         </div>
-                                                        <div *ngIf = "typed=='wiki'">
+                                                        <div *ngIf = "typed=='wikipedia'">
                                                                 {{element[0].url}}
                                                         </div>
                                                         <div *ngIf = "typed=='game'">
                                                                         <div [innerHTML]="element[0].url"></div> 
                                                         </div>
                                                         <div *ngIf = "typed=='map'">
-                                                                <iframe width="200" height="200" frameborder="0" style="border:0"
+                                                                <iframe  frameborder="0" style="border:0"
                                                                 [src]="element[0].url" allowfullscreen></iframe>
                                                         </div> 
                                                         <div *ngIf = "typed=='direction'">
-                                                                <iframe width="200" height="200" frameborder="0" style="border:0"
+                                                                <iframe  frameborder="0" style="border:0"
                                                                 [src]="element[0].url" allowfullscreen></iframe>
                                                         </div> 
                                                 </div>
@@ -132,7 +130,7 @@
                                                         </div>
                                                         <div *ngIf = "typed=='game'">
                                                                 <ul>
-                                                                        <iframe [src]="element[0].otherColumns" width="400" height="200" frameborder="0" allowfullscreen></iframe>
+                                                                        <iframe [src]="element[0].otherColumns"  frameborder="0" allowfullscreen></iframe>
                                                                         
                                                                         </ul>
                                                         </div>

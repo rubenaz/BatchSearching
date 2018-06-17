@@ -34,46 +34,41 @@ export class SearchingComponent implements OnInit {
 
 //==================================VARIABLE=====================================================================
   
-  input;
-  private apiUrl:any[]=[];
-  pressed=false;
-  steamID:any[][]=[];
-  responseArray:any[][]=[];
-  jsonArray:any[]=[];
+  input;//the input of the user
+  private apiUrl:any[]=[];//api url i need to use after the button search pushed
+  pressed=false;//flag to the button "search"
+  steamID:any[][]=[];//array of ID Of games
+  responseArray:any[][]=[];//the database 
   results:any[]=[];//all result of the api
-  ELEMENT_DATA: Element[][];
-  otherColumn:any[][];
+  ELEMENT_DATA: Element[][];//element who represente how the table need to show
+  otherColumn:any[][];//database of the added colum 
   displayedColumns = ['name','url','otherSearch'];
   dataSource;//= new MatTableDataSource(this.ELEMENT_DATA);
   allSearch:string[];//all the search of the user
   allType:number[];//each type of each search
-  falseInput=false;
-  count=0
-  count2=0;
-  countSendUrls=0;
-  steamResponse=0;
-  filmResponse=0;
-  flagGame=true
-  typed=""
-  countOfColums
-  searchUrl:any[]=[]
-  mapResponse
-  plus=false
-  htmlStr
-  finalHtml
-  newType
-  flag
-  addApiUrl
-  addResult
-  countWait
-  keyword
-  finish
-  nameOfColum
-  minus
-  cors
-  error
-  changeCheckBox
-  temp
+  falseInput=false;//flag to false input
+  count=0//to count how many response of item from the request 
+  countSendUrls=0;//how many url i sended to search
+  steamResponse=0;//steam response i received
+  filmResponse=0;//film response i recevied
+  flagGame=true//if game doesent exist 
+  typed=""//the type of the research from the user
+  countOfColums//num of columns in the table
+  searchUrl:any[]=[]//array from url - searchUrl[0] represent the url of the first item
+  mapResponse//num of map response i received
+  plus=false//flag to the button + 
+  newType//the new type that the user choosed
+  flag//
+  addApiUrl//api url i need to use after the button + pushed
+  addResult//resutl after added column
+  keyword//the keyword that the user enterd
+  finish//flag that after the push on + all responses received from http request 
+  nameOfColum//array represent the header bar of the table
+  minus//flag for the push on - 
+  cors//begin of the html from debug the bug cors
+  error//if serv of cors not work this is the error that we receive from the serv
+  changeCheckBox//flag if i change the check box fron column thad i added 
+  temp// to save the number of added columns to know what column i need to change after the change of the checkbox
   
  // https://cors-anywhere.herokuapp.com/
  // http://cors-proxy.htmldriven.com/?url=
@@ -133,8 +128,6 @@ onSave(input){
   this.results=Array.of(this.results);
   this.countOfColums=0;
   this.mapResponse=0;
-  this.htmlStr=[];
-  this.finalHtml=[]
   this.plus=false;
   this.flag=false;
   this.addApiUrl=[];
@@ -147,11 +140,11 @@ onSave(input){
   this.cors
   this.changeCheckBox=false;
 
-    this.http.get("https://cors.io/?https://api.duckduckgo.com/?q=!g paris" ).subscribe(
+    this.http.get("https://cors.io/?https://api.duckduckgo.com/?q=!g paris" ).subscribe(//need to check if the server cors.io is availble
        (err) =>  this.error=err); 
        
     
-    if(this.error=="503")
+    if(this.error=="503")//if is not availble use other server
       this.cors="https://cors-anywhere.herokuapp.com/"
     else
       this.cors="https://cors.io/?"
@@ -159,18 +152,19 @@ onSave(input){
   
 
 
-  for(let i=0;i<this.allSearch.length;i++)
+  for(let i=0;i<this.allSearch.length;i++)//first for to know what is the type of research that the user need
   {
-    this.searchUrl[i]=this.cors + "https://api.duckduckgo.com/?q=!g " + this.allSearch[i] + "&format=json";
+    this.searchUrl[i]=this.cors + "https://api.duckduckgo.com/?q=!g " + this.allSearch[i] + "&format=json";//use the api of duckduckgo and the bang to get result from google
     console.log("the first for :" + this.searchUrl[i]);
 
     this.http.get(this.searchUrl[i]).toPromise().then(response => 
     {
+      //request to get response 
       console.log("in the first get");
-      this.allType=this.service.getType(response,this.allSearch[i]);
+      this.allType=this.service.getType(response,this.allSearch[i]);//use service fonction to get the array of type of the research
       console.log(this.allType);
-      this.countSendUrls++;
-      if(this.countSendUrls==this.allSearch.length){
+      this.countSendUrls++;//update the count after receive response from the server
+      if(this.countSendUrls==this.allSearch.length){//if receive all the response go to the getAnswer Response
         console.log("finish to get the type")
          this.getAnswer();}
     });
@@ -179,13 +173,13 @@ onSave(input){
 }
 
 //=====================================================================================================================
-public  getAnswer(){
-  this.typed=this.service.getFinalType(this.allType);
-  if(this.typed=="film"){
+public  getAnswer(){//get the url of each item 
+  this.typed=this.service.getFinalType(this.allType);//get the final type 
+  if(this.typed=="film"){//if the type is film the header of the table is :
       this.nameOfColum[this.nameOfColum.length]="Trailer";
       this.nameOfColum[this.nameOfColum.length]=this.typed[0].toUpperCase() + this.typed.slice(1);
       }
-  else if (this.typed=="game")
+  else if (this.typed=="game")//if the type is game the header of the table is :
       {
         this.nameOfColum[this.nameOfColum.length]=this.typed[0].toUpperCase() + this.typed.slice(1);
         this.nameOfColum[this.nameOfColum.length]="Trailer";
@@ -193,11 +187,13 @@ public  getAnswer(){
   else 
         this.nameOfColum[this.nameOfColum.length]=this.typed[0].toUpperCase() + this.typed.slice(1);
 
-  this.displayedColumns=this.service.getColums(this.typed);
+  this.displayedColumns=this.service.getColums(this.typed);//get title of each column (database )
   console.log("in the first if: " + this.typed);
+
   this.count=0;
   this.steamResponse=0;
   this.filmResponse=0;
+
   for(let i=0 ; i<this.allSearch.length;i++)
   {
 
@@ -205,28 +201,30 @@ public  getAnswer(){
     console.log("in the second for " +  this.apiUrl[i]);
     this.http.get(this.apiUrl[i]).toPromise().then(response => 
     {
-      //console.log(response.json());
-        if(/*this.typed!="map" && */this.typed!="direction" && this.typed!="game")
+      
+        if(this.typed!="game")//if the type is game i need to seek in google the id of the game so I make search in duckducgo and use api of steam 
           this.results[i]=response.json();
         else if (this.typed=="game")
         {
           this.results[i]=response;
-          //console.log(response);
-          if(this.service.findSteamID(this.results[i]._body)!=null){
+          if(this.service.findSteamID(this.results[i]._body)!=null){//get the id of this game (search duckduckgo)
               this.steamID[i][this.countOfColums]=this.service.findSteamID(this.results[i]._body);
               console.log("this steam id = " + this.steamID[i]);
           }
-          else
+          else// if the game doesnt exist
             this.flagGame=false;
         }
-        this.loadPage(i,this.results[i]);
+        this.loadPage(i,this.results[i]);//go to loadpage 
         this.pressed=true;
     });
   
   }
 }
 //========================================================================================================================================
-public loadPage(i,result)
+public loadPage(i,result)//fill the database in this function : type is the type from the authentifacation automatic
+// and newType if after the user add column
+//responseArray is the database of the automatic authentification 
+//othercolumn is the db  of the added column
 {
   this.count++;
   console.log("in load page " + this.countOfColums)
@@ -237,7 +235,7 @@ public loadPage(i,result)
         this.ELEMENT_DATA[i][this.countOfColums]={position:i,name:this.allSearch[i],url:this.responseArray[i][this.countOfColums],otherColumns:this.otherColumn[i][this.countOfColums]};//push element in the Element array 
         if(this.count==this.allSearch.length)
         {
-        this.dataSource=new MatTableDataSource(this.ELEMENT_DATA);
+        this.dataSource=new MatTableDataSource(this.ELEMENT_DATA);//get into the table 
         this.finish=true;
         this.flag=true;
         if(this.changeCheckBox==true)
@@ -252,7 +250,7 @@ public loadPage(i,result)
         if(this.typed=="song" && this.plus==false)
           this.responseArray[i][this.countOfColums]=this.sanitizer.bypassSecurityTrustResourceUrl(this.responseArray[i][this.countOfColums]);
         else
-          this.otherColumn[i][this.countOfColums]=this.sanitizer.bypassSecurityTrustHtml('<iframe width="400" height="200" frameborder="0" style="border:0" src=\"'+ this.responseArray[i][this.countOfColums] + '\"allowfullscreen></iframe>');
+          this.otherColumn[i][this.countOfColums]=this.sanitizer.bypassSecurityTrustHtml('<iframe  frameborder="0" style="border:0" src=\"'+ this.responseArray[i][this.countOfColums] + '\"allowfullscreen></iframe>');
         this.ELEMENT_DATA[i][this.countOfColums]={position:i,name:this.allSearch[i],url:this.responseArray[i][this.countOfColums],otherColumns:this.otherColumn[i][this.countOfColums]};        if(this.count==this.allSearch.length)
         if(this.count==this.allSearch.length)
         {
@@ -266,7 +264,8 @@ public loadPage(i,result)
       }
 //==============================================WIKIPEDIA=====================================================================================
 
-     if(this.typed=="wiki" || this.newType=="wikipedia"){
+     if(this.typed=="wikipedia" || this.newType=="wikipedia"){
+       console.log(result)
        if(result[2]=="")
           result[2]="THERE ISN'T RESULT FOR THIS RESEARCH"
        this.responseArray[i][this.countOfColums]=result[2];
@@ -332,7 +331,7 @@ public loadPage(i,result)
               this.responseArray[i][this.countOfColums]=this.sanitizer.bypassSecurityTrustResourceUrl(this.responseArray[i][this.countOfColums]);
             console.log(this.responseArray[i][this.countOfColums])
             if(this.newType=="map")
-              this.otherColumn[i][this.countOfColums]=this.sanitizer.bypassSecurityTrustHtml('<iframe width="200" height="200" frameborder="0" style="border:0" src=\"'+ this.responseArray[i][this.countOfColums] + '\"allowfullscreen></iframe>');
+              this.otherColumn[i][this.countOfColums]=this.sanitizer.bypassSecurityTrustHtml('<iframe  frameborder="0" style="border:0" src=\"'+ this.responseArray[i][this.countOfColums] + '\"allowfullscreen></iframe>');
               this.ELEMENT_DATA[i][this.countOfColums]={position:i,name:this.allSearch[i],url:this.responseArray[i][this.countOfColums],otherColumns:this.otherColumn[i][this.countOfColums]};//push element in the Element array 
               if(this.mapResponse==this.allSearch.length)
               {//if get all the answer of the server
@@ -421,39 +420,39 @@ public loadPage(i,result)
 //===================================================================================================================================
 //===================================================================================================================================
 //click on the button "+"
-  add(keyword,selectType,flag,col)
+  add(keyword,selectType,flag,col)//add the column in the table
   {
-    if(selectType=="type")
+    if(selectType=="type")//if the user push on the button but didnt choose type
     {
       this.flag=true
       this.finish=true;
       return
     }
-    if(this.pressed!=true)
+    if(this.pressed!=true)//if the user push on the button but didnt search anything
     return;
     this.changeCheckBox=flag
     let options
-    this.finish=false;
-    this.plus=true;
-    this.count=0;
+    this.finish=false;//to wait the response of the server
+    this.plus=true;//button pushed
+    this.count=0;//new serach so new count 
     console.log(selectType);
     this.newType=selectType;
     this.keyword=keyword;
         console.log(this.countOfColums)
 
     if(selectType=="map")
-      this.mapResponse=0;
+      this.mapResponse=0;//new serach so new count 
     if(selectType=="imdb")
-      this.filmResponse=0;
+      this.filmResponse=0;//new serach so new count 
     if(selectType=="game")
-      this.steamResponse=0;
+      this.steamResponse=0;//new serach so new count 
 
     if(flag==false){
       console.log("here")
       this.countOfColums++;
-      this.nameOfColum[this.nameOfColum.length]= selectType[0].toUpperCase() + selectType.slice(1) + " \n" + keyword
-      this.displayedColumns[this.displayedColumns.length-1]='otherSearch'+ (this.countOfColums);
-      this.displayedColumns[this.displayedColumns.length]='add'
+      this.nameOfColum[this.nameOfColum.length]= selectType[0].toUpperCase() + selectType.slice(1) + " \n" + keyword // name of the new column
+      this.displayedColumns[this.displayedColumns.length-1]='otherSearch'+ (this.countOfColums);//database name column
+      this.displayedColumns[this.displayedColumns.length]='add'//the column in the end to add new column
     }
     else
     {
@@ -461,22 +460,22 @@ public loadPage(i,result)
       col=col.slice(-1);
       col=Number(col)
       console.log("col : " +col)
-      if(this.typed=="film" || this.typed=="game")
+      if(this.typed=="film" || this.typed=="game")//film and game have 2 columns (trailer + film/game)
         this.nameOfColum[2+col]=selectType[0].toUpperCase() + selectType.slice(1)
       else
         this.nameOfColum[1+col]=selectType[0].toUpperCase() + selectType.slice(1)
-      this.temp = this.countOfColums;
-      this.countOfColums=col
+      this.temp = this.countOfColums;//save the num of columns
+      this.countOfColums=col//the col to change
     }
     console.log( "count " + this.countOfColums)
     
     for(let i=0; i<this.allSearch.length;i++)
     {    
 
-      this.addApiUrl[i]=this.service.returnURL(selectType,this.allSearch[i]+" " +keyword,this.cors);
+      this.addApiUrl[i]=this.service.returnURL(selectType,this.allSearch[i]+" " +keyword,this.cors);//get the url for the response of json
             console.log(this.addApiUrl[i])
         if(selectType=="photo")
-        {
+        {//add request in the header
             options = new RequestOptions({
             headers: new Headers({
               'Accept': 'application/json','Api-Key': '78bseah6sqfmza2547zkt4y3'
@@ -527,18 +526,18 @@ public loadPage(i,result)
   //==============================================DELETE COLUMN=================================================================
 
 
-  deleteColumn(name_of_col)
+  deleteColumn(name_of_col)//delete column when the button - pressed 
   {
     console.log(this.ELEMENT_DATA,this.otherColumn,this.responseArray)
     
-    this.minus=false;
+    this.minus=false;//to not showing the table in html
     let col=name_of_col.slice(-1);
-    col=Number(col)
-    let array2=this.nameOfColum
-    let elementArray=this.ELEMENT_DATA;
-    let otherCol=this.otherColumn
-    let response=this.responseArray
-    let begin
+    col=Number(col)//the col what I want to delete
+    let array2=this.nameOfColum//to save the old name of the table
+    let elementArray=this.ELEMENT_DATA;//to save the old element data
+    let otherCol=this.otherColumn//to save the other column data
+    let response=this.responseArray//to save the database
+    let begin//to know from where I need to copy the old data to the new data
     if(this.typed=="film" || this.typed=="game")
       begin=2+col
     else

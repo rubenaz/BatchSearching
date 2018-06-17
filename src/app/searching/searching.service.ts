@@ -22,14 +22,14 @@ export class APIservice{
 
     constructor(){}
 
-    error(input){
+    error(input){//if the input is not good
         if(input.lastIndexOf("\n")==(input.length-1))
             return true;
         return false;
          
     }
 
-    load(input){   
+    load(input){  //if  in the input the user push on enter more than once or between 2 items there is "space" 
         this.allSearch=input.split("\n",input.length);
         let temp:string[]=[];
         let count=0;
@@ -92,7 +92,7 @@ export class APIservice{
         }
         return this.apiUrl;
     }
-    findSteamID(search)
+    findSteamID(search)//find the id of the game
     {
      
         let steamID;
@@ -103,7 +103,7 @@ export class APIservice{
        
         return steamID;
     }
-    getResultFromSteam(search)
+    getResultFromSteam(search)//get result from steam api
     {
         let result:string[]=[];
         if(search.about_the_game!=undefined)
@@ -126,7 +126,7 @@ export class APIservice{
         return result;
  
     }
-    getResultFromFilm(results)
+    getResultFromFilm(results)//get the result from imdb api 
     {
         let finalResult;
 
@@ -155,26 +155,16 @@ export class APIservice{
     {
      //this.alltype[0]="imdb",[1]=song,[2]=photo,[3]=wiki,[4]=map,[5]=game,[6]=direction[7]=product
 
-        let res=response._body;
-        let url=res;
-        let index=-1;
-        let type;
-        let indexGame=-1;
-        let index4=-1;
-        let index5=-1;
+        let begin=response._body.search("div class=\"i4J0ge\"")// the begin of the instant answer
+        let end = response._body.search("div id=\"bfoot\"")//the end of the instant answer
+        let res=response._body.substring(begin,end)//all the instant answer
+        let url;//the first url in google
         if(input.search(" to ")!=-1){
             this.alltype[6]++;
             return this.alltype;
         }
-       // index4=input.search(" to ");//check if the type is direction
-        index=res.search("cite class=\"iUh30\">");//to find the url in the html
-        type=res.match("a class=\"fl\" data-original-name=\"([0-9a-zA-Z ]*)\"");//check if the type is city
-        if(type!=null)
-            type=type[1];
-        indexGame=res.search("platform");//check if the type is game 
-        url=url.substring(index+11, index +100);//give the first url from the google search
-        console.log(type)
-        console.log("the url of google is : " + url);
+        url=response._body.match("cite class=\"iUh30\">https:\/\/(www?\.)?(\w*)(.[^/:]+)")[3];//to find the first  url in the html
+        console.log(url)
 
         if(url.search("imdb")!=-1)//if the first url is imdb or youtube 
             this.alltype[0]++;
@@ -186,7 +176,7 @@ export class APIservice{
             this.alltype[4]++;  
         else if (res.search("Artists")!=-1 || res.search("Albums")!=-1 || res.search("Artist")!=-1 || res.search("Lyrics")!=-1 || res.search("lyrics")!=-1 || res.search("albums")!=-1|| res.search("music")!=-1 || res.search("song")!=-1)
             this.alltype[1]++ 
-        else if(indexGame!=-1)
+        else if(res.search("platform")!=-1)
              this.alltype[5]++;
          else 
          this.alltype[3]++;
@@ -195,14 +185,14 @@ export class APIservice{
         return this.alltype;
 
     }
-    getColums(type)
+    getColums(type)//get the name of the database column
     {
         if(type=="game" || type=="film")
             return ['name', 'url','url2','add'];
         else    
             return ['name', 'url','add'];
     }
-    getFinalType(typeArray)
+    getFinalType(typeArray)//get the final type that the user search
     {
         let max=0;
         let count=0;
@@ -224,7 +214,7 @@ export class APIservice{
         if(max==2)
             type="photo";
         if(max==3)
-            type="wiki";
+            type="wikipedia";
         if(max==4)
             type="map";
         if(max==5)
@@ -234,12 +224,12 @@ export class APIservice{
 
             return type;      
     }
-    clearTheArrayType()
+    clearTheArrayType()//when the user click on serach to delete the contain of the array
     {
         for(let i= 0 ; i<7 ; i++)
             this.alltype[i]=0;
     }
-    generate(array,size)
+    generate(array,size)//generate the double array (data)
     {
         array=[]
         for(let i=0 ; i< size;i++)
