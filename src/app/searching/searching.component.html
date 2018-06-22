@@ -54,6 +54,7 @@
                                                         <option value="type">Type...</option>
                                                         <option value="map">Map</option>
                                                         <option value="imdb">IMDB</option>
+                                                        <option value="direction">Direction</option>
                                                         <option value="wikipedia">Wikipedia</option>
                                                         <option value="photo">Photo</option>
                                                         <option value="game">Game</option>
@@ -78,6 +79,7 @@
                                                         <option value="map">Map</option>
                                                         <option value="imdb">IMDB</option>
                                                         <option value="wikipedia">Wikipedia</option>
+                                                        <option value="direction">Direction</option>
                                                         <option value="photo">Photo</option>
                                                         <option value="game">Game</option>
                                                         <option value="trailer">Trailer</option> 
@@ -91,19 +93,19 @@
                                         <mat-cell *matCellDef="let element" style="    border-right:1px solid grey;
                                         align-self: stretch;">
                                         <div *ngIf = "col=='name'">
-                                                        <div  id="nameCell">{{element[0][col]}}</div>
+                                                <h4 class="display-4">{{element[0][col]}}</h4>
 
                                           
                                         </div>
                                                 <div *ngIf = "col=='url'">
                                                         <div *ngIf = "typed=='film'">
-                                                                <iframe [src]="element[0].url"  frameborder="0" allowfullscreen></iframe>
+                                                                <iframe [src]="element[0].url"  width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
                                                         </div>
                                                         <div *ngIf = "typed=='song'">
-                                                                <iframe [src]="element[0].url"  frameborder="0" allowfullscreen></iframe>
+                                                                <iframe [src]="element[0].url"  width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
                                                         </div>
                                                         <div *ngIf = "typed=='photo'">
-                                                                <img [src]="element[0].url"  frameborder="0" allowfullscreen>
+                                                                <img [src]="element[0].url"  width="100%" height="100%" frameborder="0" allowfullscreen>
                                                         </div>
                                                         <div *ngIf = "typed=='wikipedia'">
                                                                 {{element[0].url}}
@@ -112,11 +114,11 @@
                                                                         <div [innerHTML]="element[0].url"></div> 
                                                         </div>
                                                         <div *ngIf = "typed=='map'">
-                                                                <iframe  frameborder="0" style="border:0"
+                                                                <iframe  frameborder="0"  width="100%" height="100%" style="border:0"
                                                                 [src]="element[0].url" allowfullscreen></iframe>
                                                         </div> 
                                                         <div *ngIf = "typed=='direction'">
-                                                                <iframe  frameborder="0" style="border:0"
+                                                                <iframe  frameborder="0"  width="100%" height="100%" style="border:0"
                                                                 [src]="element[0].url" allowfullscreen></iframe>
                                                         </div> 
                                                 </div>
@@ -130,7 +132,7 @@
                                                         </div>
                                                         <div *ngIf = "typed=='game'">
                                                                 <ul>
-                                                                        <iframe [src]="element[0].otherColumns"  frameborder="0" allowfullscreen></iframe>
+                                                                        <iframe  width="100%" height="100%" [src]="element[0].otherColumns"  frameborder="0" allowfullscreen></iframe>
                                                                         
                                                                         </ul>
                                                         </div>

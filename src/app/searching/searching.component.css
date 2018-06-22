@@ -121,10 +121,11 @@ body{
 
           height: 3%;
           width: 80%;
+
       }
       #copyright
       {
-          padding-right: 50%;
+          
           display: inline-block;
         
       }
@@ -133,10 +134,7 @@ body{
         
         display: inline-block;
       }
-      footer{
-        height: 50px;
-        margin-top: -50px;
-      }
+    
       html {
         position: relative;
         min-height: 100%;
@@ -149,7 +147,9 @@ body{
     }
     #nameCell
     {
-        padding:15%;  
+        -webkit-flex-wrap: wrap; /* Safari 6.1+ */
+    display: flex;
+    flex-wrap: wrap;
         font-weight:normal;
         color: #BFB5B5;
         text-transform: uppercase;
@@ -160,4 +160,5 @@ body{
         font-family: 'Bangers', cursive;
         text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.7);
         margin: 0 auto;
+        width:100% 
 }

@@ -75,14 +75,6 @@ export class SearchingComponent implements OnInit {
   public href: string = "";
   private service=new APIservice();
   
-  /*const functions = require('firebase-functions');
-  const admin = require('firebase-admin');
-  admin.initializeApp(functions.config().firebase);
-  exports.notifyUser = functions.https.onRequest((req, res) => {
-    console.log("hahahhahahaha")
-        this.onSave(req);
-    // ...
-  });*/
 
 
 //==================================================================================================================
@@ -137,10 +129,10 @@ onSave(input){
   this.nameOfColum=['Item']
   this.minus=true
   this.error;
-  this.cors
+  this.cors=""
   this.changeCheckBox=false;
 
-    this.http.get("https://cors.io/?https://api.duckduckgo.com/?q=!g paris" ).subscribe(//need to check if the server cors.io is availble
+   /* this.http.get("https://cors.io/?https://api.duckduckgo.com/?q=!g paris" ).subscribe(//need to check if the server cors.io is availble
        (err) =>  this.error=err); 
        
     
@@ -149,23 +141,20 @@ onSave(input){
     else
       this.cors="https://cors.io/?"
 
-  
+  */
 
 
   for(let i=0;i<this.allSearch.length;i++)//first for to know what is the type of research that the user need
   {
     this.searchUrl[i]=this.cors + "https://api.duckduckgo.com/?q=!g " + this.allSearch[i] + "&format=json";//use the api of duckduckgo and the bang to get result from google
-    console.log("the first for :" + this.searchUrl[i]);
 
     this.http.get(this.searchUrl[i]).toPromise().then(response => 
     {
       //request to get response 
-      console.log("in the first get");
       this.allType=this.service.getType(response,this.allSearch[i]);//use service fonction to get the array of type of the research
-      console.log(this.allType);
+      console.log(this.allType)
       this.countSendUrls++;//update the count after receive response from the server
       if(this.countSendUrls==this.allSearch.length){//if receive all the response go to the getAnswer Response
-        console.log("finish to get the type")
          this.getAnswer();}
     });
 
@@ -188,7 +177,6 @@ public  getAnswer(){//get the url of each item
         this.nameOfColum[this.nameOfColum.length]=this.typed[0].toUpperCase() + this.typed.slice(1);
 
   this.displayedColumns=this.service.getColums(this.typed);//get title of each column (database )
-  console.log("in the first if: " + this.typed);
 
   this.count=0;
   this.steamResponse=0;
@@ -198,18 +186,16 @@ public  getAnswer(){//get the url of each item
   {
 
     this.apiUrl[i]=this.service.returnURL(this.typed,this.allSearch[i],this.cors)//get the url for the response of json
-    console.log("in the second for " +  this.apiUrl[i]);
     this.http.get(this.apiUrl[i]).toPromise().then(response => 
     {
       
-        if(this.typed!="game")//if the type is game i need to seek in google the id of the game so I make search in duckducgo and use api of steam 
+        if(this.typed!="game" && this.typed!="direction")//if the type is game i need to seek in google the id of the game so I make search in duckducgo and use api of steam 
           this.results[i]=response.json();
         else if (this.typed=="game")
         {
           this.results[i]=response;
           if(this.service.findSteamID(this.results[i]._body)!=null){//get the id of this game (search duckduckgo)
               this.steamID[i][this.countOfColums]=this.service.findSteamID(this.results[i]._body);
-              console.log("this steam id = " + this.steamID[i]);
           }
           else// if the game doesnt exist
             this.flagGame=false;
@@ -227,11 +213,10 @@ public loadPage(i,result)//fill the database in this function : type is the type
 //othercolumn is the db  of the added column
 {
   this.count++;
-  console.log("in load page " + this.countOfColums)
 //====================================================PHOTO======================================================================================
       if(this.newType=="photo"){
         this.responseArray[i][this.countOfColums]= result.images[0].display_sizes[0].uri
-        this.otherColumn[i][this.countOfColums]=this.sanitizer.bypassSecurityTrustHtml('<img width="200" height="200" frameborder="0" style="border:0" src=\"'+ this.responseArray[i][this.countOfColums] + '\"allowfullscreen>');
+        this.otherColumn[i][this.countOfColums]=this.sanitizer.bypassSecurityTrustHtml('<img  width="100%" height="100%" frameborder="0" style="border:0" src=\"'+ this.responseArray[i][this.countOfColums] + '\"allowfullscreen>');
         this.ELEMENT_DATA[i][this.countOfColums]={position:i,name:this.allSearch[i],url:this.responseArray[i][this.countOfColums],otherColumns:this.otherColumn[i][this.countOfColums]};//push element in the Element array 
         if(this.count==this.allSearch.length)
         {
@@ -250,7 +235,7 @@ public loadPage(i,result)//fill the database in this function : type is the type
         if(this.typed=="song" && this.plus==false)
           this.responseArray[i][this.countOfColums]=this.sanitizer.bypassSecurityTrustResourceUrl(this.responseArray[i][this.countOfColums]);
         else
-          this.otherColumn[i][this.countOfColums]=this.sanitizer.bypassSecurityTrustHtml('<iframe  frameborder="0" style="border:0" src=\"'+ this.responseArray[i][this.countOfColums] + '\"allowfullscreen></iframe>');
+          this.otherColumn[i][this.countOfColums]=this.sanitizer.bypassSecurityTrustHtml('<iframe  width="100%" height="100%" frameborder="0" style="border:0" src=\"'+ this.responseArray[i][this.countOfColums] + '\"allowfullscreen></iframe>');
         this.ELEMENT_DATA[i][this.countOfColums]={position:i,name:this.allSearch[i],url:this.responseArray[i][this.countOfColums],otherColumns:this.otherColumn[i][this.countOfColums]};        if(this.count==this.allSearch.length)
         if(this.count==this.allSearch.length)
         {
@@ -265,7 +250,6 @@ public loadPage(i,result)//fill the database in this function : type is the type
 //==============================================WIKIPEDIA=====================================================================================
 
      if(this.typed=="wikipedia" || this.newType=="wikipedia"){
-       console.log(result)
        if(result[2]=="")
           result[2]="THERE ISN'T RESULT FOR THIS RESEARCH"
        this.responseArray[i][this.countOfColums]=result[2];
@@ -329,9 +313,8 @@ public loadPage(i,result)//fill the database in this function : type is the type
             this.responseArray[i][this.countOfColums]=res.result.url+"&output=embed";
             if(this.newType!="map")
               this.responseArray[i][this.countOfColums]=this.sanitizer.bypassSecurityTrustResourceUrl(this.responseArray[i][this.countOfColums]);
-            console.log(this.responseArray[i][this.countOfColums])
             if(this.newType=="map")
-              this.otherColumn[i][this.countOfColums]=this.sanitizer.bypassSecurityTrustHtml('<iframe  frameborder="0" style="border:0" src=\"'+ this.responseArray[i][this.countOfColums] + '\"allowfullscreen></iframe>');
+              this.otherColumn[i][this.countOfColums]=this.sanitizer.bypassSecurityTrustHtml('<iframe  width="100%" height="100%" frameborder="0" style="border:0" src=\"'+ this.responseArray[i][this.countOfColums] + '\"allowfullscreen></iframe>');
               this.ELEMENT_DATA[i][this.countOfColums]={position:i,name:this.allSearch[i],url:this.responseArray[i][this.countOfColums],otherColumns:this.otherColumn[i][this.countOfColums]};//push element in the Element array 
               if(this.mapResponse==this.allSearch.length)
               {//if get all the answer of the server
@@ -349,15 +332,26 @@ public loadPage(i,result)//fill the database in this function : type is the type
        if (this.typed=="direction" || this.newType=="direction")
       {
        // this.http.get("https://cors.io/?https://maps.googleapis.com/maps/api/directions/json?key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos&origin=" + this.results[i].geocoded_waypoints[0].place_id + "&destination=" +this.results[i].geocoded_waypoints[1].place_id ).toPromise().then(response => {
-        this.responseArray[i][this.countOfColums]=this.apiUrl[i];
+       if(this.typed=="direction" && this.plus==false) {
+       this.responseArray[i][this.countOfColums]=this.apiUrl[i];
         this.responseArray[i][this.countOfColums]=this.sanitizer.bypassSecurityTrustResourceUrl(this.responseArray[i][this.countOfColums]);
+       }
+       else
+       {
+        this.otherColumn[i][this.countOfColums]=this.addApiUrl[i];
+        this.otherColumn[i][this.countOfColums]=this.sanitizer.bypassSecurityTrustResourceUrl(this.otherColumn[i][this.countOfColums]);
+        this.otherColumn[i][this.countOfColums]=this.sanitizer.bypassSecurityTrustHtml('<iframe  width="100%" height="100%" frameborder="0" style="border:0" src=\"'+ this.addApiUrl[i] + '\"allowfullscreen></iframe>');
+
+       }
         this.ELEMENT_DATA[i][this.countOfColums]={position:i,name:this.allSearch[i],url:this.responseArray[i][this.countOfColums],otherColumns:this.otherColumn[i][this.countOfColums]};
+        if(this.count==this.allSearch.length)
+        {
         this.dataSource=new MatTableDataSource(this.ELEMENT_DATA);
         this.flag=true;
         this.finish=true;
         if(this.changeCheckBox==true)
                     this.countOfColums=this.temp
-                
+        }  
         // });//push element in the Element array 
       }
 //======================================================GAME=======================================================================================
@@ -373,9 +367,6 @@ public loadPage(i,result)//fill the database in this function : type is the type
         {
           this.http.get(this.cors +"http://store.steampowered.com/api/appdetails?appids=" + this.steamID[i][this.countOfColums] +"&key=B458483E2C76C8BE13EB05C37106916A&format=json").toPromise().then(response => {
             let res=response.json();
-            console.log(res)
-            console.log(this.newType)
-            console.log(res[""+this.steamID[i][this.countOfColums]].success)
             if(res[""+this.steamID[i][this.countOfColums]].success!=false)
               {
                   if(this.typed=="game" && this.plus==false)
@@ -413,7 +404,6 @@ public loadPage(i,result)//fill the database in this function : type is the type
    
       }
     }
-     console.log(this.ELEMENT_DATA)
     }
 
 
@@ -435,10 +425,8 @@ public loadPage(i,result)//fill the database in this function : type is the type
     this.finish=false;//to wait the response of the server
     this.plus=true;//button pushed
     this.count=0;//new serach so new count 
-    console.log(selectType);
     this.newType=selectType;
     this.keyword=keyword;
-        console.log(this.countOfColums)
 
     if(selectType=="map")
       this.mapResponse=0;//new serach so new count 
@@ -448,7 +436,6 @@ public loadPage(i,result)//fill the database in this function : type is the type
       this.steamResponse=0;//new serach so new count 
 
     if(flag==false){
-      console.log("here")
       this.countOfColums++;
       this.nameOfColum[this.nameOfColum.length]= selectType[0].toUpperCase() + selectType.slice(1) + " \n" + keyword // name of the new column
       this.displayedColumns[this.displayedColumns.length-1]='otherSearch'+ (this.countOfColums);//database name column
@@ -456,10 +443,8 @@ public loadPage(i,result)//fill the database in this function : type is the type
     }
     else
     {
-      console.log("in the else")
       col=col.slice(-1);
       col=Number(col)
-      console.log("col : " +col)
       if(this.typed=="film" || this.typed=="game")//film and game have 2 columns (trailer + film/game)
         this.nameOfColum[2+col]=selectType[0].toUpperCase() + selectType.slice(1)
       else
@@ -467,13 +452,11 @@ public loadPage(i,result)//fill the database in this function : type is the type
       this.temp = this.countOfColums;//save the num of columns
       this.countOfColums=col//the col to change
     }
-    console.log( "count " + this.countOfColums)
     
     for(let i=0; i<this.allSearch.length;i++)
     {    
 
       this.addApiUrl[i]=this.service.returnURL(selectType,this.allSearch[i]+" " +keyword,this.cors);//get the url for the response of json
-            console.log(this.addApiUrl[i])
         if(selectType=="photo")
         {//add request in the header
             options = new RequestOptions({
@@ -482,31 +465,29 @@ public loadPage(i,result)//fill the database in this function : type is the type
             })
           });
         }
-        console.log( "count " + this.countOfColums)
       this.http.get(this.addApiUrl[i],options).toPromise().then(response => 
         {
-          console.log(response)
           if (selectType=="game")
           {
             let result:any;
             result=response;
             if(this.service.findSteamID(result._body)!=null){
               this.steamID[i][this.countOfColums]=this.service.findSteamID(result._body);
-                console.log("this steam id = " + this.steamID[i]);
                 this.addResult[i]=this.steamID[i][this.countOfColums]
             }
             else this.addResult[i]=0;
           }
+          else if(selectType=="direction")
+          {
+            this.addResult[i]=response
+          }
           else
             this.addResult[i]=response.json()
-            console.log( "before the function " + this.countOfColums)
 
           this.loadPage(i,this.addResult[i]);
         });
-        console.log(this.displayedColumns)
 
     }
-    console.log(this.countOfColums)
   }
   //==============================================RETURN NAME OF COLUMN=================================================================
   returncol(i)
@@ -528,7 +509,6 @@ public loadPage(i,result)//fill the database in this function : type is the type
 
   deleteColumn(name_of_col)//delete column when the button - pressed 
   {
-    console.log(this.ELEMENT_DATA,this.otherColumn,this.responseArray)
     
     this.minus=false;//to not showing the table in html
     let col=name_of_col.slice(-1);
@@ -550,15 +530,12 @@ public loadPage(i,result)//fill the database in this function : type is the type
     }
           this.nameOfColum.length--;
 
-    console.log("numToDelete:" + col + "     numOfColums:" + this.countOfColums)
     for(let i=0;i<this.allSearch.length;i++)//update the database
     {
       
       for(let j=col;j<=this.countOfColums;j++)
       {
         
-        console.log(j+1)
-       // console.log(this.countOfColums)
             if(j+1<=this.countOfColums)
             {
               this.otherColumn[i][j]=otherCol[i][j+1];
@@ -575,7 +552,6 @@ public loadPage(i,result)//fill the database in this function : type is the type
     this.displayedColumns[this.displayedColumns.length-1]='add'
     this.minus=true
 
-    console.log(this.ELEMENT_DATA,this.otherColumn,this.responseArray)
   }
   ngOnInit() :void{}
 }

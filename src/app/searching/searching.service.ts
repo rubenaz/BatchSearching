@@ -45,7 +45,6 @@ export class APIservice{
     }
     returnURL(type,search,cors)
     {
-       console.log(search)
         if(type=="film" || type=="trailer"|| type=="imdb")
         {
         this.apiUrl="https://www.googleapis.com/youtube/v3/search?part=snippet&q=" + search +" trailer&key=AIzaSyDntIUhIrk3e1FjrOEy_EwO7bFrSCt3Eos";
@@ -97,7 +96,6 @@ export class APIservice{
      
         let steamID;
         steamID=search.match("https://steamdb.info/app/([0-9 ]*)")[1];
-        console.log(steamID);
         if(steamID==null)
             return null;
        
@@ -206,7 +204,6 @@ export class APIservice{
             }
               
         }
-        console.log(max);
         if(max==0)
             type="film";
         if(max==1)
