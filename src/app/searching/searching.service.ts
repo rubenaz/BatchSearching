@@ -149,7 +149,7 @@ export class APIservice{
                       return finalResult;
                     }
                    
-    getType(response,input)
+    getType(response,input)//algorithm oh automatic authentification
     {
      //this.alltype[0]="imdb",[1]=song,[2]=photo,[3]=wiki,[4]=map,[5]=game,[6]=direction[7]=product
 
