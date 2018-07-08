@@ -15,7 +15,8 @@ Chrome  של Google ב.תוסף לדפדפן <br>
 <b>2- Page after cities search: <br><br>
 ![project main page](http://i65.tinypic.com/nqp7pj.png)<br><br><br>
 <b>3- VIDEO EXAMPLE : <br><br>
-  [![Alt text](https://i9.ytimg.com/vi/nwcOZgs30_A/mq2.jpg?sqp=CNCk6tkF&rs=AOn4CLAIhqEXPZQnE5NzCLlkrE8tk52XDA)](https://www.youtube.com/watch?v=nwcOZgs30_A)
+ [![Watch the video](http://i66.tinypic.com/t6xceo.png)](https://www.youtube.com/watch?v=nwcOZgs30_A)
+
 
 
 # Tools & Practices:
