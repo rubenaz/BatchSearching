@@ -136,20 +136,20 @@ onSave(input){
        (err) =>  this.error=err); 
        
     
-    if(this.error=="503")//if is not availble use other server
+    //if(this.error=="503")//if is not availble use other server
       this.cors="https://cors-anywhere.herokuapp.com/"
-    else
-      this.cors="https://cors.io/?"
+    //else
+     // this.cors="https://cors.io/?"*/
 
-  */
+  
 
 
   for(let i=0;i<this.allSearch.length;i++)//first for to know what is the type of research that the user need
   {
-    this.searchUrl[i]=this.cors + "https://api.duckduckgo.com/?q=!g " + this.allSearch[i] + "&format=json";//use the api of duckduckgo and the bang to get result from google
-
+    this.searchUrl[i]=this.cors + "https://www.google.com/search?hl=en&q= " + this.allSearch[i] + "&format=json";//use the api of duckduckgo and the bang to get result from google
+    
     this.http.get(this.searchUrl[i]).toPromise().then(response => 
-    {
+    {console.log(response)
       //request to get response 
       this.allType=this.service.getType(response,this.allSearch[i]);//use service fonction to get the array of type of the research
       console.log(this.allType)
